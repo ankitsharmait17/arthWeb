@@ -5,9 +5,9 @@ namespace BE
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class Model1 : DbContext
+    public partial class ArthModel : DbContext
     {
-        public Model1()
+        public ArthModel()
             : base("name=ArthModel")
         {
         }

@@ -53,7 +53,7 @@
     <Compile Include="ItemMapping.cs" />
     <Compile Include="ItemSubType.cs" />
     <Compile Include="ItemType.cs" />
-    <Compile Include="Model1.cs" />
+    <Compile Include="ArthModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
