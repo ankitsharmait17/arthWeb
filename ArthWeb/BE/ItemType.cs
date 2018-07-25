@@ -17,10 +17,10 @@ namespace BE
 
         public int ItemTypeID { get; set; }
 
-        [Column("ItemType")]
+        
         [Required]
         [StringLength(50)]
-        public string ItemType1 { get; set; }
+        public string ItemTypeKey { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemMapping> ItemMappings { get; set; }

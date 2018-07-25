@@ -32,7 +32,7 @@ namespace BE
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ItemType>()
-                .Property(e => e.ItemType1)
+                .Property(e => e.ItemTypeKey)
                 .IsUnicode(false);
 
             modelBuilder.Entity<ItemType>()
