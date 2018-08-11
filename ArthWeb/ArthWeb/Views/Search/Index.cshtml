@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/MatLayout.cshtml";
+}
+
+<style>
+    
+
+    .list-group-item {
+        border-left: 0;
+    }
+
+    .group-first {
+        border-top: 0;
+    }
+
+    .group-last {
+        border-bottom: 0;
+    }
+
+    .grid-img {
+        width: 250px;
+        height: 400px;
+    }
+
+    .img-div {
+        padding: 20px;
+    }
+
+    .overlay {
+        display: none;
+    }
+
+    
+
+    .card-title {
+        display: none;
+    }
+
+    .card-image:hover .card-title {
+        display: block;
+    }
+
+    .card-image>img{
+        width: 100px;
+        height: 400px;
+    }
+
+</style>
+
+
+ <div class="container-fluid">
+    <div class="row">
+            
+                <h6 align="center"><b>FILTERS</b></h6>
+                <div class="col l4">
+                    <ul class="collapsible">
+                        <li class=" group-first">
+                            <div class="collapsible-header">CATEGORIES</div>
+                            <div class="collapsible-body">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <label for="shirt">
+                                            <input type="checkbox" id="shirt"><span>Shirts</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="jeans">
+                                            <input type="checkbox" id="jeans"><span>Jeans</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="acc">
+                                            <input type="checkbox" id="acc"><span>Accesories</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col l4">
+                    <ul class="collapsible">
+                        <li class="list-group-item">
+                            <div class="collapsible-header">SIZES</div>
+                            <div class="collapsible-body">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <label for="s">
+                                            <input type="checkbox" id="s"><span>S</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="m">
+                                            <input type="checkbox" id="m"><span>M</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="l">
+                                            <input type="checkbox" id="l"><span>L</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col l4">
+                    <ul class="collapsible">
+                        <li class=" group-last">
+                            <div class="collapsible-header">PRICE</div>
+                            <div class="collapsible-body">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <label for="r1">
+                                            <input type="checkbox" id="r1"><span>Rs.500 to Rs.1000</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="r2">
+                                            <input type="checkbox" id="r2"><span>Rs.1000 to Rs.5000</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label for="r3">
+                                            <input type="checkbox" id="r3"><span>Rs.5000 to Rs.20000</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="col l12">
+                    <div class="row">
+                        <div class="col l3">
+                            <div class="input-field">
+                                <select id="sel1">
+                                    <option disabled selected>Select</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Newest First</option>
+                                    <option>Most Popular</option>
+                                </select>
+                                <label for="sel1">Sort By:</label>
+                            </div>
+                        </div>
+
+                        <div class="col l9">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+               </div>
+        <div class="container-fluid itemContainer">
+                <div class="row">
+                    
+                </div>
+            </div>
+
+
+        
+
+
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('select').formSelect();
+    });
+
+    function CreateItem() {
+        var container = $('.itemContainer>.row');
+        var markup = '<div class="col l3 img-div">' +
+            '<div class="card" >' +
+            '<div class="card-image">' +
+            '<img src="'+imageSrc+'">' +
+            '<span class="card-title">'+Price+'&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>'+
+            '</div>' +
+            '</div>' +
+            '</div >' +
+            '<div class="col l1"></div>';
+        container.append(markup);
+    }
+
+    $('#btn').on('click', function () {
+        CreateItem();
+    });
+</script>
+
