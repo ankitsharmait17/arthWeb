@@ -17,7 +17,6 @@ namespace BE
 
         public int ItemTypeID { get; set; }
 
-        
         [Required]
         [StringLength(50)]
         public string ItemTypeKey { get; set; }

@@ -8,22 +8,40 @@ namespace BE
     public partial class ArthModel : DbContext
     {
         public ArthModel()
-            : base("name=ArthModel")
+            : base("name=ArthModel1")
         {
         }
 
+        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemMapping> ItemMappings { get; set; }
         public virtual DbSet<ItemSubType> ItemSubTypes { get; set; }
         public virtual DbSet<ItemType> ItemTypes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Item>()
+                .Property(e => e.ItemKey)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Item>()
+                .Property(e => e.Description)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Item>()
+                .Property(e => e.DescriptionLong)
+                .IsUnicode(false);
+
             modelBuilder.Entity<ItemMapping>()
                 .Property(e => e.Gender)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<ItemMapping>()
+                .HasMany(e => e.Items)
+                .WithRequired(e => e.ItemMapping)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ItemSubType>()
-                .Property(e => e.ItemSubType1)
+                .Property(e => e.ItemSubTypeKey)
                 .IsUnicode(false);
 
             modelBuilder.Entity<ItemSubType>()

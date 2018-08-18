@@ -17,10 +17,9 @@ namespace BE
 
         public int ItemSubTypeID { get; set; }
 
-        [Column("ItemSubType")]
         [Required]
         [StringLength(50)]
-        public string ItemSubType1 { get; set; }
+        public string ItemSubTypeKey { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemMapping> ItemMappings { get; set; }

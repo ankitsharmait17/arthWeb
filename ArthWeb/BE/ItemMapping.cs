@@ -9,6 +9,12 @@ namespace BE
     [Table("ItemMapping")]
     public partial class ItemMapping
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ItemMapping()
+        {
+            Items = new HashSet<Item>();
+        }
+
         public int ItemMappingID { get; set; }
 
         public int ItemTypeID { get; set; }
@@ -18,6 +24,9 @@ namespace BE
         [Required]
         [StringLength(1)]
         public string Gender { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items { get; set; }
 
         public virtual ItemSubType ItemSubType { get; set; }
 
