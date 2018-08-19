@@ -8,6 +8,7 @@
 
     main {
         flex: 1 0 auto;
+        margin:10px;
     }
 </style>
 <html>
@@ -25,6 +26,12 @@
 
 <body>
     <!--        Navbar Start-->
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+    </ul>
     <header>
         <div class="navbar-fixed">
             <nav>
@@ -32,7 +39,7 @@
                     <a href="#" class="brand-logo">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="#">Men</a></li>
+                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Men</a></li>
                         <li><a href="#">Women</a></li>
                         <li><a href="#">Accessories</a></li>
                         <li>
@@ -78,23 +85,23 @@
             </div>
         </div>
         @*<div class="container">
-            <div class="row">
-                <div class="col l12 center-align">
-                    <div class="col s3"><h6><a href="#" class="white-text">CONTACT US</a></h6></div>
-                    <div class=" col s1"><h6 class="white-text"></h6></div>
-                    <div class="col s3"><h6><a href="#" class="white-text">ABOUT US</a></h6></div>
-                    <div class=" col s1"><h6 class="white-text"></h6></div>
-                    <div class="col s3"><h6><a href="#" class="white-text">TERMS & CONDITIONS</a></h6></div>
+                <div class="row">
+                    <div class="col l12 center-align">
+                        <div class="col s3"><h6><a href="#" class="white-text">CONTACT US</a></h6></div>
+                        <div class=" col s1"><h6 class="white-text"></h6></div>
+                        <div class="col s3"><h6><a href="#" class="white-text">ABOUT US</a></h6></div>
+                        <div class=" col s1"><h6 class="white-text"></h6></div>
+                        <div class="col s3"><h6><a href="#" class="white-text">TERMS & CONDITIONS</a></h6></div>
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
         <div class="footer-copyright">
 
             <div class="container">
                 <div class="row">
                     © 2018 Copyright
                     <h6 class="right">
-                        <a href="#" class="white-text">CONTACT US</a> | 
+                        <a href="#" class="white-text">CONTACT US</a> |
                         <a href="#" class="white-text">ABOUT US</a> |
                         <a href="#" class="white-text">TERMS & CONDITIONS</a>
                     </h6>
@@ -104,12 +111,12 @@
     </footer>
     <!--        Footer End-->
 
-    
-    
+
+
     <script>
         $(document).ready(function () {
-            //$('.carousel').carousel();
-            
+            //$('.carousel').carousel();\
+            $(".dropdown-trigger").dropdown({ hover: true, coverTrigger: false });
             $('.sidenav').sidenav();
             //M.AutoInit();
         });

@@ -2,10 +2,29 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/MatLayout.cshtml";
+    Dictionary<string, List<string>> catList = ViewBag.DDList;
+    string markup = null;
+    
+    foreach (var item in catList)
+    {
+        markup += "<li>";
+        markup += "<div class='collapsible-header'>"+item.Key+"</div>";
+        markup += "<div class='collapsible-body'>";
+        markup+="<ul class='list-unstyled'>";
+        foreach (string subType in item.Value)
+        {
+            markup += "<li>";
+            markup+="<label for='"+subType+"'>";
+            markup+="<input type='checkbox' id='"+subType+"'><span>"+subType+"</span>";
+            markup += "</label></li>";
+        }
+        markup += "</ul></div></li>";
+    }
+    
 }
 
 <style>
-    
+
 
     .list-group-item {
         border-left: 0;
@@ -32,7 +51,7 @@
         display: none;
     }
 
-    
+
 
     .card-title {
         display: none;
@@ -42,134 +61,131 @@
         display: block;
     }
 
-    .card-image>img{
+    .card-image > img {
         width: 100px;
         height: 400px;
     }
 
+    .sidenav li{
+        margin:10px;
+    }
 </style>
 
-
- <div class="container-fluid">
-    <div class="row">
+<ul id="slide-out" class="sidenav">
+    <li>
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>FILTERS</li>
+            <li><div class="divider"></div></li>
+            <li>
+                <div class="collapsible-header">FOR</div>
+                <div class="collapsible-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <label for="men">
+                                <input type="checkbox" id="men"><span>Men</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="women">
+                                <input type="checkbox" id="women"><span>Women</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li><div class="divider"></div></li>
             
-                <h6 align="center"><b>FILTERS</b></h6>
-                <div class="col l4">
-                    <ul class="collapsible">
-                        <li class=" group-first">
-                            <div class="collapsible-header">CATEGORIES</div>
-                            <div class="collapsible-body">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <label for="shirt">
-                                            <input type="checkbox" id="shirt"><span>Shirts</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="jeans">
-                                            <input type="checkbox" id="jeans"><span>Jeans</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="acc">
-                                            <input type="checkbox" id="acc"><span>Accesories</span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col l4">
-                    <ul class="collapsible">
-                        <li class="list-group-item">
-                            <div class="collapsible-header">SIZES</div>
-                            <div class="collapsible-body">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <label for="s">
-                                            <input type="checkbox" id="s"><span>S</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="m">
-                                            <input type="checkbox" id="m"><span>M</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="l">
-                                            <input type="checkbox" id="l"><span>L</span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col l4">
-                    <ul class="collapsible">
-                        <li class=" group-last">
-                            <div class="collapsible-header">PRICE</div>
-                            <div class="collapsible-body">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <label for="r1">
-                                            <input type="checkbox" id="r1"><span>Rs.500 to Rs.1000</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="r2">
-                                            <input type="checkbox" id="r2"><span>Rs.1000 to Rs.5000</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label for="r3">
-                                            <input type="checkbox" id="r3"><span>Rs.5000 to Rs.20000</span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-                <div class="col l12">
-                    <div class="row">
-                        <div class="col l3">
-                            <div class="input-field">
-                                <select id="sel1">
-                                    <option disabled selected>Select</option>
-                                    <option>Price: High to Low</option>
-                                    <option>Price: High to Low</option>
-                                    <option>Newest First</option>
-                                    <option>Most Popular</option>
-                                </select>
-                                <label for="sel1">Sort By:</label>
-                            </div>
-                        </div>
-
-                        <div class="col l9">
-
-                        </div>
-                    </div>
-                </div>
+            <li>
+            <div class="collapsible-header">CATEGORIES</div>
+            <div class="collapsible-body">
+                <ul class="collapsible" data-collapsible="accordion">
+                    @Html.Raw(markup)
+                </ul>
             </div>
-               </div>
-        <div class="container-fluid itemContainer">
-                <div class="row">
-                    
+        </li>
+            <li><div class="divider"></div></li>
+            <li>
+                <div class="collapsible-header">SIZES</div>
+                <div class="collapsible-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <label for="s">
+                                <input type="checkbox" id="s"><span>S</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="m">
+                                <input type="checkbox" id="m"><span>M</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="l">
+                                <input type="checkbox" id="l"><span>L</span>
+                            </label>
+                        </li>
+                    </ul>
                 </div>
-            </div>
+            </li>
+            <li><div class="divider"></div></li>
+            <li>
+                <div class="collapsible-header">PRICE</div>
+                <div class="collapsible-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <label for="r1">
+                                <input type="checkbox" id="r1"><span>Rs.500 to Rs.1000</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="r2">
+                                <input type="checkbox" id="r2"><span>Rs.1000 to Rs.5000</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="r3">
+                                <input type="checkbox" id="r3"><span>Rs.5000 to Rs.20000</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li><div class="divider"></div></li>
+        </ul>
+    </li>
+</ul>
+
+<div class="col l12">
+    <div class="row">
+        <div class="col l9"></div>
+        <div class="col l1">
+            <a href="#" data-target="slide-out" class="btn sidenav-trigger transparent black-text">FILTERS</a>
+        </div>
+        <div class="col l2">
+            <select id="sel1">
+                <option disabled selected>Sort By</option>
+                <option>Price: High to Low</option>
+                <option>Price: High to Low</option>
+                <option>Newest First</option>
+                <option>Most Popular</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="container-fluid itemContainer">
+    <div class="row">
+
+    </div>
+</div>
 
 
-        
+
 
 
 <script>
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
+        //$('.sidenav').sidenav();
     });
 
     function CreateItem() {
@@ -177,8 +193,8 @@
         var markup = '<div class="col l3 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
-            '<img src="'+imageSrc+'">' +
-            '<span class="card-title">'+Price+'&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>'+
+            '<img src="' + imageSrc + '">' +
+            '<span class="card-title">' + Price + '&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>' +
             '</div>' +
             '</div>' +
             '</div >' +

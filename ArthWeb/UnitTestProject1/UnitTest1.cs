@@ -12,5 +12,23 @@ namespace UnitTestProject1
         {
             var x = new ItemTypeDAO().GetItemType();
         }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            var x = new ItemDAO().GetItems();
+        }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var x = new ItemMappingDAO().GetItemMappings();
+        }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            var x = new ItemMappingDAO().GetItemMappingsDict();
+        }
     }
 }

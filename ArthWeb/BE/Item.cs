@@ -22,6 +22,8 @@ namespace BE
         [StringLength(500)]
         public string DescriptionLong { get; set; }
 
+        public decimal Price { get; set; }
+
         public int ItemMappingID { get; set; }
 
         public virtual ItemMapping ItemMapping { get; set; }
