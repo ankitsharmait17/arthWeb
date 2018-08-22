@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/MatLayout.cshtml";
     Dictionary<string, List<string>> catList = ViewBag.DDList;
     string markup = null;
-    
+
     foreach (var item in catList)
     {
         markup += "<li>";
@@ -15,12 +15,12 @@
         {
             markup += "<li>";
             markup+="<label for='"+subType+"'>";
-            markup+="<input type='checkbox' id='"+subType+"'><span>"+subType+"</span>";
+            markup+="<input type='checkbox' id='"+subType+"'class='filter'><span>" + subType+"</span>";
             markup += "</label></li>";
         }
         markup += "</ul></div></li>";
     }
-    
+
 }
 
 <style>
@@ -82,12 +82,12 @@
                     <ul class="list-unstyled">
                         <li>
                             <label for="men">
-                                <input type="checkbox" id="men"><span>Men</span>
+                                <input type="checkbox" id="men" class="filter"><span>Men</span>
                             </label>
                         </li>
                         <li>
                             <label for="women">
-                                <input type="checkbox" id="women"><span>Women</span>
+                                <input type="checkbox" id="women" class="filter"><span>Women</span>
                             </label>
                         </li>
                     </ul>
@@ -133,17 +133,17 @@
                     <ul class="list-unstyled">
                         <li>
                             <label for="r1">
-                                <input type="checkbox" id="r1"><span>Rs.500 to Rs.1000</span>
+                                <input type="checkbox" id="r1" class="range"><span>Rs.500 to Rs.1000</span>
                             </label>
                         </li>
                         <li>
                             <label for="r2">
-                                <input type="checkbox" id="r2"><span>Rs.1000 to Rs.5000</span>
+                                <input type="checkbox" id="r2" class="range"><span>Rs.1000 to Rs.5000</span>
                             </label>
                         </li>
                         <li>
                             <label for="r3">
-                                <input type="checkbox" id="r3"><span>Rs.5000 to Rs.20000</span>
+                                <input type="checkbox" id="r3" class="range"><span>Rs.5000 to Rs.20000</span>
                             </label>
                         </li>
                     </ul>
@@ -156,7 +156,16 @@
 
 <div class="col l12">
     <div class="row">
-        <div class="col l9"></div>
+        <div class="col l8 left">
+            <div class="disabled" id="chips">
+
+            </div>
+        </div>
+        <div class="col l1">
+            <button class="btn waves-effect waves-light" id="clear" style="display:none">
+                Clear
+            </button>
+        </div>
         <div class="col l1">
             <a href="#" data-target="slide-out" class="btn sidenav-trigger transparent black-text">FILTERS</a>
         </div>
@@ -185,7 +194,6 @@
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
-        //$('.sidenav').sidenav();
     });
 
     function CreateItem() {
@@ -202,8 +210,70 @@
         container.append(markup);
     }
 
-    $('#btn').on('click', function () {
-        CreateItem();
+    function CreateChip(text)
+    {
+        var markup = "<div class='chip'><b>" + text +"</b><i class='close material-icons' onClick='deleteChip(this)'>close</i></div>";
+        $('#chips').append(markup);
+    }
+
+    $('.filter').on('click', function () {
+        var isPresent = false;
+        var text = $(this).attr('id');
+        var isChecked;
+        if ($(this).is(':checked'))
+            isChecked = true;
+        else
+            isChecked = false;
+        $('.chip').each(function () {
+            if ($(this).find('b').text()==text) {
+                isPresent = true;
+                $(this).remove();
+            }
+        });
+        if (!isPresent) {
+            CreateChip(text);
+        }
+        if ($('#chips').children().length > 0) {
+            $('#clear').css('display', 'block');
+        }
+        else {
+            $('#clear').css('display', 'none');
+        }
     });
+
+    $('.chipClose').on('click', function () {
+        var id = $(this).find('b').text();
+        $('#' + id).prop('checked', false);
+        if ($('#chips').children().length > 0) {
+            $('#clear').css('display', 'block');
+        }
+        else {
+            $('#clear').css('display', 'none');
+        }
+    });
+
+    function deleteChip(element)
+    {
+        var id = element.previousElementSibling.innerHTML;
+        $('#' + id).prop('checked', false);
+        if ($('#chips').children().length == 1) {
+            $('#clear').css('display', 'none');
+        }
+        else {
+            $('#clear').css('display', 'block');
+        }
+    }
+
+    $('#clear').on('click', function () {
+        $('.chip').remove();
+        $('.filter').prop('checked', false);
+        if ($('#chips').children().length > 0) {
+            $('#clear').css('display', 'block');
+        }
+        else {
+            $('#clear').css('display', 'none');
+        }
+    });
+
 </script>
 
