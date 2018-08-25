@@ -20,7 +20,6 @@
         }
         markup += "</ul></div></li>";
     }
-
 }
 
 <style>
@@ -170,12 +169,12 @@
             <a href="#" data-target="slide-out" class="btn sidenav-trigger transparent black-text">FILTERS</a>
         </div>
         <div class="col l2">
-            <select id="sel1">
+            <select id="order">
                 <option disabled selected>Sort By</option>
-                <option>Price: High to Low</option>
-                <option>Price: High to Low</option>
-                <option>Newest First</option>
-                <option>Most Popular</option>
+                <option value="0">Price: High to Low</option>
+                <option value="1">Price: High to Low</option>
+                <option value="2">Newest First</option>
+                <option value="3">Most Popular</option>
             </select>
         </div>
     </div>
@@ -185,24 +184,32 @@
 
     </div>
 </div>
+<div class="container-fluid">
+    <div class="row center">
+        <ul class="pagination">
+            
+        </ul>
+    </div>
+</div>
 
 
 
 
 
 <script>
+    var search, pageSize, startRec, order;
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
     });
 
-    function CreateItem() {
+    function CreateItem(price) {
         var container = $('.itemContainer>.row');
         var markup = '<div class="col l3 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
-            '<img src="' + imageSrc + '">' +
-            '<span class="card-title">' + Price + '&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>' +
+            '<img src="~/Content/dewdrops-flora-flower-56866.jpg">' +
+            '<span class="card-title">Rs. ' + price + '&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>' +
             '</div>' +
             '</div>' +
             '</div >' +
@@ -274,6 +281,52 @@
             $('#clear').css('display', 'none');
         }
     });
+
+    function GetItemsforGrid(searchString,page){
+        search = searchString;
+        pageSize = 10;
+        if (page == null) {
+            startRec = 0;
+        }
+        else {
+            startRec = pageSize * page;
+        }
+        order = $('#order').val();
+        $.ajax({
+            url: "/Search/GetItemJsonData",
+            type: "GET",
+            data: {
+                search: search,
+                pageSize: pageSize,
+                startRec: startRec,
+                order: order
+            },
+            success: function (res) {
+                if (res.Success) {
+                    $('.pagination').empty();
+                    $('.itemContainer>.row').empty();
+                    $('.pagination').append('<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>');
+                    res.data.forEach(function (el,i) {
+                        CreateItem(el.Price);
+                    });
+                    var length = Math.ceil(res.data.length / pageSize);
+                    for (var i = 1; i <= length; i++) {
+                        if (i == 1)
+                            $('.pagination').append("<li class='active'><a href='#!'>" + i + "</a></li>");
+                        else
+                            $('.pagination').append("<li class='waves-effect'><a href='#!'>" + i + "</a></li>");
+                    }
+                    if (length==1)
+                        $('.pagination').append('<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>');
+                    else
+                        $('.pagination').append('<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>');
+                }
+                else {
+                    console.log(res.Message);
+                }
+            }
+        });
+    }
 
 </script>
 

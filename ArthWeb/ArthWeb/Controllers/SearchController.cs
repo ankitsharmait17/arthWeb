@@ -10,11 +10,12 @@ namespace ArthWeb.Controllers
     public class SearchController : Controller
     {
         // GET: Search
-        public ActionResult Index()
+        public ActionResult Index(string search=null)
         {
             try
             {
                 ViewBag.DDList = new ItemMappingBL().GetItemMappingDict();
+                ViewBag.searchString = search;
             }
             catch (Exception)
             {
@@ -23,13 +24,14 @@ namespace ArthWeb.Controllers
             }
             return View();
         }
-
-        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order, string orderDir)
+        
+        [HttpGet]
+        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order)
         {
             try
             {
-                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order, orderDir);
-                return Json(new {Success=true, data=itemList });
+                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order);
+                return Json(new {Success=true, data=itemList },JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -20,7 +20,7 @@ namespace DL
             return items;
         }
 
-        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order, string orderDir)
+        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order)
         {
             List<ItemModel> itemList = null;
             try
@@ -35,34 +35,56 @@ namespace DL
                                 on itemMap.ItemTypeID equals type.ItemTypeID
                                 join subType in cntx.ItemSubTypes
                                 on itemMap.ItemSubTypeID equals subType.ItemSubTypeID
-                                select new { item,itemMap,type,subType });
-
+                                select new { item,itemMap,type,subType }).AsEnumerable()
+                                .Select(x => new ItemModel()
+                                {
+                                    ItemID = x.item.ItemID,
+                                    ItemKey = x.item.ItemKey,
+                                    Description = x.item.Description,
+                                    DescriptionLong = x.item.DescriptionLong,
+                                    Gender = x.itemMap.Gender,
+                                    ItemSubType = x.subType.ItemSubTypeKey,
+                                    ItemType = x.type.ItemTypeKey,
+                                    Price = x.item.Price
+                                });
+                    var predicate = PredicateBuilder.False<ItemModel>();
+                    
                     if (!string.IsNullOrWhiteSpace(search))
                     {
-                        data = data.Where(x => x.item.Description.Trim().ToLower().Contains(search.Trim().ToLower()) ||
-                                             x.item.DescriptionLong.Trim().ToLower().Contains(search.Trim().ToLower()));
+                        data = data.Where(x => x.Description.Trim().ToLower().Contains(search.Trim().ToLower()) ||
+                                             x.DescriptionLong.Trim().ToLower().Contains(search.Trim().ToLower()));
                     }
                     switch (order)
                     {
                         case "0":
-                            data = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ? data.OrderByDescending(x => x.item.Price) : data.OrderBy(x => x.item.Price);
+                            data = data.OrderByDescending(x => x.Price);
+                            break;
+                        case "1":
+                            data = data.OrderBy(x => x.Price);
+                            break;
+                        case "2":
+                            data = data.OrderBy(x => x.Description);
+                            break;
+                        case "3":
+                            data = data.OrderByDescending(x => x.DescriptionLong);
                             break;
                         default:
-                            data = orderDir.Equals("DESC", StringComparison.CurrentCultureIgnoreCase) ? data.OrderByDescending(x => x.item.ItemKey) : data.OrderBy(x => x.item.ItemKey);
+                            data = data.OrderBy(x => x.ItemID);
                             break;
                     }
                     data = data.Skip(startRec).Take(pageSize);
-                    itemList = data.AsEnumerable().Select(x=>new ItemModel()
-                    {
-                         ItemID=x.item.ItemID,
-                         ItemKey=x.item.ItemKey,
-                         Description=x.item.Description,
-                         DescriptionLong=x.item.DescriptionLong,
-                         Gender=x.itemMap.Gender,
-                         ItemSubType=x.subType.ItemSubTypeKey,
-                         ItemType=x.type.ItemTypeKey,
-                         Price=x.item.Price
-                    }).ToList();
+                    itemList = data.ToList();
+                    //itemList = data.AsEnumerable().Select(x=>new ItemModel()
+                    //{
+                    //     ItemID=x.item.ItemID,
+                    //     ItemKey=x.item.ItemKey,
+                    //     Description=x.item.Description,
+                    //     DescriptionLong=x.item.DescriptionLong,
+                    //     Gender=x.itemMap.Gender,
+                    //     ItemSubType=x.subType.ItemSubTypeKey,
+                    //     ItemType=x.type.ItemTypeKey,
+                    //     Price=x.item.Price
+                    //}).ToList();
                 }
             }
             catch (Exception)
