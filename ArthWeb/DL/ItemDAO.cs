@@ -3,6 +3,7 @@ using BE.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,36 +36,28 @@ namespace DL
                                 on itemMap.ItemTypeID equals type.ItemTypeID
                                 join subType in cntx.ItemSubTypes
                                 on itemMap.ItemSubTypeID equals subType.ItemSubTypeID
-                                select new { item,itemMap,type,subType }).AsEnumerable()
-                                .Select(x => new ItemModel()
-                                {
-                                    ItemID = x.item.ItemID,
-                                    ItemKey = x.item.ItemKey,
-                                    Description = x.item.Description,
-                                    DescriptionLong = x.item.DescriptionLong,
-                                    Gender = x.itemMap.Gender,
-                                    ItemSubType = x.subType.ItemSubTypeKey,
-                                    ItemType = x.type.ItemTypeKey,
-                                    Price = x.item.Price
-                                }).AsQueryable();
+                                select new { item, itemMap, type, subType });
                     
 
                     if (!string.IsNullOrWhiteSpace(search))
                     {
-                        data = data.Where(x => x.Description.Trim().ToLower().Contains(search.Trim().ToLower()) ||
-                                             x.DescriptionLong.Trim().ToLower().Contains(search.Trim().ToLower()));
+                        data = data.Where(x => x.item.Description.Trim().ToLower().Contains(search.Trim().ToLower()) ||
+                                             x.item.DescriptionLong.Trim().ToLower().Contains(search.Trim().ToLower()));
                     }
 
-                    var predicate = PredicateBuilder.False<ItemModel>();
+                    
                     if (!string.IsNullOrWhiteSpace(filterGender))
                     {
+                        filterGender = filterGender.Remove(filterGender.Length-1);
                         var keywords = filterGender.Split('|');
-                        for (int i = 0; i < keywords.Length - 1; i++)
+                        string predicate = null;
+                        int i;
+                        for (i = 0; i < keywords.Length - 1; i++)
                         {
-                            string temp = keywords[i] == "men" ? "M" : "F";
-                            predicate = predicate.Or(p => p.Gender.Equals(temp));
+                            predicate += "itemMap.Gender.Equals(@" + i + ") ||";
                         }
-                        data = data.Where(predicate);
+                        predicate += "itemMap.Gender.Equals(@" + i + ")";
+                        data = data.Where("itemMap.Gender.Equals(@0)", keywords);
                     }
 
                     if (!string.IsNullOrWhiteSpace(filterPrice))
@@ -74,48 +67,51 @@ namespace DL
 
                     if (!string.IsNullOrWhiteSpace(filterSubtype))
                     {
+                        filterSubtype = filterSubtype.Remove(filterSubtype.Length - 1);
                         var keywords = filterSubtype.Split('|');
-                        for (int i = 0; i < keywords.Length - 1; i++)
+                        string predicate = null;
+                        int i;
+                        for (i = 0; i < keywords.Length-1; i++)
                         {
-                            string temp = keywords[i];
-                            predicate = predicate.Or(p => p.ItemSubType.Trim().ToLower().Contains(temp.Trim().ToLower()));
+                            predicate += "subType.ItemSubTypeKey.Contains(@" + i + ") ||";
                         }
-                        data = data.Where(predicate);
+                        predicate += "subType.ItemSubTypeKey.Contains(@" + i + ")";
+                        data = data.Where(predicate, keywords);
                     }
 
                     
                     switch (order)
                     {
                         case "0":
-                            data = data.OrderByDescending(x => x.Price);
+                            data = data.OrderByDescending(x => x.item.Price);
                             break;
                         case "1":
-                            data = data.OrderBy(x => x.Price);
+                            data = data.OrderBy(x => x.item.Price);
                             break;
                         case "2":
-                            data = data.OrderBy(x => x.Description);
+                            data = data.OrderBy(x => x.item.Description);
                             break;
                         case "3":
-                            data = data.OrderByDescending(x => x.DescriptionLong);
+                            data = data.OrderByDescending(x => x.item.DescriptionLong);
                             break;
                         default:
-                            data = data.OrderBy(x => x.ItemID);
+                            data = data.OrderBy(x => x.item.ItemID);
                             break;
                     }
 
                     data = data.Skip(startRec).Take(pageSize);
-                    itemList = data.ToList();
-                    //itemList = data.AsEnumerable().Select(x=>new ItemModel()
-                    //{
-                    //     ItemID=x.item.ItemID,
-                    //     ItemKey=x.item.ItemKey,
-                    //     Description=x.item.Description,
-                    //     DescriptionLong=x.item.DescriptionLong,
-                    //     Gender=x.itemMap.Gender,
-                    //     ItemSubType=x.subType.ItemSubTypeKey,
-                    //     ItemType=x.type.ItemTypeKey,
-                    //     Price=x.item.Price
-                    //}).ToList();
+                    itemList = data.AsEnumerable()
+                                .Select(x => new ItemModel()
+                                {
+                                    ItemID = x.item.ItemID,
+                                    ItemKey = x.item.ItemKey,
+                                    Description = x.item.Description,
+                                    DescriptionLong = x.item.DescriptionLong,
+                                    Gender = x.itemMap.Gender == "M" ? "men" : "women",
+                                    ItemSubType = x.subType.ItemSubTypeKey,
+                                    ItemType = x.type.ItemTypeKey,
+                                    Price = x.item.Price
+                                }).ToList();
                 }
             }
             catch (Exception)
