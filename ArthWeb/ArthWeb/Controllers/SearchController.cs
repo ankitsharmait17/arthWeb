@@ -26,11 +26,11 @@ namespace ArthWeb.Controllers
         }
         
         [HttpGet]
-        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order)
+        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order, string filterGender, string filterSubtype, string filterPrice)
         {
             try
             {
-                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order);
+                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype, filterPrice);
                 return Json(new {Success=true, data=itemList },JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

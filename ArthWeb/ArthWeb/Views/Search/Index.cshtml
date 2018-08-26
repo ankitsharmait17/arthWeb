@@ -15,7 +15,7 @@
         {
             markup += "<li>";
             markup+="<label for='"+subType+"'>";
-            markup+="<input type='checkbox' id='"+subType+"'class='filter'><span>" + subType+"</span>";
+            markup+="<input type='checkbox' id='"+subType+"'class='filterSubtype'><span>" + subType+"</span>";
             markup += "</label></li>";
         }
         markup += "</ul></div></li>";
@@ -81,12 +81,12 @@
                     <ul class="list-unstyled">
                         <li>
                             <label for="men">
-                                <input type="checkbox" id="men" class="filter"><span>Men</span>
+                                <input type="checkbox" id="men" class="filterGender"><span>Men</span>
                             </label>
                         </li>
                         <li>
                             <label for="women">
-                                <input type="checkbox" id="women" class="filter"><span>Women</span>
+                                <input type="checkbox" id="women" class="filterGender"><span>Women</span>
                             </label>
                         </li>
                     </ul>
@@ -131,18 +131,18 @@
                 <div class="collapsible-body">
                     <ul class="list-unstyled">
                         <li>
-                            <label for="r1">
-                                <input type="checkbox" id="r1" class="range"><span>Rs.500 to Rs.1000</span>
+                            <label for="500-1000">
+                                <input type="checkbox" id="500-1000" class="filterPrice"><span>Rs.500 to Rs.1000</span>
                             </label>
                         </li>
                         <li>
-                            <label for="r2">
-                                <input type="checkbox" id="r2" class="range"><span>Rs.1000 to Rs.5000</span>
+                            <label for="1000-5000">
+                                <input type="checkbox" id="1000-5000" class="filterPrice"><span>Rs.1000 to Rs.5000</span>
                             </label>
                         </li>
                         <li>
-                            <label for="r3">
-                                <input type="checkbox" id="r3" class="range"><span>Rs.5000 to Rs.20000</span>
+                            <label for="5000-20000">
+                                <input type="checkbox" id="5000-20000" class="filterPrice"><span>Rs.5000 to Rs.20000</span>
                             </label>
                         </li>
                     </ul>
@@ -156,10 +156,16 @@
 <div class="col l12">
     <div class="row">
         <div class="col l8 left">
-            <div class="disabled" id="chips">
-
+            <div class="row">
+            <div class="disabled" id="chipsGender"></div>
             </div>
-        </div>
+            <div class="row">
+            <div class="disabled" id="chipsSubtype"></div>
+            </div>
+            <div class="row">
+            <div class="disabled" id="chipsPrice"></div>
+            </div>
+          </div>
         <div class="col l1">
             <button class="btn waves-effect waves-light" id="clear" style="display:none">
                 Clear
@@ -201,6 +207,10 @@
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
+        @if (ViewBag.searchString != null)
+        {
+            @:GetItemsforGrid("@ViewBag.searchString", null);
+        }
     });
 
     function CreateItem(price) {
@@ -217,20 +227,15 @@
         container.append(markup);
     }
 
-    function CreateChip(text)
+    function CreateChip(text,id)
     {
-        var markup = "<div class='chip'><b>" + text +"</b><i class='close material-icons' onClick='deleteChip(this)'>close</i></div>";
-        $('#chips').append(markup);
+        var markup = "<div class='chip'><b>" + text + "</b><i class='close material-icons' onClick='deleteChip(this)'>close</i></div>";
+        $('#' + id).append(markup);
     }
 
-    $('.filter').on('click', function () {
+    $('.filterGender , .filterSubtype , .filterPrice').on('click', function () {
         var isPresent = false;
         var text = $(this).attr('id');
-        var isChecked;
-        if ($(this).is(':checked'))
-            isChecked = true;
-        else
-            isChecked = false;
         $('.chip').each(function () {
             if ($(this).find('b').text()==text) {
                 isPresent = true;
@@ -238,24 +243,24 @@
             }
         });
         if (!isPresent) {
-            CreateChip(text);
+            var cl = $(this).attr('class');
+            if (cl == 'filterGender')
+                cl = 'chipsGender';
+            else if (cl == 'filterSubtype')
+                cl = 'chipsSubtype';
+            else
+                cl = 'chipsPrice';
+            CreateChip(text, cl);
+            //$('#clear').css('display', 'block');
         }
-        if ($('#chips').children().length > 0) {
-            $('#clear').css('display', 'block');
-        }
-        else {
+        var l1 = $('#chipsGender').children().length;
+        var l2 = $('#chipsSubtype').children().length;
+        var l3 = $('#chipsPrice').children().length;
+        if ((l1 + l2 + l3) == 0) {
             $('#clear').css('display', 'none');
         }
-    });
-
-    $('.chipClose').on('click', function () {
-        var id = $(this).find('b').text();
-        $('#' + id).prop('checked', false);
-        if ($('#chips').children().length > 0) {
-            $('#clear').css('display', 'block');
-        }
         else {
-            $('#clear').css('display', 'none');
+            $('#clear').css('display', 'block');
         }
     });
 
@@ -263,7 +268,10 @@
     {
         var id = element.previousElementSibling.innerHTML;
         $('#' + id).prop('checked', false);
-        if ($('#chips').children().length == 1) {
+        var l1 = $('#chipsGender').children().length;
+        var l2 = $('#chipsSubtype').children().length;
+        var l3 = $('#chipsPrice').children().length;
+        if ((l1 + l2 + l3) == 1) {
             $('#clear').css('display', 'none');
         }
         else {
@@ -273,13 +281,8 @@
 
     $('#clear').on('click', function () {
         $('.chip').remove();
-        $('.filter').prop('checked', false);
-        if ($('#chips').children().length > 0) {
-            $('#clear').css('display', 'block');
-        }
-        else {
-            $('#clear').css('display', 'none');
-        }
+        $('.filterGender , .filterSubtype , .filterPrice').prop('checked', false);
+        $('#clear').css('display', 'none');
     });
 
     function GetItemsforGrid(searchString,page){
@@ -292,6 +295,18 @@
             startRec = pageSize * page;
         }
         order = $('#order').val();
+        var filterGender = "";
+        var filterSubtype = "";
+        var filterPrice = "";
+        $('#chipsGender>.chip').each(function () {
+            filterGender += $(this).find('b').text() + "|";
+        });
+        $('#chipsSubtype>.chip').each(function () {
+            filterSubtype += $(this).find('b').text() + "|";
+        });
+        $('#chipsPrice>.chip').each(function () {
+            filterPrice += $(this).find('b').text() + "|";
+        });
         $.ajax({
             url: "/Search/GetItemJsonData",
             type: "GET",
@@ -299,7 +314,10 @@
                 search: search,
                 pageSize: pageSize,
                 startRec: startRec,
-                order: order
+                order: order,
+                filterGender: filterGender,
+                filterSubtype: filterSubtype,
+                filterPrice: filterPrice
             },
             success: function (res) {
                 if (res.Success) {

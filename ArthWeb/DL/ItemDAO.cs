@@ -20,7 +20,7 @@ namespace DL
             return items;
         }
 
-        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order)
+        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order,string filterGender,string filterSubtype,string filterPrice)
         {
             List<ItemModel> itemList = null;
             try
@@ -46,14 +46,44 @@ namespace DL
                                     ItemSubType = x.subType.ItemSubTypeKey,
                                     ItemType = x.type.ItemTypeKey,
                                     Price = x.item.Price
-                                });
-                    var predicate = PredicateBuilder.False<ItemModel>();
+                                }).AsQueryable();
                     
+
                     if (!string.IsNullOrWhiteSpace(search))
                     {
                         data = data.Where(x => x.Description.Trim().ToLower().Contains(search.Trim().ToLower()) ||
                                              x.DescriptionLong.Trim().ToLower().Contains(search.Trim().ToLower()));
                     }
+
+                    var predicate = PredicateBuilder.False<ItemModel>();
+                    if (!string.IsNullOrWhiteSpace(filterGender))
+                    {
+                        var keywords = filterGender.Split('|');
+                        for (int i = 0; i < keywords.Length - 1; i++)
+                        {
+                            string temp = keywords[i] == "men" ? "M" : "F";
+                            predicate = predicate.Or(p => p.Gender.Equals(temp));
+                        }
+                        data = data.Where(predicate);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filterPrice))
+                    {
+
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filterSubtype))
+                    {
+                        var keywords = filterSubtype.Split('|');
+                        for (int i = 0; i < keywords.Length - 1; i++)
+                        {
+                            string temp = keywords[i];
+                            predicate = predicate.Or(p => p.ItemSubType.Trim().ToLower().Contains(temp.Trim().ToLower()));
+                        }
+                        data = data.Where(predicate);
+                    }
+
+                    
                     switch (order)
                     {
                         case "0":
@@ -72,6 +102,7 @@ namespace DL
                             data = data.OrderBy(x => x.ItemID);
                             break;
                     }
+
                     data = data.Skip(startRec).Take(pageSize);
                     itemList = data.ToList();
                     //itemList = data.AsEnumerable().Select(x=>new ItemModel()
