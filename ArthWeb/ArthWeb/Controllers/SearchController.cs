@@ -15,7 +15,7 @@ namespace ArthWeb.Controllers
             try
             {
                 ViewBag.DDList = new ItemMappingBL().GetItemMappingDict();
-                ViewBag.searchString = search;
+                ViewBag.searchString = string.IsNullOrWhiteSpace(search)?"":search;
             }
             catch (Exception)
             {
@@ -31,11 +31,14 @@ namespace ArthWeb.Controllers
             try
             {
                 var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype, filterPrice);
-                return Json(new {Success=true, data=itemList },JsonRequestBehavior.AllowGet);
+                if(itemList==null || itemList.Count()==0)
+                    return Json(new { Success = false, Message = "No items found." },JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new {Success=true, data=itemList },JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { Success = true, Message="Sorry for the inconvenience." });
+                return Json(new { Success = false, Message="Sorry for the inconvenience. Please reload the page and try again." }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -81,12 +81,12 @@
                     <ul class="list-unstyled">
                         <li>
                             <label for="men">
-                                <input type="checkbox" id="men" class="filterGender"><span>Men</span>
+                                <input type="checkbox" id="Men" class="filterGender"><span>Men</span>
                             </label>
                         </li>
                         <li>
                             <label for="women">
-                                <input type="checkbox" id="women" class="filterGender"><span>Women</span>
+                                <input type="checkbox" id="Women" class="filterGender"><span>Women</span>
                             </label>
                         </li>
                     </ul>
@@ -204,12 +204,14 @@
 
 <script>
     var search, pageSize, startRec, order;
+    search = "@ViewBag.searchString";
+    pageSize = 10;
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
-        @if (ViewBag.searchString != null)
+        if (search != "")
         {
-            @:GetItemsforGrid("@ViewBag.searchString", null);
+            GetItemsforGrid(search, null);
         }
     });
 
@@ -231,6 +233,7 @@
     {
         var markup = "<div class='chip'><b>" + text + "</b><i class='close material-icons' onClick='deleteChip(this)'>close</i></div>";
         $('#' + id).append(markup);
+        GetItemsforGrid(search, null);
     }
 
     $('.filterGender , .filterSubtype , .filterPrice').on('click', function () {
@@ -277,17 +280,98 @@
         else {
             $('#clear').css('display', 'block');
         }
+        GetItemsforGrid(search, null);
     }
 
     $('#clear').on('click', function () {
         $('.chip').remove();
         $('.filterGender , .filterSubtype , .filterPrice').prop('checked', false);
         $('#clear').css('display', 'none');
+        GetItemsforGrid(search, null);
+    });
+
+    $('.page-link').on('click', function () {
+        var page = parseInt($(this).text());
+        $('.pagination > li').each(function () {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active').addClass('waves-effect');
+
+            }
+        });
+        $(this).parent().addClass('active').removeClass('waves-effect');
+        var pagecount = $('.page-link').length;
+        if (page == 1)
+            $('.prev').parent().removeClass('waves-effect').addClass('disabled');
+        else
+            $('.prev').parent().addClass('waves-effect').removeClass('disabled');
+
+        if (page == pagecount)
+            $('.next').parent().removeClass('waves-effect').addClass('disabled');
+        else
+            $('.next').parent().addClass('waves-effect').removeClass('disabled');
+        GetItemsforGrid(search, page);
+    });
+
+    $('.prev').on('click', function () {
+        if (!$(this).parent().hasClass('disabled')) {
+            var page = $('.pagination > .active >a').text();
+            $('.pagination > li').each(function () {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active').addClass('waves-effect');
+                }
+            });
+            $('.pagination > li').each(function () {
+                if ($(this).text() == parseInt(page) - 1) {
+                    $(this).addClass('active').removeClass('waves-effect');
+                }
+            });
+            page = parseInt(page) - 1;
+            var pagecount = $('.page-link').length;
+            if (page == 1)
+                $('.prev').parent().removeClass('waves-effect').addClass('disabled');
+            else
+                $('.prev').parent().addClass('waves-effect').removeClass('disabled');
+
+            if (page == pagecount)
+                $('.next').parent().removeClass('waves-effect').addClass('disabled');
+            else
+                $('.next').parent().addClass('waves-effect').removeClass('disabled');
+
+            GetItemsforGrid(search, page);
+        }
+    });
+
+    $('.next').on('click', function () {
+        if (!$(this).parent().hasClass('disabled')) {
+            var page = $('.pagination > .active >a').text();
+            $('.pagination > li').each(function () {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active').addClass('waves-effect');
+                }
+                else {
+                    if ($(this).text() == parseInt(page) + 1) {
+                        $(this).addClass('active').removeClass('waves-effect');
+                    }
+                }
+            });
+            page = parseInt(page) + 1;
+            var pagecount = $('.page-link').length;
+            if (page == 1)
+                $('.prev').parent().removeClass('waves-effect').addClass('disabled');
+            else
+                $('.prev').parent().addClass('waves-effect').removeClass('disabled');
+
+            if (page == pagecount)
+                $('.next').parent().removeClass('waves-effect').addClass('disabled');
+            else
+                $('.next').parent().addClass('waves-effect').removeClass('disabled');
+
+            GetItemsforGrid(search, page);
+        }
     });
 
     function GetItemsforGrid(searchString,page){
         search = searchString;
-        pageSize = 10;
         if (page == null) {
             startRec = 0;
         }
@@ -323,24 +407,27 @@
                 if (res.Success) {
                     $('.pagination').empty();
                     $('.itemContainer>.row').empty();
-                    $('.pagination').append('<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>');
+                    if (page == null || page==1)
+                        $('.pagination').append('<li class="disabled"><a href="#!" class="prev"><i class="material-icons">chevron_left</i></a></li>');
+                    else
+                        $('.pagination').append('<li class="waves-effect"><a href="#!" class="prev"><i class="material-icons">chevron_left</i></a></li>');
                     res.data.forEach(function (el,i) {
                         CreateItem(el.Price);
                     });
                     var length = Math.ceil(res.data.length / pageSize);
-                    for (var i = 1; i <= length; i++) {
-                        if (i == 1)
-                            $('.pagination').append("<li class='active'><a href='#!'>" + i + "</a></li>");
-                        else
-                            $('.pagination').append("<li class='waves-effect'><a href='#!'>" + i + "</a></li>");
+                    $('.pagination').append("<li class='active'><a href='#!' class='page-link'>1</a></li>");
+                    for (var i = 2; i <= length; i++) {
+                        $('.pagination').append("<li class='waves-effect'><a href='#! class='page-link'>" + i + "</a></li>");
                     }
-                    if (length==1)
-                        $('.pagination').append('<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>');
+                    if (length == 1 || length == page)
+                        $('.pagination').append('<li class="disabled"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
                     else
-                        $('.pagination').append('<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>');
+                        $('.pagination').append('<li class="waves-effect"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
                 }
                 else {
-                    console.log(res.Message);
+                    $('.pagination').empty();
+                    $('.itemContainer>.row').empty();
+                    $('.itemContainer>.row').append('<h3>' + res.Message + '</h3>');
                 }
             }
         });
