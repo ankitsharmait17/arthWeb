@@ -80,12 +80,12 @@
                 <div class="collapsible-body">
                     <ul class="list-unstyled">
                         <li>
-                            <label for="men">
+                            <label for="Men">
                                 <input type="checkbox" id="Men" class="filterGender"><span>Men</span>
                             </label>
                         </li>
                         <li>
-                            <label for="women">
+                            <label for="Women">
                                 <input type="checkbox" id="Women" class="filterGender"><span>Women</span>
                             </label>
                         </li>
@@ -270,11 +270,12 @@
     function deleteChip(element)
     {
         var id = element.previousElementSibling.innerHTML;
+        element.parentNode.parentNode.removeChild(element.parentNode);
         $('#' + id).prop('checked', false);
         var l1 = $('#chipsGender').children().length;
         var l2 = $('#chipsSubtype').children().length;
         var l3 = $('#chipsPrice').children().length;
-        if ((l1 + l2 + l3) == 1) {
+        if ((l1 + l2 + l3) == 0) {
             $('#clear').css('display', 'none');
         }
         else {
@@ -370,6 +371,20 @@
         }
     });
 
+    function CreatePagination(length) {
+        length = Math.ceil(length / pageSize);
+        $('.pagination').empty();
+        $('.pagination').append('<li class="disabled"><a href="#!" class="prev"><i class="material-icons">chevron_left</i></a></li>');
+        $('.pagination').append("<li class='active'><a href='#!' class='page-link'>1</a></li>");
+        for (var i = 2; i <= length; i++) {
+            $('.pagination').append("<li class='waves-effect'><a href='#! class='page-link'>" + i + "</a></li>");
+        }
+        if (length == 1)
+            $('.pagination').append('<li class="disabled"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
+        else
+            $('.pagination').append('<li class="waves-effect"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
+    }
+
     function GetItemsforGrid(searchString,page){
         search = searchString;
         if (page == null) {
@@ -405,24 +420,12 @@
             },
             success: function (res) {
                 if (res.Success) {
-                    $('.pagination').empty();
                     $('.itemContainer>.row').empty();
-                    if (page == null || page==1)
-                        $('.pagination').append('<li class="disabled"><a href="#!" class="prev"><i class="material-icons">chevron_left</i></a></li>');
-                    else
-                        $('.pagination').append('<li class="waves-effect"><a href="#!" class="prev"><i class="material-icons">chevron_left</i></a></li>');
                     res.data.forEach(function (el,i) {
                         CreateItem(el.Price);
                     });
-                    var length = Math.ceil(res.data.length / pageSize);
-                    $('.pagination').append("<li class='active'><a href='#!' class='page-link'>1</a></li>");
-                    for (var i = 2; i <= length; i++) {
-                        $('.pagination').append("<li class='waves-effect'><a href='#! class='page-link'>" + i + "</a></li>");
-                    }
-                    if (length == 1 || length == page)
-                        $('.pagination').append('<li class="disabled"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
-                    else
-                        $('.pagination').append('<li class="waves-effect"><a href="#!" class="next"><i class="material-icons">chevron_right</i></a></li>');
+                    if(page==null)
+                        CreatePagination(res.data.length);
                 }
                 else {
                     $('.pagination').empty();
@@ -432,6 +435,8 @@
             }
         });
     }
+
+    
 
 </script>
 

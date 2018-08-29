@@ -28,7 +28,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod4()
         {
-            var x = new ItemDAO().GetItemsforGrid(null, 10, 0, "0", "Men|", "Kurta|Kalidar|", null);
+            var x = new ItemDAO().GetItemsforGrid(null, 10, 0, "0", "Men|Women|", "Kurta|Kalidar|", null);
         }
     }
 }

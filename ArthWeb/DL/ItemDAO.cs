@@ -57,7 +57,7 @@ namespace DL
                             predicate += "itemMap.Gender.Equals(@" + i + ") ||";
                         }
                         predicate += "itemMap.Gender.Equals(@" + i + ")";
-                        data = data.Where("itemMap.Gender.Equals(@0)", keywords);
+                        data = data.Where(predicate, keywords);
                     }
 
                     if (!string.IsNullOrWhiteSpace(filterPrice))
@@ -73,7 +73,7 @@ namespace DL
                         int i;
                         for (i = 0; i < keywords.Length-1; i++)
                         {
-                            predicate += "subType.ItemSubTypeKey.Contains(@" + i + ") ||";
+                            predicate += "subType.ItemSubTypeKey.Contains(@" + i + ") || ";
                         }
                         predicate += "subType.ItemSubTypeKey.Contains(@" + i + ")";
                         data = data.Where(predicate, keywords);
@@ -107,7 +107,7 @@ namespace DL
                                     ItemKey = x.item.ItemKey,
                                     Description = x.item.Description,
                                     DescriptionLong = x.item.DescriptionLong,
-                                    Gender = x.itemMap.Gender == "M" ? "men" : "women",
+                                    Gender = x.itemMap.Gender,
                                     ItemSubType = x.subType.ItemSubTypeKey,
                                     ItemType = x.type.ItemTypeKey,
                                     Price = x.item.Price
