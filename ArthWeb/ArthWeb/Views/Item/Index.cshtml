@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/MatLayout.cshtml";
+}
+<style>
+    .small_img {
+        height: 100px;
+        width: 100px;
+    }
+
+    .big_img {
+        height: 500px;
+        width: 500px;
+    }
+
+    
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>Roses</h1>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col l1">
+            <img class="small_img responsive-img card" src="~/Content/dewdrops-flora-flower-56866.jpg" />
+            <img class="small_img responsive-img card" src="~/Content/beautiful-bloom-blooming-658687.jpg" />
+            <img class="small_img responsive-img card" src="~/Content/beauty-bloom-blue-67636.jpg" />
+            <img class="small_img responsive-img card" src="~/Content/bloom-blossom-flora-35807.jpg" />
+        </div>
+        <div class="col l4">
+            <div id="big_img_div">
+                <img class="big_img img-thumbnail responsive-img card" src="~/Content/dewdrops-flora-flower-56866.jpg" data-zoom-image="~/Content/dewdrops-flora-flower-56866.jpg">
+            </div>
+        </div>
+        <div class="col l5 center">
+            <div class="row">
+                <div class="col l12">
+                    <p><u><b>Description:</b></u></p>
+                    <p>
+                        Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l12">
+                    <div class="input-field inline">
+                        <label for="qty">Quantity</label>
+                        <input type="number" id="qty" value="1" min="1">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l3">
+
+                </div>
+            </div>
+            <button id="addBtn" class="btn btn-primary">Add to Cart</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.big_img').elevateZoom();
+    });
+        
+    $('.small_img').on('click',function(){
+        $("#big_img_div img:last-child").remove()
+        var src = $(this).attr("src");
+        $('#big_img_div').append("<img src='" + src + "' class='big_img img-thumbnail responsive-img card' data-zoom-image='"+src+"' />");
+        $('.big_img').elevateZoom();
+    });
+</script>
+
+

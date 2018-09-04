@@ -55,7 +55,6 @@
     <Compile Include="ItemSubType.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="Models\ItemModel.cs" />
-    <Compile Include="Models\PredicateBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
