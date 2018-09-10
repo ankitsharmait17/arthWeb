@@ -16,6 +16,7 @@ namespace BE
         public virtual DbSet<ItemMapping> ItemMappings { get; set; }
         public virtual DbSet<ItemSubType> ItemSubTypes { get; set; }
         public virtual DbSet<ItemType> ItemTypes { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
