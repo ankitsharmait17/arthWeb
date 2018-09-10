@@ -8,14 +8,14 @@
     foreach (var item in catList)
     {
         markup += "<li>";
-        markup += "<div class='collapsible-header'>"+item.Key+"</div>";
+        markup += "<div class='collapsible-header'>" + item.Key + "</div>";
         markup += "<div class='collapsible-body'>";
-        markup+="<ul class='list-unstyled'>";
+        markup += "<ul class='list-unstyled'>";
         foreach (string subType in item.Value)
         {
             markup += "<li>";
-            markup+="<label for='"+subType+"'>";
-            markup+="<input type='checkbox' id='"+subType+"'class='filterSubtype'><span>" + subType+"</span>";
+            markup += "<label for='" + subType + "'>";
+            markup += "<input type='checkbox' id='" + subType + "'class='filterSubtype'><span>" + subType + "</span>";
             markup += "</label></li>";
         }
         markup += "</ul></div></li>";
@@ -50,13 +50,19 @@
         display: none;
     }
 
-
+    .addBtn{
+        display:none;
+    }
 
     .card-title {
         display: none;
     }
 
-    .card-image:hover .card-title {
+    .card-image:hover .card-title{
+        display: block;
+    }
+
+    .card-image:hover .addBtn {
         display: block;
     }
 
@@ -65,8 +71,8 @@
         height: 400px;
     }
 
-    .sidenav li{
-        margin:10px;
+    .sidenav li {
+        margin: 10px;
     }
 </style>
 
@@ -93,15 +99,15 @@
                 </div>
             </li>
             <li><div class="divider"></div></li>
-            
+
             <li>
-            <div class="collapsible-header">CATEGORIES</div>
-            <div class="collapsible-body">
-                <ul class="collapsible" data-collapsible="accordion">
-                    @Html.Raw(markup)
-                </ul>
-            </div>
-        </li>
+                <div class="collapsible-header">CATEGORIES</div>
+                <div class="collapsible-body">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        @Html.Raw(markup)
+                    </ul>
+                </div>
+            </li>
             <li><div class="divider"></div></li>
             <li>
                 <div class="collapsible-header">SIZES</div>
@@ -157,15 +163,15 @@
     <div class="row">
         <div class="col l8 left">
             <div class="row">
-            <div class="disabled" id="chipsGender"></div>
+                <div class="disabled" id="chipsGender"></div>
             </div>
             <div class="row">
-            <div class="disabled" id="chipsSubtype"></div>
+                <div class="disabled" id="chipsSubtype"></div>
             </div>
             <div class="row">
-            <div class="disabled" id="chipsPrice"></div>
+                <div class="disabled" id="chipsPrice"></div>
             </div>
-          </div>
+        </div>
         <div class="col l1">
             <button class="btn waves-effect waves-light" id="clear" style="display:none">
                 Clear
@@ -185,6 +191,7 @@
         </div>
     </div>
 </div>
+
 <div class="container-fluid itemContainer">
     <div class="row">
 
@@ -192,9 +199,7 @@
 </div>
 <div class="container-fluid">
     <div class="row center">
-        <ul class="pagination">
-            
-        </ul>
+        <ul class="pagination"></ul>
     </div>
 </div>
 
@@ -220,8 +225,9 @@
         var markup = '<div class="col l3 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
-            '<img src="~/Content/dewdrops-flora-flower-56866.jpg">' +
-            '<span class="card-title">Rs. ' + price + '&nbsp;&nbsp;&nbsp;<a class="btn-floating"><i class="material-icons">add</i></a></span>' +
+            '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
+            '<span class="card-title">Rs. ' + price + '</span>' +
+            '<a class="btn-floating halfway-fab waves-effect waves-light red addBtn"><i class="material-icons">add</i></a>'+
             '</div>' +
             '</div>' +
             '</div >' +
@@ -371,6 +377,10 @@
         }
     });
 
+    $('#order').on('change', function () {
+        GetItemsforGrid(search, null);
+    });
+
     function CreatePagination(length) {
         length = Math.ceil(length / pageSize);
         $('.pagination').empty();
@@ -436,7 +446,7 @@
         });
     }
 
-    
+
 
 </script>
 
