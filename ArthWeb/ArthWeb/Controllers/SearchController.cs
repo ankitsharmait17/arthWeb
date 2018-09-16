@@ -1,4 +1,5 @@
-﻿using BL;
+﻿using ArthWeb.Filters;
+using BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace ArthWeb.Controllers
                 else
                     return Json(new {Success=true, data=itemList },JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new { Success = false, Message="Sorry for the inconvenience. Please reload the page and try again." }, JsonRequestBehavior.AllowGet);
             }
