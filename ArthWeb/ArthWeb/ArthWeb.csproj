@@ -220,6 +220,9 @@
     <Content Include="Content\brands.css" />
     <Content Include="Content\brands.min.css" />
     <Content Include="Content\dewdrops-flora-flower-56866.jpg" />
+    <Content Include="Content\font-awesome\font-awesome.css" />
+    <Content Include="Content\font-awesome\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\font-awesome.svg" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\materialize.css" />
@@ -241,6 +244,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\font-awesome\font-awesome.eot" />
+    <Content Include="Content\font-awesome\font-awesome.ttf" />
+    <Content Include="Content\font-awesome\font-awesome.woff" />
+    <Content Include="Content\font-awesome\font-awesome.woff2" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
