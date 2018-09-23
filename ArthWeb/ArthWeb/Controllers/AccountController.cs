@@ -28,7 +28,7 @@ namespace ArthWeb.Controllers
                 ViewBag.ReturnUrl = retUrl;
                 if (Request.IsAuthenticated)
                 {
-                    return Redirect(ReturnUrl);
+                    return Redirect(retUrl);
                 }
                 var expiredAuthProcessCookie =new Ticket().DestroyCookie(
                     ConfigurationManager.AppSettings["AUTH_PROCESS_COOKIE"],Request.Url.Host);
