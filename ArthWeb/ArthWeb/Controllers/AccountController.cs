@@ -1,9 +1,13 @@
 ﻿using ArthWeb.Filters;
 using ArthWeb.Helpers;
 using ArthWeb.Models;
+using BE;
+using BE.Models;
 using BL;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -14,8 +18,14 @@ namespace ArthWeb.Controllers
     {
         public ActionResult Login(string ReturnUrl = "")
         {
+            string retUrl = null;
             try
             {
+                if (string.IsNullOrWhiteSpace(ReturnUrl))
+                    retUrl = Url.Action("Index", "Home");
+                else
+                    retUrl = ReturnUrl;
+                ViewBag.ReturnUrl = retUrl;
                 if (Request.IsAuthenticated)
                 {
                     return Redirect(ReturnUrl);
@@ -23,8 +33,6 @@ namespace ArthWeb.Controllers
                 var expiredAuthProcessCookie =new Ticket().DestroyCookie(
                     ConfigurationManager.AppSettings["AUTH_PROCESS_COOKIE"],Request.Url.Host);
                 Response.Cookies.Add(expiredAuthProcessCookie);
-                ViewBag.ReturnUrl = ReturnUrl;
-                
             }
             catch (Exception)
             {
@@ -39,11 +47,16 @@ namespace ArthWeb.Controllers
         [HandleAntiForgeryErrorOnLogin]
         public ActionResult Login(LoginModel data,string ReturnUrl)
         {
+            string retUrl = null;
             try
             {
+                if (string.IsNullOrWhiteSpace(ReturnUrl))
+                    retUrl = Url.Action("Index", "Home");
+                else
+                    retUrl = ReturnUrl;
                 if (Request.IsAuthenticated)
                 {
-                    return Redirect(ReturnUrl);
+                    return Redirect(retUrl);
                 }
                 var authProcessCookie = new Ticket().CreateCookie(
                     ConfigurationManager.AppSettings["AUTHENTICATION_PROCESS_COOKIE"],
@@ -57,14 +70,20 @@ namespace ArthWeb.Controllers
                 {
                     var formscookie = new Ticket().CreateAuthenticationCookie(data.UserName);
                     Response.Cookies.Add(formscookie);
-                    return Redirect(ReturnUrl);
+                    //var authCookieValue = Request.Headers.Get("authCookieValue");
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(formscookie.Value);
+                    var userData = JsonConvert.DeserializeObject<UserData>(authTicket.UserData);
+                    var identity = new GenericIdentity(authTicket.Name, "Forms");
+                    var principal = new GenericPrincipal(identity, null);
+                    HttpContext.User = principal;
+                    return Redirect(retUrl);
                 }
             }
             catch (Exception)
             {
-                return RedirectToAction("Login", routeValues: new { ReturnUrl = ReturnUrl });
+                return RedirectToAction("Login", routeValues: new { ReturnUrl = retUrl });
             }
-            return RedirectToAction("Login", new { ReturnUrl = ReturnUrl });
+            return RedirectToAction("Login", new { ReturnUrl = retUrl });
         }
 
         [CustomAuthorize]
@@ -84,6 +103,26 @@ namespace ArthWeb.Controllers
             Response.Cookies.Add(formsCookie);
 
             return RedirectToAction("Login");
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RegisterUser(User user)
+        {
+            try
+            {
+                var isSuccess = new UserBL().AddUser(user);
+                return Json(new { Success = isSuccess });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

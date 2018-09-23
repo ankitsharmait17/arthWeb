@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cryptography
 {
-    class Salt
+    public class Salt
     {
         int saltLength;
         public Salt()

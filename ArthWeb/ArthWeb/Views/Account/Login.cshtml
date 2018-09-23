@@ -22,17 +22,15 @@
                 @Html.PasswordFor(m => m.Password, new { @required = "required",@id="pass" ,@class="validate"})
                 @Html.LabelFor(m => m.Password)
             </div>
-            <input type="submit" value="Log in" class="btn waves-effect waves-light" />
-                      
-                    <p>
-                        @Html.ActionLink("Register as a new user", "Register")
-                    </p>
-                    @* Enable this once you have account confirmation enabled for password reset functionality
-                        <p>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                        </p>*@
+                <input type="submit" value="Log in" class="btn" />
+                   
                 }
             
+        </div>
+        <div class="col s4 center">
+            <p>
+                @Html.ActionLink("Register as a new user", "Register","Account")
+            </p>
         </div>
     </div>
 </div>
@@ -42,9 +40,6 @@
         var uname = $('#uname').val();
         var pass = $('#pass').val();
         if (uname = "") {
-            alert("Username cannot be empty"); return false;
-        }
-        if (pass = "") {
             alert("Username cannot be empty"); return false;
         }
         if (pass.length < 8) {

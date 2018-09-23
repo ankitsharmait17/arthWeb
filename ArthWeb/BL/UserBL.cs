@@ -24,5 +24,10 @@ namespace BL
         {
             return new UserDAO().GetUserData(username);
         }
+
+        public bool AddUser(User user)
+        {
+            return new UserDAO().AddUser(user);
+        }
     }
 }

@@ -17,7 +17,9 @@ namespace DL
             bool isCorrect=false;
             using (ArthModel cntx = new ArthModel())
             {
-                var user = cntx.Users.Where(x => x.IsActive && x.EmailID.Equals(email)).FirstOrDefault();
+                var user = cntx.Users.Where(x => x.EmailID.Equals(email)).FirstOrDefault();
+                if (user == null)
+                    return false;
                 isCorrect = new Hash().VerifyPassword(password, user.Password);
             }
             return isCorrect;
@@ -51,6 +53,27 @@ namespace DL
                 Phone = user.Phone
             });
             return userdata;
+        }
+
+        public bool AddUser(User user)
+        {
+            try
+            {
+                using (ArthModel cntx=new ArthModel())
+                {
+                    var isPresent = cntx.Users.Where(x => user.EmailID.Equals(x.EmailID)).FirstOrDefault();
+                    if (isPresent != null)
+                        return false;
+                    user.Password = new Hash().GenerateHash(user.Password,new Salt().GenerateSalt());
+                    cntx.Users.Add(user);
+                    cntx.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return true;
         }
     }
 }
