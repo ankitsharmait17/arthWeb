@@ -18,12 +18,8 @@
                 <input required="required" maxlength="254" type="email" class="validate" id="email" />
             </div>
             <div class="input-field">
-                <label for="fname">First Name</label>
+                <label for="fname">Name</label>
                 <input required="required" maxlength="50" type="text" id="fname" />
-            </div>
-            <div class="input-field">
-                <label for="lname">Last Name</label>
-                <input maxlength="50" type="text" id="lname" />
             </div>
             <div class="input-field">
                 <label for="phone">Phone</label>
@@ -55,7 +51,6 @@
         var pass = $('#pass').val();
         var confirmPass = $('#confirmPass').val();
         var fname = $('#fname').val();
-        var lname
         if (email.length < 8) {
             alert("email length is minimum 8.");return;
         }
@@ -64,7 +59,7 @@
             return;
         }
         if (fname.length == 0) {
-            alert("First Name cannot be empty.");
+            alert("Name cannot be empty.");
             return;
         }
         $.ajax({
@@ -73,8 +68,7 @@
             data: {
                 EmailID: email,
                 Password: pass,
-                FirstName: fname,
-                LastName: $('#lname').val(),
+                Name: fname,
                 Phone: $('#phone').val()
             },
             success: function (res) {

@@ -14,11 +14,37 @@ namespace DL
         public List<Item> GetItems()
         {
             List<Item> items = null;
-            using (ArthModel cntx=new ArthModel())
+            try
             {
-                items = cntx.Items.ToList();
+                using (ArthModel cntx = new ArthModel())
+                {
+                    items = cntx.Items.ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return items;
+        }
+
+        public Item GetItem(string itemKey)
+        {
+            Item item = null;
+            try
+            {
+                using (ArthModel cntx = new ArthModel())
+                {
+                    item = cntx.Items.Where(x => x.ItemKey.Equals(itemKey)).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return item;
         }
 
         public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order,string filterGender,string filterSubtype,string filterPrice)

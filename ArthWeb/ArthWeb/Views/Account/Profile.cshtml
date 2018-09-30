@@ -1,0 +1,104 @@
+﻿@using BE
+@model User
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/MatLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+            <div class="row valign-wrapper">
+                <div class="col s2">
+                    <i class="material-icons">account_circle</i> <!-- notice the "circle" class -->
+                </div>
+                <div class="col s10">
+                    <span class="black-text">
+                        Hello @Model.Name . You can manage your account from here.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#account">Account</a></li>
+                <li class="tab col s3"><a href="#address">Addresses</a></li>
+                <li class="tab col s3"><a href="#orders">Orders</a></li>
+            </ul>
+        </div>
+        <div id="account" class="col s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="col s12 center">
+                        <div class="input-field">
+                            <label for="email">Email ID</label>
+                            <input required="required" maxlength="254" value="@Model.EmailID" type="email" class="validate" id="email" disabled />
+                        </div>
+                        <div class="input-field">
+                            <label for="fname">Name</label>
+                            <input required="required" maxlength="50" type="text" id="fname" value="@Model.Name" />
+                        </div>
+                        <div class="input-field">
+                            <label for="phone">Phone</label>
+                            <input maxlength="10" type="text" id="phone" value="@Model.Phone" onkeypress="return isNumber(event)" />
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light" id="submitBtn" disabled>Submit</button>
+                </div>
+            </div>
+        </div>
+        <div id="address" class="col s12">Addresses</div>
+        <div id="orders" class="col s12">Orders</div>
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.tabs').tabs();
+    });
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    $('#fname , #phone').on('keyup', function () {
+        $('#submitBtn').prop('disabled', false);
+    });
+
+    $('#submitBtn').on('click', function () {
+        var email = $('#email').val();
+        var fname = $('#fname').val();
+        if (fname.length == 0) {
+            alert("Name cannot be empty.");
+            return;
+        }
+        $.ajax({
+            url: "/Account/UpdateUser",
+            type: 'POST',
+            data: {
+                EmailID: email,
+                Name: fname,
+                Phone: $('#phone').val()
+            },
+            success: function (res) {
+                if (res.Success) {
+                    alert("Details Updated.");
+                }
+            }
+        })
+
+    });
+
+
+</script>
+
+

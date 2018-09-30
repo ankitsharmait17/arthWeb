@@ -38,8 +38,8 @@
     }
 
     .grid-img {
-        width: 250px;
-        height: 400px;
+        width: 250px!important;
+        height: 400px!important;
     }
 
     .img-div {
@@ -54,6 +54,10 @@
         display:none;
     }
 
+    .viewBtn {
+        display: none;
+    }
+
     .card-title {
         display: none;
     }
@@ -62,7 +66,11 @@
         display: block;
     }
 
-    .card-image:hover .addBtn {
+    .card-image:hover .addBtn{
+        display: block;
+    }
+
+    .card-image:hover .viewBtn{
         display: block;
     }
 
@@ -74,6 +82,7 @@
     .sidenav li {
         margin: 10px;
     }
+    
 </style>
 
 <ul id="slide-out" class="sidenav">
@@ -220,14 +229,15 @@
         }
     });
 
-    function CreateItem(price) {
+    function CreateItem(itemkey,price) {
         var container = $('.itemContainer>.row');
         var markup = '<div class="col l3 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
             '<span class="card-title">Rs. ' + price + '</span>' +
-            '<a class="btn-floating halfway-fab waves-effect waves-light red addBtn"><i class="material-icons">add</i></a>'+
+            '<a href="@Url.Action("Index","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light red viewBtn"><i class="material-icons">zoom_in</i></a>' +
+            '<a class="btn-floating halfway-fab waves-effect waves-light red addBtn"><i class="material-icons">add_shopping_cart</i></a>'+
             '</div>' +
             '</div>' +
             '</div >' +
@@ -432,7 +442,7 @@
                 if (res.Success) {
                     $('.itemContainer>.row').empty();
                     res.data.forEach(function (el,i) {
-                        CreateItem(el.Price);
+                        CreateItem(el.ItemKey,el.Price);
                     });
                     if(page==null)
                         CreatePagination(res.data.length);

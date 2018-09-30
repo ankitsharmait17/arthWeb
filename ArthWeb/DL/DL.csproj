@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressDAO.cs" />
     <Compile Include="ItemDAO.cs" />
     <Compile Include="ItemMappingDAO.cs" />
     <Compile Include="ItemTypeDAO.cs" />

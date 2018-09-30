@@ -48,8 +48,7 @@ namespace DL
             var user = GetUser(username);
             string userdata = JsonConvert.SerializeObject(new UserData()
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                Name = user.Name,
                 Phone = user.Phone
             });
             return userdata;
@@ -74,6 +73,33 @@ namespace DL
                 throw;
             }
             return true;
+        }
+
+        public bool UpdateUser(User user)
+        {
+            int rows;
+            try
+            {
+                using (ArthModel cntx=new ArthModel())
+                {
+                    var exUser = cntx.Users.Where(x => x.EmailID.Equals(user.EmailID)).FirstOrDefault();
+                    if (exUser == null)
+                        return false;
+                    exUser.Name = user.Name;
+                    exUser.Phone = user.Phone;
+                    cntx.Entry(exUser).State = System.Data.Entity.EntityState.Modified;
+                    rows=cntx.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            if (rows > 0)
+                return true;
+            else
+                return false;
         }
     }
 }

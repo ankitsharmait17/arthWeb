@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="ArthModel.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemMapping.cs" />

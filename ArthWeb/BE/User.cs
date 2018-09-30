@@ -7,6 +7,8 @@ namespace BE
     [Table("User")]
     public class User
     {
+        public int UserID { get; set; }
+
         [StringLength(254)]
         [Key]
         public String EmailID { get; set; }
@@ -15,10 +17,7 @@ namespace BE
         public String Password { get; set; }
 
         [StringLength(50)]
-        public String FirstName { get; set; }
-
-        [StringLength(50)]
-        public String LastName { get; set; }
+        public String Name { get; set; }
 
         [StringLength(10)]
         public String Phone { get; set; }

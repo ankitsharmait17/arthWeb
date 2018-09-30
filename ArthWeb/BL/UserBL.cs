@@ -29,5 +29,10 @@ namespace BL
         {
             return new UserDAO().AddUser(user);
         }
+
+        public bool UpdateUser(User user)
+        {
+            return new UserDAO().UpdateUser(user);
+        }
     }
 }

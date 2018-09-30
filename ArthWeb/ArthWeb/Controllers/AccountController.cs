@@ -102,7 +102,7 @@ namespace ArthWeb.Controllers
             var formsCookie = new Ticket().DestroyAuthenticationCookie();
             Response.Cookies.Add(formsCookie);
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Index","Home");
         }
 
         public ActionResult Register()
@@ -124,5 +124,35 @@ namespace ArthWeb.Controllers
                 throw;
             }
         }
+
+        [CustomAuthorize]
+        public ActionResult Profile()
+        {
+            var username = User.Identity.Name;
+            User user = null;
+            try
+            {
+                user = new UserBL().GetUser(username);
+            }
+            catch (Exception)
+            {
+                RedirectToAction("Index", "Home");
+            }
+            return View(user);
+        }
+
+        public ActionResult UpdateUser(User user)
+        {
+            try
+            {
+                bool isSuccess = new UserBL().UpdateUser(user);
+                return Json(new { Success = true, Message = "Your details have been updated." });
+            }
+            catch (Exception)
+            {
+                return Json(new { Success = false, Message = "Sorry,Your details have not been updated." });
+            }
+        }
+
     }
 }

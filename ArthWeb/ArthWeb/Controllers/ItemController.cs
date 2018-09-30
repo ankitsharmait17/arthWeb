@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BE;
+using BL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +11,18 @@ namespace ArthWeb.Controllers
     public class ItemController : Controller
     {
         // GET: Item
-        public ActionResult Index()
+        public ActionResult Index(string itemKey)
         {
-            return View();
+            Item item = null;
+            try
+            {
+                item = new ItemBL().GetItem(itemKey);
+            }
+            catch (Exception ex)
+            {
+                RedirectToAction("Index", "Home");
+            }
+            return View(item);
         }
     }
 }

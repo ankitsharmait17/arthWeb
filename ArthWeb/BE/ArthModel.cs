@@ -17,6 +17,7 @@ namespace BE
         public virtual DbSet<ItemSubType> ItemSubTypes { get; set; }
         public virtual DbSet<ItemType> ItemTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -58,6 +59,54 @@ namespace BE
                 .HasMany(e => e.ItemMappings)
                 .WithRequired(e => e.ItemType)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.AddressDetail)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.AltPhone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.City)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.Landmark)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.Phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.Name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.Pin)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.State)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Address>()
+                .Property(e => e.Type)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.EmailID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Phone)
+                .IsUnicode(false);
         }
     }
 }

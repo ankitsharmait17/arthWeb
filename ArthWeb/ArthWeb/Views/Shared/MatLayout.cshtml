@@ -33,16 +33,16 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">LOGO</a>
+                    <a href="@Url.Action("Index","Home")" class="brand-logo">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Men</a></li>
+                        <li><a href="#">Men</a></li>
                         <li><a href="#">Women</a></li>
                         <li><a href="#">Accessories</a></li>
                         <li>
-                            <form id="searchForm">
+                            <form id="searchForm" action="@Url.Action("Index","Search")">
                                 <div class="input-field">
-                                    <input id="search" type="search" required>
+                                    <input id="search" type="search" name="search" required>
                                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                                     <i class="material-icons">close</i>
                                 </div>
@@ -55,10 +55,14 @@
                                 <i class="material-icons">account_circle</i>
                             </a>
                             <ul id="profileDD" class="dropdown-content">
-                                <li><a href="#" class="grey-text text-darken-1"><i class="material-icons">face</i>Profile</a></li>
-                                <li><a href="#" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                                <li><a href="@Url.Action("Profile","Account")" class="grey-text text-darken-1"><i class="material-icons">face</i>Profile</a></li>
+                                <li><a href="@Url.Action("LogOut", "Account")" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
                             </ul>
                         </li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Login", "Login", "Account")</li>
                         }
                     </ul>
                 </div>
@@ -125,12 +129,13 @@
     <script>
         $(document).ready(function () {
             //$('.carousel').carousel();\
-            $(".dropdown-trigger").dropdown({ hover: true, coverTrigger: false });
+            $(".dropdown-trigger").dropdown({ hover: true, coverTrigger: false, constrainWidth: false });
             $('.sidenav').sidenav();
             //M.AutoInit();
         });
 
         $('#searchForm').on('submit', function () {
+
             var term = $('#search').val();
             location.href = "@Url.Action("Index","Search")" + "?search=" + term;
         });
