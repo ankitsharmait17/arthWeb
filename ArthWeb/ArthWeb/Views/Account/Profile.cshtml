@@ -1,5 +1,6 @@
-﻿@using BE
-@model User
+﻿@using  BE.Models
+@using BE
+@model UserAddressModel
 @{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/MatLayout.cshtml";
@@ -36,7 +37,7 @@
                     <div class="col s12 center">
                         <div class="input-field">
                             <label for="email">Email ID</label>
-                            <input required="required" maxlength="254" value="@Model.EmailID" type="email" class="validate" id="email" disabled />
+                            <input required="required" maxlength="254" value="@Model.Email" type="email" class="validate" id="email" disabled />
                         </div>
                         <div class="input-field">
                             <label for="fname">Name</label>
@@ -51,14 +52,98 @@
                 </div>
             </div>
         </div>
-        <div id="address" class="col s12">Addresses</div>
+        <div id="address" class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">add_circle_outline</i>Add an Address</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div class="col s4">
+                                <label>
+                                    <input name="addType" value="Home" type="radio" checked />
+                                    <span>Home</span>
+                                </label>
+                                <label>
+                                    <input name="addType" value="Work" type="radio" />
+                                    <span>Work</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col s4 input-field">
+                                <label for="addName">Name</label>
+                                <input required="required" maxlength="50" type="text" id="addName" />
+                            </div>
+                            <div class="col s4 input-field">
+                                <label for="addPhone">Phone</label>
+                                <input required="required" maxlength="10" type="text" id="addPhone" onkeypress="return isNumber(event)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s4 input-field">
+                                <textarea id="addDet" class="materialize-textarea"></textarea>
+                                <label for="addDet">Address</label>
+                            </div>
+                            <div class="col s4 input-field">
+                                <label for="addCity">City</label>
+                                <input required="required" maxlength="50" type="text" id="addCity" />
+                            </div>
+                            <div class="col s4 input-field">
+                                <label for="addState">State</label>
+                                <input required="required" maxlength="50" type="text" id="addState" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s4 input-field">
+                                <label for="addPin">Pin</label>
+                                <input required="required" maxlength="10" type="text" id="addPin"/>
+                            </div>
+                            <div class="col s4 input-field">
+                                <label for="addLandmark">Landmark</label>
+                                <input maxlength="50" type="text" id="addLandmark" placeholder="Optional" />
+                            </div>
+                            <div class="col s4 input-field">
+                                <label for="addAltphone">Alternate Phone</label>
+                                <input maxlength="10" type="text" id="addAltphone" placeholder="Optional" />
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light" id="addBtn">Add</button>
+                    </div>
+                </li>
+             </ul>
+            <div id="panelDiv">
+                @foreach (var add in @Model.Addresses)
+                {
+                <div class="card-panel col s4" id="addDiv-@add.AddressID">
+                    <button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>
+                    <p><span class="name">@add.Name</span>,<span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
+                    @if (add.Landmark != null)
+                    {<p><span class="landmark">@add.Landmark</span></p>}
+                    <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
+                    @if (add.AltPhone != null)
+                    {
+                        <p><b>Alternate Phone:</b> <span class="altphn">@add.AltPhone</span></p>
+                    }
+                    <span class="addressID" style="display:none">@add.AddressID</span>
+                    <span class="addressType" style="display:none">@add.Type</span>
+                </div>
+                }
+            </div>
+        </div>
         <div id="orders" class="col s12">Orders</div>
     </div>
-
+<ul id="editDD" class="dropdown-content">
+    <li><a href="#" class="grey-text text-darken-1">Edit</a></li>
+    <li><a href="#" class="grey-text text-darken-1">Delete</a></li>
+</ul>
 
 <script>
+    var addData;
     $(document).ready(function () {
         $('.tabs').tabs();
+        $('.collapsible').collapsible();
+        $(".editTrigger").dropdown({ coverTrigger: false });
     });
 
     function isNumber(evt) {
@@ -98,6 +183,102 @@
 
     });
 
+    function CheckAddressForm() {
+        if ($('#addName').val().length == 0) {
+            alert("Name for address cannot be empty.");
+            return false;
+        }
+
+        if ($('#addPhone').val().length == 0) {
+            alert("Phone number cannot be empty.");
+            return false;
+        }
+
+        if ($('#addDet').val().length == 0) {
+            alert("Address cannot be empty.");
+            return false;
+        }
+
+        if ($('#addCity').val().length == 0) {
+            alert("City cannot be empty.");
+            return false;
+        }
+
+        if ($('#addState').val().length == 0) {
+            alert("State cannot be empty.");
+            return false;
+        }
+
+        if ($('#addPin').val().length == 0) {
+            alert("Pin cannot be empty.");
+            return false;
+        }
+        return true;
+    }
+
+    function Addrow(add, id) {
+        var markup = '<div class="card-panel col s4" id="addDiv-' + id + '">';
+        markup += '<button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>';
+        markup += '<p><span class="name">' + add.Name + '</span>,<span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
+        if (add.Landmark.length != 0)
+        {
+            markup += '<p><span class="landmark">' + add.Landmark + '</span></p>';
+        }
+        markup += '<p><b>Phone:</b><span class="phn">' + add.Phone + '</span></p>';
+        if (add.AltPhone.length != 0)
+        {
+            markup += '<p><b>Alternate Phone:</b><span class="altphn">' + add.AltPhone + '</span></p>';
+        }
+        markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">'+add.Type+'</span>';
+        markup += '</div>';
+        $('#panelDiv').append(markup);
+    }
+
+    $('#addBtn').on('click', function () {
+        if (CheckAddressForm() == false)
+            return;
+        var postdata = {
+            Name: $('#addName').val(),
+            Phone: $('#addPhone').val(),
+            AltPhone: $('#addAltphone').val(),
+            Pin: $('#addPin').val(),
+            AddressDetail: $('#addDet').val(),
+            City: $('#addCity').val(),
+            State: $('#addState').val(),
+            Landmark: $('#addLandmark').val(),
+            Type: $('input[name=addType]:checked').val()
+        }
+        $.ajax({
+            url: '/Account/AddAddress',
+            type: 'POST',
+            data: postdata,
+            success: function (res) {
+                if (res.Success) {
+                    alert(res.Message);
+                    Addrow(postdata);
+                }
+                else {
+                    alert(res.Message);
+                }
+            }
+        });
+    });
+
+    $('.editTrigger').on('click', function () {
+        var panelDiv = $(this).closest('.card-panel');
+        addData = {
+            Name: panelDiv.find('.name').text(),
+            Phone: panelDiv.find('.phn').text(),
+            AltPhone: panelDiv.find('.altphn').text(),
+            Pin: panelDiv.find('.pin').text(),
+            AddressDetail: panelDiv.find('.address').text(),
+            City: panelDiv.find('.city').text(),
+            State: panelDiv.find('.state').text(),
+            Landmark: panelDiv.find('.landmark').text(),
+            Type: panelDiv.find('.addressType').text(),
+            AddressID: panelDiv.find('.addressID').text()
+        }
+    });
 
 </script>
 

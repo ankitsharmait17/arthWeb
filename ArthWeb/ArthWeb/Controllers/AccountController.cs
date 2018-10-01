@@ -129,10 +129,10 @@ namespace ArthWeb.Controllers
         public ActionResult Profile()
         {
             var username = User.Identity.Name;
-            User user = null;
+            UserAddressModel user = null;
             try
             {
-                user = new UserBL().GetUser(username);
+                user = new UserBL().GetUserWithAdresses(username);
             }
             catch (Exception)
             {
@@ -146,11 +146,26 @@ namespace ArthWeb.Controllers
             try
             {
                 bool isSuccess = new UserBL().UpdateUser(user);
-                return Json(new { Success = true, Message = "Your details have been updated." });
+                return Json(new { Success = isSuccess, Message = "Your details have been updated." });
             }
             catch (Exception)
             {
                 return Json(new { Success = false, Message = "Sorry,Your details have not been updated." });
+            }
+        }
+
+        public ActionResult AddAddress(Address address)
+        {
+            try
+            {
+                address.UserID = new UserBL().GetUser(User.Identity.Name).UserID;
+                bool isSuccess = new AddressBL().AddAddress(address);
+                return Json(new { Success = isSuccess, Message = "Address added." });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { Success = false, Message = "Address could not be added." });
             }
         }
 

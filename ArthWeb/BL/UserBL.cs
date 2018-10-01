@@ -1,4 +1,5 @@
 ﻿using BE;
+using BE.Models;
 using DL;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,20 @@ namespace BL
         public bool UpdateUser(User user)
         {
             return new UserDAO().UpdateUser(user);
+        }
+
+        public UserAddressModel GetUserWithAdresses(string username)
+        {
+            UserAddressModel user = null;
+            var data = GetUser(username);
+            user = new UserAddressModel()
+            {
+                Email = data.EmailID,
+                Name = data.Name,
+                Phone = data.Phone,
+                Addresses = new AddressBL().GetAddressforUserID(data.UserID)
+            };
+            return user;
         }
     }
 }
