@@ -27,16 +27,16 @@ namespace DL
             return addresses;
         }
 
-        public bool AddAddress(Address address)
+        public int AddAddress(Address address)
         {
-            bool isSuccess = false;
+            int addedId;
             try
             {
                 using (ArthModel cntx=new ArthModel())
                 {
-                    cntx.Addresses.Add(address);
+                    var entity=cntx.Addresses.Add(address);
                     var rows=cntx.SaveChanges();
-                    isSuccess = rows > 0 ? true:false;
+                    addedId = entity != null ? entity.AddressID : 0;
                 }
             }
             catch (Exception)
@@ -44,7 +44,7 @@ namespace DL
 
                 throw;
             }
-            return isSuccess;
+            return addedId;
         }
 
         public bool UpdateAddress(Address address)

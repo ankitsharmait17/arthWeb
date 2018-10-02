@@ -159,8 +159,23 @@ namespace ArthWeb.Controllers
             try
             {
                 address.UserID = new UserBL().GetUser(User.Identity.Name).UserID;
-                bool isSuccess = new AddressBL().AddAddress(address);
-                return Json(new { Success = isSuccess, Message = "Address added." });
+                int id = new AddressBL().AddAddress(address);
+                return Json(new { Success = id==0?false:true, Message = "Address added.",data=id });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { Success = false, Message = "Address could not be added." });
+            }
+        }
+
+        public ActionResult UpdateAddress(Address address)
+        {
+            try
+            {
+                address.UserID = new UserBL().GetUser(User.Identity.Name).UserID;
+                bool isSuccess = new AddressBL().UpdateAddress(address);
+                return Json(new { Success = isSuccess, Message = "Saved changes."});
             }
             catch (Exception ex)
             {

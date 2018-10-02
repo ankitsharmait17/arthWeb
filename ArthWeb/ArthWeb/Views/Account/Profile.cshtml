@@ -1,4 +1,4 @@
-﻿@using  BE.Models
+﻿@using BE.Models
 @using BE
 @model UserAddressModel
 @{
@@ -23,98 +23,40 @@
     </div>
 </div>
 <div class="row">
-    
-        <div class="col s12">
-            <ul class="tabs">
-                <li class="tab col s3"><a class="active" href="#account">Account</a></li>
-                <li class="tab col s3"><a href="#address">Addresses</a></li>
-                <li class="tab col s3"><a href="#orders">Orders</a></li>
-            </ul>
-        </div>
-        <div id="account" class="col s12">
-            <div class="card-panel">
-                <div class="row">
-                    <div class="col s12 center">
-                        <div class="input-field">
-                            <label for="email">Email ID</label>
-                            <input required="required" maxlength="254" value="@Model.Email" type="email" class="validate" id="email" disabled />
-                        </div>
-                        <div class="input-field">
-                            <label for="fname">Name</label>
-                            <input required="required" maxlength="50" type="text" id="fname" value="@Model.Name" />
-                        </div>
-                        <div class="input-field">
-                            <label for="phone">Phone</label>
-                            <input maxlength="10" type="text" id="phone" value="@Model.Phone" onkeypress="return isNumber(event)" />
-                        </div>
+
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#account">Account</a></li>
+            <li class="tab col s3"><a href="#address">Addresses</a></li>
+            <li class="tab col s3"><a href="#orders">Orders</a></li>
+        </ul>
+    </div>
+    <div id="account" class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="input-field">
+                        <label for="email">Email ID</label>
+                        <input required="required" maxlength="254" value="@Model.Email" type="email" class="validate" id="email" disabled />
                     </div>
-                    <button class="btn waves-effect waves-light" id="submitBtn" disabled>Submit</button>
+                    <div class="input-field">
+                        <label for="fname">Name</label>
+                        <input required="required" maxlength="50" type="text" id="fname" value="@Model.Name" />
+                    </div>
+                    <div class="input-field">
+                        <label for="phone">Phone</label>
+                        <input maxlength="10" type="text" id="phone" value="@Model.Phone" onkeypress="return isNumber(event)" />
+                    </div>
                 </div>
+                <button class="btn waves-effect waves-light" id="submitBtn" disabled>Submit</button>
             </div>
         </div>
-        <div id="address" class="col s12">
-            <ul class="collapsible">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">add_circle_outline</i>Add an Address</div>
-                    <div class="collapsible-body">
-                        <div class="row">
-                            <div class="col s4">
-                                <label>
-                                    <input name="addType" value="Home" type="radio" checked />
-                                    <span>Home</span>
-                                </label>
-                                <label>
-                                    <input name="addType" value="Work" type="radio" />
-                                    <span>Work</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            
-                            <div class="col s4 input-field">
-                                <label for="addName">Name</label>
-                                <input required="required" maxlength="50" type="text" id="addName" />
-                            </div>
-                            <div class="col s4 input-field">
-                                <label for="addPhone">Phone</label>
-                                <input required="required" maxlength="10" type="text" id="addPhone" onkeypress="return isNumber(event)" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s4 input-field">
-                                <textarea id="addDet" class="materialize-textarea"></textarea>
-                                <label for="addDet">Address</label>
-                            </div>
-                            <div class="col s4 input-field">
-                                <label for="addCity">City</label>
-                                <input required="required" maxlength="50" type="text" id="addCity" />
-                            </div>
-                            <div class="col s4 input-field">
-                                <label for="addState">State</label>
-                                <input required="required" maxlength="50" type="text" id="addState" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s4 input-field">
-                                <label for="addPin">Pin</label>
-                                <input required="required" maxlength="10" type="text" id="addPin"/>
-                            </div>
-                            <div class="col s4 input-field">
-                                <label for="addLandmark">Landmark</label>
-                                <input maxlength="50" type="text" id="addLandmark" placeholder="Optional" />
-                            </div>
-                            <div class="col s4 input-field">
-                                <label for="addAltphone">Alternate Phone</label>
-                                <input maxlength="10" type="text" id="addAltphone" placeholder="Optional" />
-                            </div>
-                        </div>
-                        <button class="btn waves-effect waves-light" id="addBtn">Add</button>
-                    </div>
-                </li>
-             </ul>
-            <div id="panelDiv">
-                @foreach (var add in @Model.Addresses)
-                {
+    </div>
+    <div id="address" class="col s12">
+        <button class="waves-effect waves-light btn" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
+        <div id="panelDiv">
+            @foreach (var add in @Model.Addresses)
+            {
                 <div class="card-panel col s4" id="addDiv-@add.AddressID">
                     <button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>
                     <p><span class="name">@add.Name</span>,<span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
@@ -128,22 +70,86 @@
                     <span class="addressID" style="display:none">@add.AddressID</span>
                     <span class="addressType" style="display:none">@add.Type</span>
                 </div>
-                }
-            </div>
+            }
         </div>
-        <div id="orders" class="col s12">Orders</div>
     </div>
+    <div id="orders" class="col s12">Orders</div>
+</div>
 <ul id="editDD" class="dropdown-content">
-    <li><a href="#" class="grey-text text-darken-1">Edit</a></li>
-    <li><a href="#" class="grey-text text-darken-1">Delete</a></li>
+    <li><a href="#" class="grey-text text-darken-1 editLink">Edit</a></li>
+    <li><a href="#" class="grey-text text-darken-1 deleteLink">Delete</a></li>
 </ul>
 
+<!-- Modal Structure -->
+<div id="addModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h5 class="modal-title">Add Address</h5><br />
+        <input id="addID" type="text" style="display:none"/>
+        <div class="row">
+            <div class="col s4">
+                <label>
+                    <input name="addType" value="Home" type="radio" id="Home" checked />
+                    <span>Home</span>
+                </label>
+                <label>
+                    <input name="addType" value="Work" id="Work" type="radio" />
+                    <span>Work</span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 input-field">
+                <label for="addName">Name</label>
+                <input required="required" maxlength="50" type="text" id="addName" />
+            </div>
+            <div class="col s4 input-field">
+                <label for="addPhone">Phone</label>
+                <input required="required" maxlength="10" type="text" id="addPhone" onkeypress="return isNumber(event)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 input-field">
+                <textarea id="addDet" class="materialize-textarea"></textarea>
+                <label for="addDet">Address</label>
+            </div>
+            <div class="col s4 input-field">
+                <label for="addCity">City</label>
+                <input required="required" maxlength="50" type="text" id="addCity" />
+            </div>
+            <div class="col s4 input-field">
+                <label for="addState">State</label>
+                <input required="required" maxlength="50" type="text" id="addState" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 input-field">
+                <label for="addPin">Pin</label>
+                <input required="required" maxlength="10" type="text" id="addPin" />
+            </div>
+            <div class="col s4 input-field">
+                <label for="addLandmark">Landmark</label>
+                <input maxlength="50" type="text" id="addLandmark" placeholder="Optional" />
+            </div>
+            <div class="col s4 input-field">
+                <label for="addAltphone">Alternate Phone</label>
+                <input maxlength="10" type="text" id="addAltphone" placeholder="Optional" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn waves-effect waves-light" id="addBtn">Save</button>
+    </div>
+</div>
+
+
 <script>
-    var addData;
+    var addData,instance;
     $(document).ready(function () {
         $('.tabs').tabs();
         $('.collapsible').collapsible();
-        $(".editTrigger").dropdown({ coverTrigger: false });
+        $(".editTrigger").dropdown({ coverTrigger: false, hover: true });
+        $('.modal').modal();
+        //instance = M.Dropdown.getInstance(document.querySelectorAll('.editTrigger'));
     });
 
     function isNumber(evt) {
@@ -220,16 +226,14 @@
         var markup = '<div class="card-panel col s4" id="addDiv-' + id + '">';
         markup += '<button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>';
         markup += '<p><span class="name">' + add.Name + '</span>,<span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
-        if (add.Landmark.length != 0)
-        {
+        if (add.Landmark.length != 0) {
             markup += '<p><span class="landmark">' + add.Landmark + '</span></p>';
         }
         markup += '<p><b>Phone:</b><span class="phn">' + add.Phone + '</span></p>';
-        if (add.AltPhone.length != 0)
-        {
+        if (add.AltPhone.length != 0) {
             markup += '<p><b>Alternate Phone:</b><span class="altphn">' + add.AltPhone + '</span></p>';
         }
-        markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">'+add.Type+'</span>';
+        markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">' + add.Type + '</span>';
         markup += '</div>';
         $('#panelDiv').append(markup);
     }
@@ -237,6 +241,7 @@
     $('#addBtn').on('click', function () {
         if (CheckAddressForm() == false)
             return;
+        var addressID = $('#addID').val();
         var postdata = {
             Name: $('#addName').val(),
             Phone: $('#addPhone').val(),
@@ -246,22 +251,15 @@
             City: $('#addCity').val(),
             State: $('#addState').val(),
             Landmark: $('#addLandmark').val(),
-            Type: $('input[name=addType]:checked').val()
+            Type: $('input[name=addType]:checked').val(),
+            AddressID: addressID
         }
-        $.ajax({
-            url: '/Account/AddAddress',
-            type: 'POST',
-            data: postdata,
-            success: function (res) {
-                if (res.Success) {
-                    alert(res.Message);
-                    Addrow(postdata);
-                }
-                else {
-                    alert(res.Message);
-                }
-            }
-        });
+
+        if (addressID == "")
+            AddAddress(postdata);
+        else
+            EditAddress(postdata);
+
     });
 
     $('.editTrigger').on('click', function () {
@@ -279,6 +277,71 @@
             AddressID: panelDiv.find('.addressID').text()
         }
     });
+
+    $('.editLink').on('click', function () {
+        $('.modal-title').html('Edit Address');
+        $('#addName').val(addData.Name);
+        $('#addPhone').val(addData.Phone);
+        $('#addAltphone').val(addData.AltPhone);
+        $('#addPin').val(addData.Pin);
+        $('#addDet').val(addData.AddressDetail);
+        $('#addCity').val(addData.City);
+        $('#addState').val(addData.State);
+        $('#addLandmark').val(addData.Landmark);
+        $('#addID').val(addData.AddressID);
+        $('input:radio[name=addType][id=' + addData.Type + ']').prop('checked', true);
+        $('.modal').modal('open');
+    });
+
+    $('#addTrigger').on('click', function () {
+        $('.modal-title').html('Add Address');
+        $('#addName').val("");
+        $('#addPhone').val("");
+        $('#addAltphone').val("");
+        $('#addPin').val("");
+        $('#addDet').val("");
+        $('#addCity').val("");
+        $('#addState').val("");
+        $('#addLandmark').val("");
+        $('#addID').val("");
+        $('input:radio[name=addType][id=Home]').prop('checked', true);
+        $('.modal').modal('open');
+    });
+
+    function AddAddress(obj) {
+        $.ajax({
+            url: '/Account/AddAddress',
+            type: 'POST',
+            data: obj,
+            success: function (res) {
+                if (res.Success) {
+                    alert(res.Message);
+                    Addrow(obj, res.data);
+                }
+                else {
+                    alert(res.Message);
+                }
+            }
+        });
+    }
+
+    function EditAddress(obj) {
+        $.ajax({
+            url: '/Account/UpdateAddress',
+            type: 'POST',
+            data: obj,
+            success: function (res) {
+                if (res.Success) {
+                    alert(res.Message);
+                    $('#addDiv-' + obj.AddressID).remove();
+                    Addrow(obj, obj.AddressID);
+                }
+                else {
+                    alert(res.Message);
+                }
+            }
+        });
+    }
 
 </script>
 

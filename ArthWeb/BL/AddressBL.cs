@@ -15,7 +15,7 @@ namespace BL
             return new AddressDAO().GetAddressforUserID(userID);
         }
 
-        public bool AddAddress(Address address)
+        public int AddAddress(Address address)
         {
             return new AddressDAO().AddAddress(address);
         }
