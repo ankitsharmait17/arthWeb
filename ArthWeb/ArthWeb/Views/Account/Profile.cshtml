@@ -5,7 +5,16 @@
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/MatLayout.cshtml";
 }
+<style>
+    p{
+        margin:2px;
+    }
+    
+    .s3{
+        margin:10px!important;
+    }
 
+</style>
 <div class="row">
     <div class="col s12 m8 offset-m2 l6 offset-l3">
         <div class="card-panel grey lighten-5 z-depth-1">
@@ -53,13 +62,17 @@
         </div>
     </div>
     <div id="address" class="col s12">
-        <button class="waves-effect waves-light btn" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
+        <br />
+        <div class="row center">
+            <button class="waves-effect waves-light btn" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
+        </div>
         <div id="panelDiv">
             @foreach (var add in @Model.Addresses)
             {
-                <div class="card-panel col s4" id="addDiv-@add.AddressID">
-                    <button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>
-                    <p><span class="name">@add.Name</span>,<span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
+            <div class="card-panel col s3" id="addDiv-@add.AddressID">
+                <div class="col s10">
+                    <p><span class="name">@add.Name</span></p>
+                    <p><span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
                     @if (add.Landmark != null)
                     {<p><span class="landmark">@add.Landmark</span></p>}
                     <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
@@ -70,15 +83,17 @@
                     <span class="addressID" style="display:none">@add.AddressID</span>
                     <span class="addressType" style="display:none">@add.Type</span>
                 </div>
+                <div class="col s1"></div>
+                <div class="col s1">
+                    <button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>
+                    <button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>
+                </div>
+            </div>
             }
         </div>
     </div>
     <div id="orders" class="col s12">Orders</div>
 </div>
-<ul id="editDD" class="dropdown-content">
-    <li><a href="#" class="grey-text text-darken-1 editLink">Edit</a></li>
-    <li><a href="#" class="grey-text text-darken-1 deleteLink">Delete</a></li>
-</ul>
 
 <!-- Modal Structure -->
 <div id="addModal" class="modal modal-fixed-footer">
@@ -100,31 +115,31 @@
         <div class="row">
             <div class="col s4 input-field">
                 <label for="addName">Name</label>
-                <input required="required" maxlength="50" type="text" id="addName" />
+                <input required="required" maxlength="50" type="text" id="addName" placeholder="Required" />
             </div>
             <div class="col s4 input-field">
                 <label for="addPhone">Phone</label>
-                <input required="required" maxlength="10" type="text" id="addPhone" onkeypress="return isNumber(event)" />
+                <input required="required" maxlength="10" type="text" id="addPhone" placeholder="Required" onkeypress="return isNumber(event)" />
             </div>
         </div>
         <div class="row">
             <div class="col s4 input-field">
-                <textarea id="addDet" class="materialize-textarea"></textarea>
+                <textarea id="addDet" class="materialize-textarea" placeholder="Required"></textarea>
                 <label for="addDet">Address</label>
             </div>
             <div class="col s4 input-field">
                 <label for="addCity">City</label>
-                <input required="required" maxlength="50" type="text" id="addCity" />
+                <input required="required" maxlength="50" type="text" id="addCity" placeholder="Required"/>
             </div>
             <div class="col s4 input-field">
                 <label for="addState">State</label>
-                <input required="required" maxlength="50" type="text" id="addState" />
+                <input required="required" maxlength="50" type="text" id="addState" placeholder="Required"/>
             </div>
         </div>
         <div class="row">
             <div class="col s4 input-field">
                 <label for="addPin">Pin</label>
-                <input required="required" maxlength="10" type="text" id="addPin" />
+                <input required="required" maxlength="10" type="text" id="addPin" placeholder="Required"/>
             </div>
             <div class="col s4 input-field">
                 <label for="addLandmark">Landmark</label>
@@ -143,13 +158,10 @@
 
 
 <script>
-    var addData,instance;
     $(document).ready(function () {
         $('.tabs').tabs();
         $('.collapsible').collapsible();
-        $(".editTrigger").dropdown({ coverTrigger: false, hover: true });
         $('.modal').modal();
-        //instance = M.Dropdown.getInstance(document.querySelectorAll('.editTrigger'));
     });
 
     function isNumber(evt) {
@@ -223,9 +235,10 @@
     }
 
     function Addrow(add, id) {
-        var markup = '<div class="card-panel col s4" id="addDiv-' + id + '">';
-        markup += '<button class="btn-flat waves-effect editTrigger right" data-target="editDD"><i class="material-icons">more_vert</i></button>';
-        markup += '<p><span class="name">' + add.Name + '</span>,<span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
+        var markup = '<div class="card-panel col s3" id="addDiv-' + id + '">';
+        markup += '<div class="col s10">';
+        markup += '<p><span class="name">' + add.Name + '</span></p>';
+        markup += '<p><span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
         if (add.Landmark.length != 0) {
             markup += '<p><span class="landmark">' + add.Landmark + '</span></p>';
         }
@@ -234,6 +247,12 @@
             markup += '<p><b>Alternate Phone:</b><span class="altphn">' + add.AltPhone + '</span></p>';
         }
         markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">' + add.Type + '</span>';
+        markup += '</div>';
+        markup += '<div class="col s1"></div>';
+        markup += '<div class="col s1">';
+        markup += '<button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>';
+        markup += '<button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>';
+        markup += '</div>';
         markup += '</div>';
         $('#panelDiv').append(markup);
     }
@@ -263,8 +282,12 @@
     });
 
     $('.editTrigger').on('click', function () {
+        
+    });
+
+    $('.editLink').on('click', function () {
         var panelDiv = $(this).closest('.card-panel');
-        addData = {
+        var addData = {
             Name: panelDiv.find('.name').text(),
             Phone: panelDiv.find('.phn').text(),
             AltPhone: panelDiv.find('.altphn').text(),
@@ -276,9 +299,6 @@
             Type: panelDiv.find('.addressType').text(),
             AddressID: panelDiv.find('.addressID').text()
         }
-    });
-
-    $('.editLink').on('click', function () {
         $('.modal-title').html('Edit Address');
         $('#addName').val(addData.Name);
         $('#addPhone').val(addData.Phone);
@@ -308,6 +328,11 @@
         $('.modal').modal('open');
     });
 
+    $('.deleteLink').on('click', function () {
+        var addressID = $(this).closest('.card-panel').find('.addressID').text();
+        DeleteAddress(addressID);
+    });
+
     function AddAddress(obj) {
         $.ajax({
             url: '/Account/AddAddress',
@@ -335,6 +360,23 @@
                     alert(res.Message);
                     $('#addDiv-' + obj.AddressID).remove();
                     Addrow(obj, obj.AddressID);
+                }
+                else {
+                    alert(res.Message);
+                }
+            }
+        });
+    }
+
+    function DeleteAddress(id) {
+        $.ajax({
+            url: '/Account/DeleteAddress',
+            type: 'POST',
+            data: { id: id },
+            success: function (res) {
+                if (res.Success) {
+                    alert(res.Message);
+                    $('#addDiv-' + id).remove();
                 }
                 else {
                     alert(res.Message);

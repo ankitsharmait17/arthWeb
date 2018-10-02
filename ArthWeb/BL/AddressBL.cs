@@ -24,5 +24,10 @@ namespace BL
         {
             return new AddressDAO().UpdateAddress(address);
         }
+
+        public bool DeleteAddress(int addID)
+        {
+            return new AddressDAO().DeleteAddress(addID);
+        }
     }
 }

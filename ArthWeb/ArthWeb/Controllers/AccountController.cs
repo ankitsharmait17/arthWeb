@@ -146,11 +146,14 @@ namespace ArthWeb.Controllers
             try
             {
                 bool isSuccess = new UserBL().UpdateUser(user);
-                return Json(new { Success = isSuccess, Message = "Your details have been updated." });
+                if(isSuccess)
+                    return Json(new { Success = isSuccess, Message = "Your details have been updated." });
+                else
+                    return Json(new { Success = isSuccess, Message = "Your details could not be updated." });
             }
             catch (Exception)
             {
-                return Json(new { Success = false, Message = "Sorry,Your details have not been updated." });
+                return Json(new { Success = false, Message = "Sorry,your details have not been updated." });
             }
         }
 
@@ -160,7 +163,11 @@ namespace ArthWeb.Controllers
             {
                 address.UserID = new UserBL().GetUser(User.Identity.Name).UserID;
                 int id = new AddressBL().AddAddress(address);
-                return Json(new { Success = id==0?false:true, Message = "Address added.",data=id });
+                bool isSuccess = id == 0 ? false : true;
+                if(isSuccess)
+                    return Json(new { Success =isSuccess , Message = "Address added.",data=id });
+                else
+                    return Json(new { Success = isSuccess, Message = "Address couldn't be added."});
             }
             catch (Exception ex)
             {
@@ -175,12 +182,32 @@ namespace ArthWeb.Controllers
             {
                 address.UserID = new UserBL().GetUser(User.Identity.Name).UserID;
                 bool isSuccess = new AddressBL().UpdateAddress(address);
-                return Json(new { Success = isSuccess, Message = "Saved changes."});
+                if(isSuccess)
+                    return Json(new { Success = isSuccess, Message = "Saved changes."});
+                else
+                    return Json(new { Success = isSuccess, Message = "Could not save changes." });
             }
             catch (Exception ex)
             {
 
-                return Json(new { Success = false, Message = "Address could not be added." });
+                return Json(new { Success = false, Message = "Address could not be updated." });
+            }
+        }
+
+        public ActionResult DeleteAddress(int id)
+        {
+            try
+            {
+                bool isSuccess = new AddressBL().DeleteAddress(id);
+                if (isSuccess)
+                    return Json(new { Success = isSuccess, Message = "Address deleted." });
+                else
+                    return Json(new { Success = isSuccess, Message = "Could not delete address." });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { Success = false, Message = "Address could not be deleted." });
             }
         }
 

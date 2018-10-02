@@ -78,5 +78,28 @@ namespace DL
             }
             return isSuccess;
         }
+
+        public bool DeleteAddress(int addID)
+        {
+            bool isSuccess = false;
+            try
+            {
+                using (ArthModel cntx=new ArthModel())
+                {
+                    var exAdd = cntx.Addresses.Where(x => x.AddressID == addID).FirstOrDefault();
+                    if (exAdd == null)
+                        return false;
+                    cntx.Addresses.Remove(exAdd);
+                    var rows=cntx.SaveChanges();
+                    isSuccess = rows > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return true;
+        }
     }
 }
