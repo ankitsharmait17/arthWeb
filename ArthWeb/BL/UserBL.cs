@@ -26,9 +26,9 @@ namespace BL
             return new UserDAO().GetUserData(username);
         }
 
-        public bool AddUser(User user)
+        public bool AddUser(User user,string url)
         {
-            return new UserDAO().AddUser(user);
+            return new UserDAO().AddUser(user,url);
         }
 
         public bool UpdateUser(User user)
@@ -48,6 +48,16 @@ namespace BL
                 Addresses = new AddressBL().GetAddressforUserID(data.UserID)
             };
             return user;
+        }
+
+        public int ConfirmEmail(string email, string confirmationCode)
+        {
+            return new UserDAO().ConfirmEmail(email, confirmationCode);
+        }
+
+        public int ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            return new UserDAO().ChangePassword(username, oldPassword, newPassword);
         }
     }
 }

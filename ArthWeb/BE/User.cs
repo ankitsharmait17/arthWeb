@@ -7,6 +7,7 @@ namespace BE
     [Table("User")]
     public class User
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserID { get; set; }
 
         [StringLength(254)]
@@ -23,5 +24,7 @@ namespace BE
         public String Phone { get; set; }
 
         public bool IsActive { get; set; }
+
+        public Guid Confirmation { get; set; }
     }
 }

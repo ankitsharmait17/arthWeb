@@ -54,6 +54,10 @@
         if (email.length < 8) {
             alert("email length is minimum 8.");return;
         }
+        if (pass.length != 8) {
+            alert("minimum password size is 8.");
+            return;
+        }
         if (pass.length != confirmPass.length || pass != confirmPass) {
             alert("password and confirm password are not equal.");
             return;

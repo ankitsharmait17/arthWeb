@@ -16,6 +16,7 @@ namespace ArthWeb.Controllers
 {
     public class AccountController : Controller
     {
+        
         public ActionResult Login(string ReturnUrl = "")
         {
             string retUrl = null;
@@ -115,7 +116,8 @@ namespace ArthWeb.Controllers
         {
             try
             {
-                var isSuccess = new UserBL().AddUser(user);
+                string url = Request.Url.AbsoluteUri.Replace("RegisterUser", "ConfirmEmail");
+                var isSuccess = new UserBL().AddUser(user,url);
                 return Json(new { Success = isSuccess });
             }
             catch (Exception)
@@ -208,6 +210,50 @@ namespace ArthWeb.Controllers
             {
 
                 return Json(new { Success = false, Message = "Address could not be deleted." });
+            }
+        }
+
+        public ActionResult ConfirmEmail(string email,string code)
+        {
+            try
+            {
+                var isSuccess = new UserBL().ConfirmEmail(email, code);
+                ViewBag.MessageFix = "Redirecting now...";
+                if (isSuccess == 1)
+                    ViewBag.Message = "Some problem with verification of email.Please try again.";
+                else if(isSuccess==2)
+                    ViewBag.Message = "Verification link expired.";
+                else
+                    ViewBag.Message = "Verified successfully";
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string oldPassword,string newPassword)
+        {
+            try
+            {
+                var username = User.Identity.Name;
+                var isSuccess = new UserBL().ChangePassword(username, oldPassword, newPassword);
+                if (isSuccess == 0)
+                    return Json(new { Success = true, Message = "Password changed." });
+                else if (isSuccess == 1)
+                    return Json(new { Success = false, Message = "Email or Password entered does not match." });
+                else
+                    return Json(new { Success = false, Message = "Couldn't change password.Please try again." });
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

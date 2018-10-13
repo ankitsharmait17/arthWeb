@@ -5,6 +5,18 @@
 <h2>@ViewBag.Title.</h2>
 <div>
     <p>
-        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        @ViewBag.Message
+    </p>
+
+    <p>
+        @ViewBag.MessageFix
     </p>
 </div>
+
+<script>
+    $(document).ready(function () {
+        window.setTimeout(function () {
+            window.location.href = "@Url.Action("Login","Account")";
+        }, 3000);
+    });
+</script>

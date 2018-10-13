@@ -30,5 +30,11 @@ namespace UnitTestProject1
         {
             var x = new ItemDAO().GetItemsforGrid(null, 10, 0, "0", "Men|Women|", "Kurta|Kalidar|", null);
         }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            new UserDAO().SendEmail("abc-abc-abc-abc", "ankit.sharma.it2017@gmail.com", "ankit","http://localhost:62316/Account/ConfirmEmail");
+        }
     }
 }
