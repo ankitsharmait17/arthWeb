@@ -53,8 +53,11 @@
     <Compile Include="ArthModel.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemMapping.cs" />
+    <Compile Include="ItemQuantity.cs" />
+    <Compile Include="ItemSize.cs" />
     <Compile Include="ItemSubType.cs" />
     <Compile Include="ItemType.cs" />
+    <Compile Include="Models\ItemCartModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\UserAddressModel.cs" />
     <Compile Include="Models\UserData.cs" />

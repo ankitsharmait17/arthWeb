@@ -1,4 +1,7 @@
-﻿<style>
+﻿@{ 
+    int count = (string)Session["count"]==null?0:(int)Session["count"];
+}
+<style>
     body {
         display: flex;
         min-height: 100vh;
@@ -10,6 +13,8 @@
         flex: 1 0 auto;
         margin:10px;
     }
+
+    
 </style>
 <html>
 <head>
@@ -48,6 +53,14 @@
                                 </div>
                             </form>
                         </li>
+                        <li>
+                            <a href="@Url.Action("ViewCart","Cart")" id="cartLink">
+                                <span class="new badge white black-text" data-badge-caption="Items">@count</span>
+                                <i class="fab fa-shopping-cart white-text"></i>&nbsp;&nbsp;
+                                Cart
+                            </a>
+                        </li>
+                       
                         @if (User.Identity.IsAuthenticated)
                         {
                         <li>

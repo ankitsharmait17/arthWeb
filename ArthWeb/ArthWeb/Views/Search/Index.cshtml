@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
     Layout = "~/Views/Shared/MatLayout.cshtml";
     Dictionary<string, List<string>> catList = ViewBag.DDList;
     string markup = null;
@@ -83,6 +83,9 @@
         margin: 10px;
     }
     
+    .itemKeyspan{
+        display:none;
+    }
 </style>
 
 <ul id="slide-out" class="sidenav">
@@ -236,6 +239,7 @@
             '<div class="card-image">' +
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
             '<span class="card-title">Rs. ' + price + '</span>' +
+            '<span class="itemKeyspan">' + itemkey+'</span>'+
             '<a href="@Url.Action("Index","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light red viewBtn"><i class="material-icons">zoom_in</i></a>' +
             '<a class="btn-floating halfway-fab waves-effect waves-light red addBtn"><i class="material-icons">add_shopping_cart</i></a>'+
             '</div>' +
@@ -391,6 +395,11 @@
         GetItemsforGrid(search, null);
     });
 
+    $('.addBtn').on('click', function () {
+        var item = $(this).closest('div').find('.itemKeyspan').text();
+        AddToCart(item);
+    });
+
     function CreatePagination(length) {
         length = Math.ceil(length / pageSize);
         $('.pagination').empty();
@@ -456,7 +465,24 @@
         });
     }
 
-
+    function AddToCart(item,size) {
+        $.ajax({
+            url: '@Url.Action("Add","Cart")',
+            type: 'POST',
+            data: {
+                ItemKey: item,
+                Quantity: 1,
+                Size: size
+            },
+            success: function (res) {
+                if (res.Success) {
+                    var count = parseInt($('#cartLink').find('badge').text());
+                    count++;
+                    $('#cartLink').find('badge').text(count);
+                }
+            }
+        });
+    }
 
 </script>
 
