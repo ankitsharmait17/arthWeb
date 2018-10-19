@@ -16,5 +16,10 @@ namespace BL
         {
             return new ItemDAO().GetItem(itemKey);
         }
+
+        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items)
+        {
+            return new ItemDAO().GetCartItems(items);
+        }
     }
 }

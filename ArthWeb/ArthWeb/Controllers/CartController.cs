@@ -1,4 +1,5 @@
 ﻿using BE.Models;
+using BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,28 @@ namespace ArthWeb.Controllers
     public class CartController : Controller
     {
         // GET: Cart
-        public ActionResult Index()
+        public ActionResult CartItems()
         {
-            return View();
+            List<ItemCartModel> items = null;
+            try
+            {
+                if (Session["cart"] == null)
+                    return View(items);
+                List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
+                items =new ItemBL().GetCartItems(li);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return View(items);
         }
 
+        [HttpPost]
         public ActionResult Add(ItemCartModel item)
         {
+            int count = 0;
             try
             {
                 if (Session["cart"] == null)
@@ -25,17 +41,23 @@ namespace ArthWeb.Controllers
                     li.Add(item);
                     Session["cart"] = li;
                     ViewBag.cart = li.Count();
-                    Session["count"] = 1;
+                    count = 1;
+                    Session["count"] = count;
                 }
                 else
                 {
                     List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
-                    li.Add(item);
+                    var check=li.FirstOrDefault(x => x.ItemKey.Equals(item.ItemKey));
+                    if (check != null)
+                        check.Quantity += item.Quantity;
+                    else
+                        li.Add(item);
                     Session["cart"] = li;
                     ViewBag.cart = li.Count();
-                    Session["count"] = Convert.ToInt32(Session["count"]) + 1;
+                    count = Convert.ToInt32(Session["count"]) + 1;
+                    Session["count"] = count;
                 }
-                return Json(new { Success = true });
+                return Json(new { Success = true,data=count });
             }
             catch (Exception)
             {

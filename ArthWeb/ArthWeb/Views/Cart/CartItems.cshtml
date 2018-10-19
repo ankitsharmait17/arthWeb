@@ -1,0 +1,70 @@
+﻿@using BE.Models
+@model List<ItemCartModel>
+@{
+    ViewBag.Title = "Cart Items";
+    decimal price = 0;
+}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s9">
+            <ul class="collection with-header">
+                <li class="collection-header"><h6>MY CART</h6></li>
+                @foreach (ItemCartModel item in Model)
+                {
+                    <li class="collection-item avatar">
+                        <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
+                        <span class="title">@item.Description</span>
+                        <span class="itemKey" style="display:none">@item.ItemKey</span>
+                        <p>
+                            Size: @item.Size<br>
+                            Quantity: @item.Quantity
+                        </p>
+                        <button class="btn-flat waves-effect secondary-content removefromCart"><i class="material-icons">close</i></button>
+                    </li>
+                    price += item.Price;
+                }
+                <li class="collection-item">
+                    <p style="float:left">
+                        <button class="btn btn-flat waves-effect">KEEP SHOPPING</button>
+                        <button class="btn btn-primary waves-effect">PLACE ORDER</button>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="col s3">
+            <ul class="collection with-header">
+                <li class="collection-header"><h6>PRICE DETAILS</h6></li>
+                <li class="collection-item">
+                    <div class="row">
+                        <div class="col s9">
+                            Price (@Model.Count Item/s)
+                            <br />
+                            Delivery Charges
+                        </div>
+                        <div class="col s3">
+                            
+                                Rs.@price
+                                <br />
+                                FREE
+                        </div>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li class="collection-item">
+                    <div class="row">
+                        <div class="col s9">
+                            Amount Payable
+                        </div>
+                        <div class="col s3">
+                            Rs.@price
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

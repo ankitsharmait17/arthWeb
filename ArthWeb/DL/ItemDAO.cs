@@ -148,5 +148,38 @@ namespace DL
             
             return itemList;
         }
+
+        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items)
+        {
+            List<ItemCartModel> itemCarts= null;
+            try
+            {
+                using(ArthModel cntx=new ArthModel())
+                {
+                    itemCarts = new List<ItemCartModel>();
+                    foreach (ItemCartModel it in items)
+                    {
+                        var item = cntx.Items.FirstOrDefault(x => x.ItemKey.Equals(it.ItemKey));
+                        if (item != null)
+                        {
+                            itemCarts.Add(new ItemCartModel()
+                            {
+                                ItemKey = item.ItemKey,
+                                Description = item.Description,
+                                Quantity = it.Quantity,
+                                Size = it.Size,
+                                Price=item.Price
+                            });
+                        }   
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return itemCarts;
+        }
     }
 }

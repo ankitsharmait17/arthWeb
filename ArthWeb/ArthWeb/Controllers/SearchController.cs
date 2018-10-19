@@ -1,4 +1,5 @@
 ﻿using ArthWeb.Filters;
+using BE;
 using BL;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,21 @@ namespace ArthWeb.Controllers
             catch (Exception)
             {
                 return Json(new { Success = false, Message="Sorry for the inconvenience. Please reload the page and try again." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetItemSizes(string itemKey)
+        {
+            List<ItemSize> itemSizes = null;
+            try
+            {
+                itemSizes = new ItemSizeBL().GetItemSizesfromItemKey(itemKey);
+                return Json(new { Success = true, data = itemSizes },JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { Success = true,Message="Try adding again." });
             }
         }
     }

@@ -86,6 +86,12 @@
     .itemKeyspan{
         display:none;
     }
+
+    .modal {
+        width: 400px!important;
+        height: 300px!important;
+        overflow:visible;
+    }
 </style>
 
 <ul id="slide-out" class="sidenav">
@@ -214,18 +220,35 @@
         <ul class="pagination"></ul>
     </div>
 </div>
-
+<div id="sizeModal" class="modal">
+    <div class="modal-content">
+        <h5 class="modal-title">Select Size</h5><br/>
+        <div class="row">
+            <div class="col s12 input-field">
+                <select id="itemSize">
+                    <option value="" disabled selected>Choose a Size</option>
+                    
+                </select>
+                <label>Size</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn waves-effect waves-light" id="addToCart">Add to Cart</button>
+    </div>
+</div>
 
 
 
 
 <script>
-    var search, pageSize, startRec, order;
+    var search, pageSize, startRec, order,itemKey;
     search = "@ViewBag.searchString";
     pageSize = 10;
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('select').formSelect();
+        $('#sizeModal').modal();
         if (search != "")
         {
             GetItemsforGrid(search, null);
@@ -240,8 +263,8 @@
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
             '<span class="card-title">Rs. ' + price + '</span>' +
             '<span class="itemKeyspan">' + itemkey+'</span>'+
-            '<a href="@Url.Action("Index","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light red viewBtn"><i class="material-icons">zoom_in</i></a>' +
-            '<a class="btn-floating halfway-fab waves-effect waves-light red addBtn"><i class="material-icons">add_shopping_cart</i></a>'+
+            '<a href="@Url.Action("Index","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light btn-large red viewBtn"><i class="material-icons">zoom_in</i></a>' +
+            '<button class="btn-floating halfway-fab waves-effect waves-light red addBtn btn-large"><i class="material-icons">add_shopping_cart</i></button>'+
             '</div>' +
             '</div>' +
             '</div >' +
@@ -395,9 +418,14 @@
         GetItemsforGrid(search, null);
     });
 
-    $('.addBtn').on('click', function () {
-        var item = $(this).closest('div').find('.itemKeyspan').text();
-        AddToCart(item);
+    $(document).on('click', '.addBtn', function () {
+        itemKey = $(this).closest('div').find('.itemKeyspan').text();
+        GetSizes(itemKey);
+    });
+
+    $('#addToCart').on('click', function () {
+        var size = $('#itemSize').val();
+        AddToCart(itemKey, size);
     });
 
     function CreatePagination(length) {
@@ -476,9 +504,29 @@
             },
             success: function (res) {
                 if (res.Success) {
-                    var count = parseInt($('#cartLink').find('badge').text());
-                    count++;
-                    $('#cartLink').find('badge').text(count);
+                    $('#cartLink').find('.badge').text(res.data);
+                    $('#sizeModal').modal('close');
+                    alert('Item added to cart.');
+                }
+            }
+        });
+    }
+
+    function GetSizes(item) {
+        $.ajax({
+            url: '@Url.Action("GetItemSizes", "Search")',
+            type: 'GET',
+            data: {
+                itemKey: item
+            },
+            success: function(res) {
+                if (res.Success) {
+                    $('#itemSize').find('option').not(':first').remove();
+                    $.each(res.data, function (i, el) {
+                        $('#itemSize').append('<option value="' + el.ItemSizeName + '">' + el.ItemSizeName+'</option>');
+                    });
+                    $('select').formSelect();
+                    $('#sizeModal').modal('open');
                 }
             }
         });

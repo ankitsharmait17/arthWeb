@@ -18,6 +18,8 @@ namespace BE
         public virtual DbSet<ItemType> ItemTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<ItemSize> ItemSizes { get; set; }
+        public virtual DbSet<ItemQuantity> ItemQuantities { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

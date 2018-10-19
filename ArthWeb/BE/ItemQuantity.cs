@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BE
 {
+    [Table("ItemQuantity")]
     public partial class ItemQuantity
     {
         [Key]

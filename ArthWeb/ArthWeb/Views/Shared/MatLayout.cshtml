@@ -1,5 +1,5 @@
 ﻿@{ 
-    int count = (string)Session["count"]==null?0:(int)Session["count"];
+    int count = Session["count"]==null?0:(int)Session["count"];
 }
 <style>
     body {
@@ -54,8 +54,8 @@
                             </form>
                         </li>
                         <li>
-                            <a href="@Url.Action("ViewCart","Cart")" id="cartLink">
-                                <span class="new badge white black-text" data-badge-caption="Items">@count</span>
+                            <a href="@Url.Action("CartItems","Cart")" id="cartLink">
+                                <span class="new badge white black-text" data-badge-caption="Item/s">@count</span>
                                 <i class="fab fa-shopping-cart white-text"></i>&nbsp;&nbsp;
                                 Cart
                             </a>
