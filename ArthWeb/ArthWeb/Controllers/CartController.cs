@@ -1,4 +1,5 @@
-﻿using BE.Models;
+﻿using ArthWeb.Filters;
+using BE.Models;
 using BL;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,35 @@ using System.Web.Mvc;
 
 namespace ArthWeb.Controllers
 {
+    
     public class CartController : Controller
     {
         // GET: Cart
+        [CustomAuthorize]
         public ActionResult CartItems()
         {
             List<ItemCartModel> items = null;
             try
             {
                 if (Session["cart"] == null)
-                    return View(items);
+                    return RedirectToAction("Index","Home");
                 List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
                 items =new ItemBL().GetCartItems(li);
+                if (items.Count != li.Count)
+                {
+                    ViewBag.Error = "Some items had to be removed from your cart because they were low in stock.";
+                    Session["cart"] = items;
+                }
+                var id = User.Identity.Name;
+                var address = new AddressBL().GetAddressforUserID(new UserBL().GetUser(id).UserID);
+                if (address != null)
+                {
+                    ViewBag.addresses = address.Select(x => new SelectListItem()
+                    {
+                        Text = x.Type + "(" + x.AddressDetail + "," + x.City + "," + x.State,
+                        Value = x.AddressID.ToString()
+                    });
+                }
             }
             catch (Exception)
             {
@@ -62,6 +80,48 @@ namespace ArthWeb.Controllers
             catch (Exception)
             {
                 return Json(new { Success = false });
+            }
+        }
+
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult Remove(string itemKey)
+        {
+            try
+            {
+                List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
+                var check = li.RemoveAll(x => x.ItemKey.Equals(itemKey));
+                Session["count"] = li.Count;
+                return RedirectToAction("CartItems", "Cart");
+            }
+            catch (Exception)
+            {
+                 throw;
+            }
+        }
+
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult PlaceOrder(int id)
+        {
+            try
+            {
+                List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
+                var exList = new OrderBL().PlaceOrder(id, User.Identity.Name, li);
+                if (!exList.Any())
+                {
+                    Session["cart"] = null;
+                    Session["count"] = 0;
+                    return Json(new { Success = true, Message = "Order Placed" });
+                }
+                else
+                {
+                    return Json(new { Success = false, Message = exList });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Message = ex.Message });
             }
         }
     }

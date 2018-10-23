@@ -20,6 +20,8 @@ namespace BE
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<ItemSize> ItemSizes { get; set; }
         public virtual DbSet<ItemQuantity> ItemQuantities { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -108,6 +110,10 @@ namespace BE
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<OrderDetail>()
+                .Property(e => e.ItemKey)
                 .IsUnicode(false);
         }
     }

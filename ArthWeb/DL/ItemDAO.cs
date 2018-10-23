@@ -160,6 +160,14 @@ namespace DL
                     foreach (ItemCartModel it in items)
                     {
                         var item = cntx.Items.FirstOrDefault(x => x.ItemKey.Equals(it.ItemKey));
+                        var qty = cntx.ItemQuantities.FirstOrDefault(x => x.ItemID == item.ItemID);
+                        if (qty != null)
+                        {
+                            if (qty.Quantity < it.Quantity)
+                            {
+                                continue;
+                            }
+                        }
                         if (item != null)
                         {
                             itemCarts.Add(new ItemCartModel()
@@ -181,5 +189,7 @@ namespace DL
             }
             return itemCarts;
         }
+
+         
     }
 }

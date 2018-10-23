@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Cart Items";
     decimal price = 0;
+    IEnumerable<SelectListItem> addressList = null;
+    if (ViewBag.addresses != null)
+    {
+        addressList = (IEnumerable<SelectListItem>)ViewBag.addresses;
+    }
 }
 
 
@@ -24,15 +29,16 @@
                         </p>
                         <button class="btn-flat waves-effect secondary-content removefromCart"><i class="material-icons">close</i></button>
                     </li>
-                    price += item.Price;
+                    price += item.Price*item.Quantity;
                 }
                 <li class="collection-item">
                     <p style="float:left">
-                        <button class="btn btn-flat waves-effect">KEEP SHOPPING</button>
-                        <button class="btn btn-primary waves-effect">PLACE ORDER</button>
+                        <a href="@Url.Action("Index","Home")" class="btn btn-flat waves-effect">KEEP SHOPPING</a>
+                        <button class="btn btn-primary waves-effect" id="placeOrder">PLACE ORDER</button>
                     </p>
                 </li>
             </ul>
+            
         </div>
         <div class="col s3">
             <ul class="collection with-header">
@@ -45,10 +51,10 @@
                             Delivery Charges
                         </div>
                         <div class="col s3">
-                            
-                                Rs.@price
-                                <br />
-                                FREE
+
+                            Rs.@price
+                            <br />
+                            FREE
                         </div>
                     </div>
                 </li>
@@ -64,7 +70,92 @@
                     </div>
                 </li>
             </ul>
+            <blockquote>
+                Currently we are taking orders for Cash on Delivery Only.
+                Online Payment coming soon.
+            </blockquote>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s2">
+            <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
+        </div>
+        <div class="col s8">
+            <p id="addressP">
+
+            </p>
         </div>
     </div>
 </div>
 
+<div id="selectModal" class="modal modal-lg">
+    <div class="modal-content">
+        <h5 class="modal-title">Select Address</h5><br />
+        <div class="row">
+            @Html.DropDownList("address",addressList, new {@class= "input-field" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn waves-effect waves-light" id="selBtn">OK</button>
+    </div>
+</div>
+
+<script>
+    var aID;
+    $(document).ready(function () {
+        $('#selectModal').modal();
+        $('select').formSelect();
+    });
+
+    $('#selBtn').on('click', function () {
+        var add = $('#address').val();
+        if (add.length == 0) {
+            alert("Select an address");
+            return false;
+        }
+        aID = add;
+        alert("Address selected");
+        $('#selectModal').modal('close');
+    });
+
+    $('.removefromCart').on('click', function () {
+        var item = $(this).closest('li').find('.itemKey').text();
+        RemovefromCart(item, this);
+    });
+
+    $('#placeOrder').on('click', function () {
+        if (aID == null || aID.length == 0) {
+            alert("Select an address");
+            return false;
+        }
+        if ($('#addressP').html=="") {
+            alert("Select an address");
+            return false;
+        }
+        PlaceOrder(aID);
+    });
+
+    function RemovefromCart(item,selector){
+        $.ajax({
+            url: '@Url.Action("Remove", "Cart")',
+            type: "POST",
+            data: { itemKey: item },
+            success: function () {
+                console.log("Removal Success");
+                //selector.closest('li').remove();
+            } 
+        });
+    }
+
+    function PlaceOrder(id) {
+        $.ajax({
+            url: '@Url.Action("PlaceOrder","Cart")',
+            type: "POST",
+            data: { id: id },
+            success: function (res) {
+                alert(res.Message);
+            }
+        });
+    }
+
+</script>

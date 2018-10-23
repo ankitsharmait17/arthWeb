@@ -54,7 +54,7 @@
                             </form>
                         </li>
                         <li>
-                            <a href="@Url.Action("CartItems","Cart")" id="cartLink">
+                            <a href="#" id="cartLink">
                                 <span class="new badge white black-text" data-badge-caption="Item/s">@count</span>
                                 <i class="fab fa-shopping-cart white-text"></i>&nbsp;&nbsp;
                                 Cart
@@ -151,6 +151,13 @@
 
             var term = $('#search').val();
             location.href = "@Url.Action("Index","Search")" + "?search=" + term;
+        });
+
+        $('#cartLink').on('click', function () {
+            if ($(this).find('.badge').text() == "0") {
+                return false;
+            }
+            location.href = "@Url.Action("CartItems", "Cart")";
         });
     </script>
 </body>
