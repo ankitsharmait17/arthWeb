@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,5 +27,12 @@ namespace BE
 
         [Required]
         public bool Delivered { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Status { get; set; }
+
+        [NotMapped]
+        public List<OrderDetail> OrderDetails { get; set; }
     }
 }

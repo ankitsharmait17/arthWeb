@@ -17,6 +17,8 @@ namespace ArthWeb.Controllers
             try
             {
                 item = new ItemBL().GetItem(itemKey);
+                var size = new ItemSizeBL().GetItemSizesfromItemKey(itemKey);
+                ViewBag.sizes = size.Select(x => new SelectListItem { Text = x.ItemSizeName, Value = x.ItemSizeID.ToString() });
             }
             catch (Exception ex)
             {

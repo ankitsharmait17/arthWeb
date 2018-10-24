@@ -11,5 +11,7 @@ namespace BE.Models
         public string Phone { get; set; }
 
         public List<Address> Addresses { get; set; }
+
+        public List<OrderModel> Orders { get; set; }
     }
 }

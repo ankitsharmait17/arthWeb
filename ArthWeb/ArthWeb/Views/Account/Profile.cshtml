@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/MatLayout.cshtml";
+    decimal price = 0;
 }
 <style>
     p {
@@ -92,7 +93,38 @@
             }
         </div>
     </div>
-    <div id="orders" class="col s12">Orders</div>
+    <div id="orders" class="col s12">
+        <ul class="collapsible">
+            @foreach(var order in Model.Orders)
+            {
+                price = 0;
+            <li>
+                <div class="collapsible-header">Order#: @order.OrderID</div>
+                <div class="collapsible-body">
+                    <ul class="collection">
+                        @foreach(var orderdetail in order.OrderDetails)
+                        {
+                        <li class="collection-item avatar">
+                            <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
+                            <span class="title"><a href="@Url.Action("Index","Item")?itemKey=@orderdetail.ItemKey">@orderdetail.ItemDesc</a></span>
+                            <p>
+                                <b>Size</b>: @orderdetail.Size<br>
+                                <b>Quantity</b>: @orderdetail.Quantity
+                            </p>
+                        </li>
+                            price += orderdetail.PricePerItem * orderdetail.Quantity;
+                        }
+                    </ul>
+                    <p class="left">
+                        <b>Order Date</b>: @order.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
+                        <b>Status</b>: @order.Status
+                    </p>
+                    <p class="right">Order Total: Rs. @price</p>
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
 </div>
 
 <!--Address Modal Start -->

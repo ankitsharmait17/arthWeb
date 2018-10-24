@@ -60,6 +60,7 @@
     <Compile Include="ItemSizeDAO.cs" />
     <Compile Include="ItemTypeDAO.cs" />
     <Compile Include="OrderDAO.cs" />
+    <Compile Include="OrderDetailDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDAO.cs" />
   </ItemGroup>

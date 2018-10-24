@@ -45,7 +45,8 @@ namespace BL
                 Email = data.EmailID,
                 Name = data.Name,
                 Phone = data.Phone,
-                Addresses = new AddressBL().GetAddressforUserID(data.UserID)
+                Addresses = new AddressBL().GetAddressforUserID(data.UserID),
+                Orders=new OrderBL().GetOrdersforUser(data.UserID)
             };
             return user;
         }

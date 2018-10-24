@@ -99,10 +99,9 @@ namespace ArthWeb.Controllers
             Response.Cache.SetExpires(DateTime.Now.AddSeconds(-1));
             Response.Cache.SetNoStore();
             Response.AppendHeader("Pragma", "no-cache");
-
             var formsCookie = new Ticket().DestroyAuthenticationCookie();
             Response.Cookies.Add(formsCookie);
-
+            Response.Cookies["AUTHCOOKIE"].Expires = DateTime.Now.AddDays(-1);
             return RedirectToAction("Index","Home");
         }
 

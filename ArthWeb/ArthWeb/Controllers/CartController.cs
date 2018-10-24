@@ -13,7 +13,7 @@ namespace ArthWeb.Controllers
     public class CartController : Controller
     {
         // GET: Cart
-        [CustomAuthorize]
+        [Authorize]
         public ActionResult CartItems()
         {
             List<ItemCartModel> items = null;
@@ -22,6 +22,12 @@ namespace ArthWeb.Controllers
                 if (Session["cart"] == null)
                     return RedirectToAction("Index","Home");
                 List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
+                if (!li.Any())
+                {
+                    Session["cart"] = null;
+                    Session["count"] = 0;
+                    return RedirectToAction("Index", "Home");
+                }
                 items =new ItemBL().GetCartItems(li);
                 if (items.Count != li.Count)
                 {
@@ -34,7 +40,7 @@ namespace ArthWeb.Controllers
                 {
                     ViewBag.addresses = address.Select(x => new SelectListItem()
                     {
-                        Text = x.Type + "(" + x.AddressDetail + "," + x.City + "," + x.State,
+                        Text = x.Type + " (" + x.AddressDetail + ", " + x.City + ", " + x.State + ", " + x.Pin+") "+" Phone: "+x.Phone,
                         Value = x.AddressID.ToString()
                     });
                 }
@@ -92,11 +98,12 @@ namespace ArthWeb.Controllers
                 List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
                 var check = li.RemoveAll(x => x.ItemKey.Equals(itemKey));
                 Session["count"] = li.Count;
-                return RedirectToAction("CartItems", "Cart");
+                return Json(new { success = true });
             }
             catch (Exception)
             {
-                 throw;
+                return Json(new { success = false });
+                throw;
             }
         }
 

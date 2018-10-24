@@ -21,15 +21,15 @@
                 {
                     <li class="collection-item avatar">
                         <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
-                        <span class="title">@item.Description</span>
+                        <span class="title"><a href="@Url.Action("Index","Item")?itemKey=@item.ItemKey">@item.Description</a></span>
                         <span class="itemKey" style="display:none">@item.ItemKey</span>
                         <p>
-                            Size: @item.Size<br>
-                            Quantity: @item.Quantity
+                            <b>Size</b>: @item.Size<br>
+                            <b>Quantity</b>: @item.Quantity
                         </p>
                         <button class="btn-flat waves-effect secondary-content removefromCart"><i class="material-icons">close</i></button>
                     </li>
-                    price += item.Price*item.Quantity;
+                    price += item.Price * item.Quantity;
                 }
                 <li class="collection-item">
                     <p style="float:left">
@@ -39,6 +39,14 @@
                 </li>
             </ul>
             
+                <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
+            
+            
+                <p id="addressP" class="flow-text" style="width:50%;border: 1px solid black;">
+
+                </p>
+            
+
         </div>
         <div class="col s3">
             <ul class="collection with-header">
@@ -76,16 +84,6 @@
             </blockquote>
         </div>
     </div>
-    <div class="row">
-        <div class="col s2">
-            <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
-        </div>
-        <div class="col s8">
-            <p id="addressP">
-
-            </p>
-        </div>
-    </div>
 </div>
 
 <div id="selectModal" class="modal modal-lg">
@@ -115,6 +113,9 @@
         }
         aID = add;
         alert("Address selected");
+        var markup = "<b>Address:</b><br/>";
+        markup += $('#address').find(":selected").text()
+        $('#addressP').html(markup);
         $('#selectModal').modal('close');
     });
 
@@ -140,9 +141,11 @@
             url: '@Url.Action("Remove", "Cart")',
             type: "POST",
             data: { itemKey: item },
-            success: function () {
-                console.log("Removal Success");
-                //selector.closest('li').remove();
+            success: function (res) {
+                if (res.success) {
+                    console.log("Removal Success");
+                    location.reload();
+                }
             } 
         });
     }

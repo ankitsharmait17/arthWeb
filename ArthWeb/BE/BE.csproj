@@ -59,6 +59,8 @@
     <Compile Include="ItemType.cs" />
     <Compile Include="Models\ItemCartModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\OrderDetailModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\UserAddressModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Order.cs" />
