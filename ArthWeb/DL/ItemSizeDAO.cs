@@ -36,5 +36,22 @@ namespace DL
             }
             return itemSizes;
         }
+
+        public List<string> GetAllSizes()
+        {
+            List<string> itemSizes = null;
+            try
+            {
+                using (ArthModel cntx = new ArthModel())
+                {
+                    itemSizes = cntx.ItemSizes.Select(x=>x.ItemSizeName).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return itemSizes;
+        }
     }
 }

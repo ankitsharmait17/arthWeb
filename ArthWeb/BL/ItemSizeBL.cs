@@ -14,5 +14,10 @@ namespace BL
         {
             return new ItemSizeDAO().GetItemSizesfromItemKey(itemKey);
         }
+
+        public List<string> GetAllSizes()
+        {
+            return new ItemSizeDAO().GetAllSizes();
+        }
     }
 }

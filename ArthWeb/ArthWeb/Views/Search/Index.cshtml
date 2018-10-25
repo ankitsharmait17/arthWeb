@@ -20,6 +20,15 @@
         }
         markup += "</ul></div></li>";
     }
+    string sizeMarkup = null;
+    List<string> sizeList = ViewBag.sizes;
+    foreach(string size in sizeList)
+    {
+        sizeMarkup += "<li>";
+        sizeMarkup += "<label for='" + size + "'>";
+        sizeMarkup += "<input type='checkbox' id='" + size + "'class='filterSize'><span>" + size + "</span>";
+        sizeMarkup += "</label></li>";
+    }
 }
 
 <style>
@@ -131,21 +140,7 @@
                 <div class="collapsible-header">SIZES</div>
                 <div class="collapsible-body">
                     <ul class="list-unstyled">
-                        <li>
-                            <label for="s">
-                                <input type="checkbox" id="s"><span>S</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label for="m">
-                                <input type="checkbox" id="m"><span>M</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label for="l">
-                                <input type="checkbox" id="l"><span>L</span>
-                            </label>
-                        </li>
+                        @Html.Raw(sizeMarkup)
                     </ul>
                 </div>
             </li>
@@ -244,7 +239,7 @@
         $('select').formSelect();
         $('#sizeModal').modal();
         $('.chip').remove();
-        $('.filterGender , .filterSubtype , .filterPrice').prop('checked', false);
+        $('.filterGender , .filterSubtype , .filterPrice , .filterSize').prop('checked', false);
         $('#clear').css('display', 'none');
         if (search != "")
         {
@@ -276,7 +271,7 @@
         GetItemsforGrid(search, null);
     }
 
-    $('.filterGender , .filterSubtype , .filterPrice').on('click', function () {
+    $('.filterGender , .filterSubtype , .filterPrice , .filterSize').on('click', function () {
         var isPresent = false;
         var text = $(this).attr('id');
         $('.chip').each(function () {
@@ -291,8 +286,10 @@
                 cl = 'chipsGender';
             else if (cl == 'filterSubtype')
                 cl = 'chipsSubtype';
-            else
+            else if (cl == 'filterPrice')
                 cl = 'chipsPrice';
+            else if (cl == 'filterSize')
+                cl = 'chipsSize';
             CreateChip(text, cl);
             //$('#clear').css('display', 'block');
         }
@@ -325,7 +322,7 @@
 
     $('#clear').on('click', function () {
         $('.chip').remove();
-        $('.filterGender , .filterSubtype , .filterPrice').prop('checked', false);
+        $('.filterGender , .filterSubtype , .filterPrice , .filterSize').prop('checked', false);
         $('#clear').css('display', 'none');
         GetItemsforGrid(search, null);
     });
@@ -450,6 +447,7 @@
         var filterGender = "";
         var filterSubtype = "";
         var filterPrice = "";
+        var filterSize = "";
         $('.chipsGender').each(function () {
             filterGender += $(this).find('b').text() + "|";
         });
@@ -458,6 +456,9 @@
         });
         $('.chipsPrice').each(function () {
             filterPrice += $(this).find('b').text() + "|";
+        });
+        $('.chipsSize').each(function () {
+            filterSize += $(this).find('b').text() + "|";
         });
         $.ajax({
             url: "/Search/GetItemJsonData",
@@ -469,7 +470,8 @@
                 order: order,
                 filterGender: filterGender,
                 filterSubtype: filterSubtype,
-                filterPrice: filterPrice
+                filterPrice: filterPrice,
+                filterSize: filterSize
             },
             success: function (res) {
                 if (res.Success) {

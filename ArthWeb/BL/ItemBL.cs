@@ -7,9 +7,9 @@ namespace BL
 {
     public class ItemBL
     {
-        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order, string filterGender, string filterSubtype, string filterPrice)
+        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order, string filterGender, string filterSubtype, string filterPrice,string filterSize)
         {
-            return new ItemDAO().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype,  filterPrice);
+            return new ItemDAO().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype,  filterPrice, filterSize);
         }
 
         public Item GetItem(string itemKey)

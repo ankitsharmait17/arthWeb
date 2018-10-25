@@ -17,6 +17,7 @@ namespace ArthWeb.Controllers
             try
             {
                 ViewBag.DDList = new ItemMappingBL().GetItemMappingDict();
+                ViewBag.sizes = new ItemSizeBL().GetAllSizes();
                 ViewBag.searchString = string.IsNullOrWhiteSpace(search)?"":search;
             }
             catch (Exception)
@@ -28,11 +29,11 @@ namespace ArthWeb.Controllers
         }
         
         [HttpGet]
-        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order, string filterGender, string filterSubtype, string filterPrice)
+        public ActionResult GetItemJsonData(string search, int pageSize, int startRec, string order, string filterGender, string filterSubtype, string filterPrice,string filterSize)
         {
             try
             {
-                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype, filterPrice);
+                var itemList = new ItemBL().GetItemsforGrid(search, pageSize, startRec, order, filterGender, filterSubtype, filterPrice,filterSize);
                 if(itemList==null || itemList.Count()==0)
                     return Json(new { Success = false, Message = "No items found." },JsonRequestBehavior.AllowGet);
                 else

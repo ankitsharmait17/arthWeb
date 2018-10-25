@@ -47,7 +47,7 @@ namespace DL
             return item;
         }
 
-        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order,string filterGender,string filterSubtype,string filterPrice)
+        public List<ItemModel> GetItemsforGrid(string search, int pageSize, int startRec, string order,string filterGender,string filterSubtype,string filterPrice,string filterSize)
         {
             List<ItemModel> itemList = null;
             try
@@ -62,7 +62,11 @@ namespace DL
                                 on itemMap.ItemTypeID equals type.ItemTypeID
                                 join subType in cntx.ItemSubTypes
                                 on itemMap.ItemSubTypeID equals subType.ItemSubTypeID
-                                select new { item, itemMap, type, subType });
+                                //join qty in cntx.ItemQuantities
+                                //on item.ItemID equals qty.ItemID
+                                //join itemSize in cntx.ItemSizes
+                                //on qty.ItemSizeID equals itemSize.ItemSizeID
+                                select new { item, itemMap, type, subType});
                     
 
                     if (!string.IsNullOrWhiteSpace(search))
@@ -105,7 +109,32 @@ namespace DL
                         data = data.Where(predicate, keywords);
                     }
 
-                    
+                    if (!string.IsNullOrWhiteSpace(filterSize))
+                    {
+                        var sizeCheck = (from joined in data
+                                         join qty in cntx.ItemQuantities
+                                         on joined.item.ItemID equals qty.ItemID
+                                         join itemSize in cntx.ItemSizes
+                                         on qty.ItemSizeID equals itemSize.ItemSizeID
+                                         select new { qty,itemSize });
+                        filterSize = filterSize.Remove(filterSize.Length - 1);
+                        var keywords = filterSize.Split('|');
+                        string predicate = null;
+                        int i;
+                        for (i = 0; i < keywords.Length - 1; i++)
+                        {
+                            predicate += "itemSize.ItemSizeName.Equals(@" + i + ") || ";
+                        }
+                        predicate += "itemSize.ItemSizeName.Equals(@" + i + ")";
+                        sizeCheck = sizeCheck.Where(predicate, keywords);
+                        var distinctitems = sizeCheck.AsEnumerable().Select(x => x.qty.ItemID).Distinct();
+                        data = (from joined in data
+                                join item in distinctitems
+                                on joined.item.ItemID equals item
+                                select new { joined.item,joined.itemMap,joined.type,joined.subType });
+                    }
+
+
                     switch (order)
                     {
                         case "0":
