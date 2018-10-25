@@ -62,10 +62,6 @@ namespace DL
                                 on itemMap.ItemTypeID equals type.ItemTypeID
                                 join subType in cntx.ItemSubTypes
                                 on itemMap.ItemSubTypeID equals subType.ItemSubTypeID
-                                //join qty in cntx.ItemQuantities
-                                //on item.ItemID equals qty.ItemID
-                                //join itemSize in cntx.ItemSizes
-                                //on qty.ItemSizeID equals itemSize.ItemSizeID
                                 select new { item, itemMap, type, subType});
                     
 
@@ -92,7 +88,10 @@ namespace DL
 
                     if (!string.IsNullOrWhiteSpace(filterPrice))
                     {
-
+                        var keywords = filterPrice.Split('-');
+                        decimal start = Convert.ToDecimal(keywords[0]);
+                        decimal end = Convert.ToDecimal(keywords[1]);
+                        data = data.Where(x=>x.item.Price>=start && x.item.Price<=end);
                     }
 
                     if (!string.IsNullOrWhiteSpace(filterSubtype))
