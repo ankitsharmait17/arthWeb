@@ -87,7 +87,7 @@ namespace ArthWeb.Controllers
             return RedirectToAction("Login", new { ReturnUrl = retUrl });
         }
 
-        [CustomAuthorize]
+        [Authorize]
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
@@ -126,7 +126,7 @@ namespace ArthWeb.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [Authorize]
         public ActionResult Profile()
         {
             var username = User.Identity.Name;
@@ -142,6 +142,7 @@ namespace ArthWeb.Controllers
             return View(user);
         }
 
+        [Authorize]
         public ActionResult UpdateUser(User user)
         {
             try
@@ -158,6 +159,7 @@ namespace ArthWeb.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult AddAddress(Address address)
         {
             try
@@ -177,6 +179,7 @@ namespace ArthWeb.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult UpdateAddress(Address address)
         {
             try
@@ -195,6 +198,7 @@ namespace ArthWeb.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult DeleteAddress(int id)
         {
             try
@@ -234,6 +238,7 @@ namespace ArthWeb.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(string oldPassword,string newPassword)
         {
@@ -256,6 +261,7 @@ namespace ArthWeb.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult ViewOrder(int orderID)
         {
             OrderModel order = null;

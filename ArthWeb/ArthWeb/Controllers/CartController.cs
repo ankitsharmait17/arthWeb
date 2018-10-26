@@ -89,7 +89,7 @@ namespace ArthWeb.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [Authorize]
         [HttpPost]
         public ActionResult Remove(string itemKey)
         {
@@ -107,7 +107,7 @@ namespace ArthWeb.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [Authorize]
         [HttpPost]
         public ActionResult PlaceOrder(int id)
         {
