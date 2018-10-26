@@ -12,7 +12,7 @@ namespace ArthWeb.Controllers
     public class SearchController : Controller
     {
         // GET: Search
-        public ActionResult Index(string search=null)
+        public ActionResult SearchItems(string search=null)
         {
             try
             {

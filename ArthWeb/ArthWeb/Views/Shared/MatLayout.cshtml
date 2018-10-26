@@ -45,7 +45,7 @@
                         <li><a href="#">Women</a></li>
                         <li><a href="#">Accessories</a></li>
                         <li>
-                            <form id="searchForm" action="@Url.Action("Index","Search")">
+                            <form id="searchForm" action="@Url.Action("SearchItems","Search")">
                                 <div class="input-field">
                                     <input id="search" type="search" name="search" required>
                                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -150,7 +150,7 @@
         $('#searchForm').on('submit', function () {
 
             var term = $('#search').val();
-            location.href = "@Url.Action("Index","Search")" + "?search=" + term;
+            location.href = "@Url.Action("SearchItems","Search")" + "?search=" + term;
         });
 
         $('#cartLink').on('click', function () {

@@ -11,7 +11,7 @@ namespace ArthWeb.Controllers
     public class ItemController : Controller
     {
         // GET: Item
-        public ActionResult Index(string itemKey)
+        public ActionResult ViewItem(string itemKey)
         {
             Item item = null;
             try
