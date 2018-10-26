@@ -1,0 +1,71 @@
+﻿@using  BE.Models
+@model OrderModel
+@{
+    ViewBag.Title = "View Order";
+    Layout = "~/Views/Shared/MatLayout.cshtml";
+    decimal price = 0;
+}
+<div class="container-fluid">
+    <div class="row">
+        
+            <div class="col s12">
+
+                <ul class="collection with-header">
+                    <li class="collection-header"><h6>Order#: @Model.OrderID</h6></li>
+                    <li class="collection-item">
+                        <p><h6><b>Address:</b></h6></p>
+                        <p><span class="name">@Model.Address.Name</span></p>
+                        <p><span class="address">@Model.Address.AddressDetail</span>,<span class="city">@Model.Address.City</span>,<span class="state">@Model.Address.State</span> - <span class="pin">@Model.Address.Pin</span></p>
+                        @if (Model.Address.Landmark != null)
+                        {<p><span class="landmark">@Model.Address.Landmark</span></p>}
+                        <p><b>Phone:</b> <span class="phn">@Model.Address.Phone</span></p>
+                        @if (Model.Address.AltPhone != null)
+                        {
+                            <p><b>Alternate Phone:</b> <span class="altphn">@Model.Address.AltPhone</span></p>
+                        }
+                        <span class="addressID" style="display:none">@Model.Address.AddressID</span>
+                        <span class="addressType" style="display:none">@Model.Address.Type</span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="col s12">
+                
+                    <ul class="collection with-header">
+                        <li class="collection-header"><h6><b>Order Details:</b></h6></li>
+                        @foreach (var orderdetail in Model.OrderDetails)
+                        {
+                            <li class="collection-item avatar">
+                                <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
+                                <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@orderdetail.ItemKey">@orderdetail.ItemDesc</a></span>
+                                <p>
+                                    <b>Size</b>: @orderdetail.Size<br>
+                                    <b>Quantity</b>: @orderdetail.Quantity
+                                </p>
+                            </li>
+                            price += orderdetail.PricePerItem * orderdetail.Quantity;
+                        }
+                        <li class="collection-item">
+                            <p class="left">
+                                <b>Order Date</b>: @Model.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
+                                <b>Status</b>: @Model.Status &nbsp;&nbsp;&nbsp;&nbsp;
+                                @if (Model.Delivered == true)
+                                {
+                                    <b>Delivered Date:</b> @Model.OrderDeliveredDate @:&nbsp;&nbsp;&nbsp;&nbsp;
+                                }
+                                else
+                                {
+                                    <b>Delivery By:</b> @Model.OrderDeliveryDate @:&nbsp;&nbsp;&nbsp;&nbsp;
+                                }
+                            </p>
+                            <p class="right">Order Total: Rs. @price</p>
+                        </li>
+                    </ul>
+                
+            </div>
+        </div>
+    </div>
+ 
+
+

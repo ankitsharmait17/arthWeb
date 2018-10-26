@@ -119,7 +119,7 @@
                         <b>Order Date</b>: @order.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
                         <b>Status</b>: @order.Status
                     </p>
-                    <p class="right">Order Total: Rs. @price</p>
+                    <p class="right">Order Total: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
                 </div>
             </li>
             }

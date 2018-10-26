@@ -115,11 +115,11 @@ namespace ArthWeb.Controllers
             {
                 List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
                 var exList = new OrderBL().PlaceOrder(id, User.Identity.Name, li);
-                if (!exList.Any())
+                if (exList.Count()==1)
                 {
                     Session["cart"] = null;
                     Session["count"] = 0;
-                    return Json(new { Success = true, Message = "Order Placed" });
+                    return Json(new { Success = true, Message = "Order Placed" ,data=exList});
                 }
                 else
                 {

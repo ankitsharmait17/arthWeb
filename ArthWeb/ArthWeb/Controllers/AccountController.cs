@@ -256,5 +256,24 @@ namespace ArthWeb.Controllers
             }
         }
 
+        public ActionResult ViewOrder(int orderID)
+        {
+            OrderModel order = null;
+            try
+            {
+                int userID = new UserBL().GetUser(User.Identity.Name).UserID;
+                order = new OrderBL().GetOrder(orderID,userID);
+                if (order == null)
+                {
+                    return RedirectToAction("Profile", "Account");
+                }
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+            return View(order);
+        }
+
     }
 }

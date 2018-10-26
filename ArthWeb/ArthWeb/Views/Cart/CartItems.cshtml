@@ -156,7 +156,16 @@
             type: "POST",
             data: { id: id },
             success: function (res) {
-                showSuccessAlert(res.Message);
+                if (res.Success) {
+                    showSuccessAlert(res.Message);
+                    var param = res.data["OrderID"];
+                    location.href = '@Url.Action("ViewOrder","Account")?orderID=' + param;
+                }
+                else {
+                    $.each(res.data, function (i, el) {
+                        showErrorAlert(el.Key + " " + el.Value);
+                    });
+                }
             }
         });
     }

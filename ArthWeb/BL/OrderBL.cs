@@ -22,5 +22,15 @@ namespace BL
             }
             return orders;
         }
+
+        public OrderModel GetOrder(int orderID,int userID)
+        {
+            OrderModel order = new OrderDAO().GetOrder(orderID,userID);
+            if (order != null)
+            {
+                order.OrderDetails = new OrderDetailBL().GetOrderDetailsforOrder(orderID);
+            }
+            return order;
+        }
     }
 }

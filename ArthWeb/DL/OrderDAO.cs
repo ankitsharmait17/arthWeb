@@ -35,6 +35,7 @@ namespace DL
                         Status="Placed"
                     });
                     cntx.SaveChanges();
+                    exList.Add("OrderID", addedOrder.OrderID.ToString());
                     foreach (ItemCartModel item in orderDetails)
                     {
                         var addedOrderDetail = cntx.OrderDetails.Add(new OrderDetail()
@@ -126,6 +127,53 @@ namespace DL
                 throw;
             }
             return orders;
+        }
+
+        public OrderModel GetOrder(int orderID,int userID)
+        {
+            OrderModel order = null;
+            try
+            {
+                using (ArthModel cntx=new ArthModel())
+                {
+                    order = (from ord in cntx.Orders
+                             where ord.OrderID == orderID && ord.UserID==userID
+                             join add in cntx.Addresses
+                             on ord.AddressID equals add.AddressID
+                             select new { ord, add }).AsEnumerable()
+                           .Select(x => new OrderModel()
+                           {
+                               Address = new Address()
+                               {
+                                   AddressDetail = x.add.AddressDetail,
+                                   AddressID = x.add.AddressID,
+                                   AltPhone = x.add.AltPhone,
+                                   City = x.add.City,
+                                   Landmark = x.add.Landmark,
+                                   Name = x.add.Name,
+                                   Phone = x.add.Phone,
+                                   Pin = x.add.Pin,
+                                   State = x.add.State,
+                                   Type = x.add.Type,
+                                   UserID = x.add.UserID
+                               },
+                               Status = x.ord.Status,
+                               OrderID = x.ord.OrderID,
+                               Delivered = x.ord.Delivered,
+                               OrderDate = x.ord.OrderDate,
+                               OrderDeliveredDate = x.ord.OrderDeliveredDate,
+                               OrderDeliveryDate = x.ord.OrderDeliveryDate,
+                               UserID = x.ord.UserID
+                           }).FirstOrDefault();
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return order;
         }
     }
 }
