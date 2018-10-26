@@ -40,10 +40,10 @@
         var uname = $('#uname').val();
         var pass = $('#pass').val();
         if (uname = "") {
-            alert("Username cannot be empty"); return false;
+            showWarningAlert("Username cannot be empty"); return false;
         }
         if (pass.length < 8) {
-            alert("Minimum length of password is 8."); return false;
+            showWarningAlert("Minimum length of password is 8."); return false;
         }
         return true;
     }

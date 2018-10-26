@@ -239,7 +239,7 @@
         var email = $('#email').val();
         var fname = $('#fname').val();
         if (fname.length == 0) {
-            alert("Name cannot be empty.");
+            showWarningAlert("Name cannot be empty.");
             return;
         }
         $.ajax({
@@ -252,7 +252,7 @@
             },
             success: function (res) {
                 if (res.Success) {
-                    alert("Details Updated.");
+                    showSuccessAlert("Details Updated.");
                 }
             }
         })
@@ -261,32 +261,32 @@
 
     function CheckAddressForm() {
         if ($('#addName').val().length == 0) {
-            alert("Name for address cannot be empty.");
+            showWarningAlert("Name for address cannot be empty.");
             return false;
         }
 
         if ($('#addPhone').val().length == 0) {
-            alert("Phone number cannot be empty.");
+            showWarningAlert("Phone number cannot be empty.");
             return false;
         }
 
         if ($('#addDet').val().length == 0) {
-            alert("Address cannot be empty.");
+            showWarningAlert("Address cannot be empty.");
             return false;
         }
 
         if ($('#addCity').val().length == 0) {
-            alert("City cannot be empty.");
+            showWarningAlert("City cannot be empty.");
             return false;
         }
 
         if ($('#addState').val().length == 0) {
-            alert("State cannot be empty.");
+            showWarningAlert("State cannot be empty.");
             return false;
         }
 
         if ($('#addPin').val().length == 0) {
-            alert("Pin cannot be empty.");
+            showWarningAlert("Pin cannot be empty.");
             return false;
         }
         return true;
@@ -342,17 +342,17 @@
     $('#pwd').on('click', function () {
         var oldpass = $('#oldPwd').val();
         if (oldpass.length != 8) {
-            alert("minimum password size is 8.");
+            showWarningAlert("minimum password size is 8.");
             return;
         }
         var pass = $('#newPwd1').val();
         var confirmPass = $('#newPwd2').val();
         if (pass.length != 8) {
-            alert("minimum password size is 8.");
+            showWarningAlert("minimum password size is 8.");
             return;
         }
         if (pass.length != confirmPass.length || pass != confirmPass) {
-            alert("password and confirm password are not equal.");
+            showWarningAlert("password and confirm password are not equal.");
             return;
         }
         ChangePassword(oldpass, pass);
@@ -415,11 +415,11 @@
             data: obj,
             success: function (res) {
                 if (res.Success) {
-                    alert(res.Message);
+                    showSuccessAlert(res.Message);
                     Addrow(obj, res.data);
                 }
                 else {
-                    alert(res.Message);
+                    showErrorAlert(res.Message);
                 }
             }
         });
@@ -432,12 +432,12 @@
             data: obj,
             success: function (res) {
                 if (res.Success) {
-                    alert(res.Message);
+                    showSuccessAlert(res.Message);
                     $('#addDiv-' + obj.AddressID).remove();
                     Addrow(obj, obj.AddressID);
                 }
                 else {
-                    alert(res.Message);
+                    showErrorAlert(res.Message);
                 }
             }
         });
@@ -450,11 +450,11 @@
             data: { id: id },
             success: function (res) {
                 if (res.Success) {
-                    alert(res.Message);
+                    showSuccessAlert(res.Message);
                     $('#addDiv-' + id).remove();
                 }
                 else {
-                    alert(res.Message);
+                    showErrorAlert(res.Message);
                 }
             }
         });
@@ -471,10 +471,10 @@
             data: postdata,
             success: function (res) {
                 if (res.Success) {
-                    alert(res.Message);
+                    showSuccessAlert(res.Message);
                 }
                 else {
-                    alert(res.Message);
+                    showErrorAlert(res.Message);
                 }
             }
         });

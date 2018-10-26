@@ -112,7 +112,7 @@
             return false;
         }
         aID = add;
-        alert("Address selected");
+        showSuccessAlert("Address selected");
         var markup = "<b>Address:</b><br/>";
         markup += $('#address').find(":selected").text()
         $('#addressP').html(markup);
@@ -126,11 +126,11 @@
 
     $('#placeOrder').on('click', function () {
         if (aID == null || aID.length == 0) {
-            alert("Select an address");
+            showWarningAlert("Select an address");
             return false;
         }
         if ($('#addressP').html=="") {
-            alert("Select an address");
+            showWarningAlert("Select an address");
             return false;
         }
         PlaceOrder(aID);
@@ -143,7 +143,7 @@
             data: { itemKey: item },
             success: function (res) {
                 if (res.success) {
-                    console.log("Removal Success");
+                    showSuccessAlert("Item removed from cart.");
                     location.reload();
                 }
             } 
@@ -156,7 +156,7 @@
             type: "POST",
             data: { id: id },
             success: function (res) {
-                alert(res.Message);
+                showSuccessAlert(res.Message);
             }
         });
     }

@@ -89,7 +89,7 @@
     $('#addBtn').on('click', function () {
         var size = $('#sizes').val();
         if (size == null || size.length == 0) {
-            alert('Please select a size.');
+            showWarningAlert('Please select a size.');
             return false;
         }
         AddToCart($('#sizes').find(':selected').text());
@@ -108,7 +108,10 @@
                 if (res.Success) {
                     $('#cartLink').find('.badge').text(res.data);
                     $('#sizeModal').modal('close');
-                    alert('Item added to cart.');
+                    showSuccessAlert('Item added to cart.');
+                }
+                else {
+                    showErrorAlert("Item couldn't be added to cart.Please try again.");
                 }
             }
         });

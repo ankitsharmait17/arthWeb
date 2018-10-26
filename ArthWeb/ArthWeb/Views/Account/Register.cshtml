@@ -52,18 +52,18 @@
         var confirmPass = $('#confirmPass').val();
         var fname = $('#fname').val();
         if (email.length < 8) {
-            alert("email length is minimum 8.");return;
+            showWarningAlert("email length is minimum 8.");return;
         }
         if (pass.length != 8) {
-            alert("minimum password size is 8.");
+            showWarningAlert("minimum password size is 8.");
             return;
         }
         if (pass.length != confirmPass.length || pass != confirmPass) {
-            alert("password and confirm password are not equal.");
+            showWarningAlert("password and confirm password are not equal.");
             return;
         }
         if (fname.length == 0) {
-            alert("Name cannot be empty.");
+            showWarningAlert("Name cannot be empty.");
             return;
         }
         $.ajax({
@@ -77,7 +77,7 @@
             },
             success: function (res) {
                 if (res.Success) {
-                    alert("Registered Successfully.");
+                    showSuccessAlert("Registered Successfully.");
                     location.href = '@Url.Action("Login","Account")';
                 }
             }

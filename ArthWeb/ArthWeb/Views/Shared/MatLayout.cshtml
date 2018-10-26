@@ -138,7 +138,7 @@
     <!--        Footer End-->
 
 
-
+    
     <script>
         $(document).ready(function () {
             //$('.carousel').carousel();\
@@ -159,6 +159,21 @@
             }
             location.href = "@Url.Action("CartItems", "Cart")";
         });
+
+        function showSuccessAlert(message) {
+            var markup = "<i class='fa fa-check'></i>&nbsp;<span>" + message + "</span>";
+            M.toast({ html: markup,classes:'rounded' });
+        }
+
+        function showErrorAlert(message) {
+            var markup = "<i class='fa fa-times'></i>&nbsp;<span>" + message + "</span>";
+            M.toast({ html: markup, classes: 'rounded' });
+        }
+
+        function showWarningAlert(message) {
+            var markup = "<i class='fa fa-exclamation-triangle'></i>&nbsp;<span>" + message + "</span>";
+            M.toast({ html: markup, classes: 'rounded' });
+        }
     </script>
 </body>
 </html>

@@ -512,7 +512,10 @@
                 if (res.Success) {
                     $('#cartLink').find('.badge').text(res.data);
                     $('#sizeModal').modal('close');
-                    alert('Item added to cart.');
+                    showSuccessAlert('Item added to cart.');
+                }
+                else {
+                    showErrorAlert("Please try again.");
                 }
             }
         });
