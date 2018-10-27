@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Configuration;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -117,6 +118,10 @@ namespace ArthWeb.Controllers
             {
                 string url = Request.Url.AbsoluteUri.Replace("RegisterUser", "ConfirmEmail");
                 var isSuccess = new UserBL().AddUser(user,url);
+                if (isSuccess)
+                {
+
+                }
                 return Json(new { Success = isSuccess });
             }
             catch (Exception)
@@ -281,5 +286,123 @@ namespace ArthWeb.Controllers
             return View(order);
         }
 
+        public ActionResult ForgotPassword()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel forgotPassword)
+        {
+            string code = null;
+            try
+            {
+                code= new UserBL().ForgotPasswordEnable(forgotPassword.Email);
+                if (code!= null)
+                {
+                    TempData["Success"] = "An email has been sent you with the link to change your password.";
+                    string url = Request.Url.AbsoluteUri.Replace("ForgotPassword", "ResetPassword");
+                    Task.Run(() => SendResetPasswordMail(url, forgotPassword.Email, code));
+                }
+                else
+                {
+                    TempData["Fail"] = "Some issue occured. Please try again.";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Index", "Home") });
+        }
+
+        public ActionResult ResetPassword(string email, string code)
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            try
+            {
+                var check = new UserBL().ConfirmForgotPassword(code, email);
+                if (check == false)
+                {
+                    TempData["Fail"] = "Link has expired.";
+                    return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Index", "Home") });
+                }
+                ViewBag.email = email;
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel reset)
+        {
+            try
+            {
+                var isSuccess = new UserBL().ResetPassword(reset.Email, reset.Password);
+                if (isSuccess)
+                {
+                    TempData["Success"] = "Password reset success. Redirecting to login.";
+                    Task.Run(() => SendResetPasswordSuccessMail(reset.Email));
+                }
+                else
+                {
+                    TempData["Fail"] = "Password reset failure. Please try again.";
+                }
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+        }
+
+        public void SendResetPasswordMail(string url,string email,string actCode)
+        {
+            try
+            {
+                string name = new UserBL().GetUser(email).Name;
+                url += "?email=" + email + "&code=" + actCode;
+                string body = "Hello " + name + ",";
+                body += "<br /><br />Please click the following link to reset your account password";
+                body += "<br /><a href = '" + url + "'>Click here to reset your account password.</a>";
+                body += "<br /><br />Thanks";
+                string subject = "Arth support : Reset Password";
+                new MailHelperBL().SendEmail(email, name, body, subject);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void SendResetPasswordSuccessMail(string email)
+        {
+            try
+            {
+                string name = new UserBL().GetUser(email).Name;
+                string body = "Hello " + name + ",";
+                body += "<br /><br />Your account password has been reset. You can now login using your new password.";
+                body += "<br /><br />Thanks";
+                string subject = "Arth support : Reset Password Success.";
+                new MailHelperBL().SendEmail(email, name, body, subject);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

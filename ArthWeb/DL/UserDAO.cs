@@ -217,5 +217,85 @@ namespace DL
             }
             return isSuccess;
         }
+
+        public string ForgotPasswordEnable(string username)
+        {
+            string code=null;
+            try
+            {
+                using (ArthModel cntx = new ArthModel())
+                {
+                    var user = cntx.Users.FirstOrDefault(x => x.EmailID.Equals(username));
+                    if (user == null)
+                    {
+                        return null;
+                    }
+                    user.ForgotPassword = true;
+                    user.Confirmation = Guid.NewGuid();
+                    cntx.SaveChanges();
+                    code = user.Confirmation.ToString();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return code;
+        }
+
+        public bool ConfirmForgotPassword(string code,string email)
+        {
+            bool isSuccess = false;
+            try
+            {
+                using (ArthModel cntx = new ArthModel())
+                {
+                    var check = cntx.Users.FirstOrDefault(x => x.EmailID.Equals(email) && x.ForgotPassword == true);
+                    if (check == null)
+                    {
+                        isSuccess=false;
+                    }
+                    else
+                    {
+                        if (check.Confirmation.ToString().Equals(code))
+                            isSuccess = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return isSuccess;
+        }
+
+        public bool ResetPassword(string username,string password)
+        {
+            bool isSuccess = false;
+            try
+            {
+                var hashPass = new Hash().GenerateHash(password, new Salt().GenerateSalt());
+                using (ArthModel cntx = new ArthModel())
+                {
+                    var exUser = cntx.Users.Where(x => x.EmailID.Equals(username)).FirstOrDefault();
+                    if (exUser == null)
+                        return false;
+                    exUser.Password = hashPass;
+                    exUser.ForgotPassword = false;
+                    //cntx.Entry(exUser).State = System.Data.Entity.EntityState.Modified;
+                    var rows = cntx.SaveChanges();
+                    isSuccess = rows > 0 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return isSuccess;
+        }
+
     }
 }

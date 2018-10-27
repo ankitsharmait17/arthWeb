@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,6 +45,7 @@
     <Compile Include="ItemBL.cs" />
     <Compile Include="ItemMappingBL.cs" />
     <Compile Include="ItemSizeBL.cs" />
+    <Compile Include="MailHelperBL.cs" />
     <Compile Include="OrderBL.cs" />
     <Compile Include="OrderDetailBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

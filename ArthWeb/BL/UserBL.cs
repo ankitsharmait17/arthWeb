@@ -60,5 +60,20 @@ namespace BL
         {
             return new UserDAO().ChangePassword(username, oldPassword, newPassword);
         }
+
+        public string ForgotPasswordEnable(string username)
+        {
+            return new UserDAO().ForgotPasswordEnable(username);
+        }
+
+        public bool ConfirmForgotPassword(string code, string email)
+        {
+            return new UserDAO().ConfirmForgotPassword(code, email);
+        }
+
+        public bool ResetPassword(string email,string password)
+        {
+            return new UserDAO().ResetPassword(email, password);
+        }
     }
 }

@@ -26,5 +26,7 @@ namespace BE
         public bool IsActive { get; set; }
 
         public Guid Confirmation { get; set; }
+
+        public bool ForgotPassword { get; set; }
     }
 }

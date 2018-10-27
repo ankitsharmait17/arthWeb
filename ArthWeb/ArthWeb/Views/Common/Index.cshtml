@@ -1,0 +1,21 @@
+﻿@{
+    string message=null;
+    if (TempData["Success"] != null)
+    {
+        message = TempData["Success"] as string;
+    }
+    if (TempData["Fail"] != null)
+    {
+        message = TempData["Fail"] as string;
+    }
+}
+<h3>@message</h3>
+
+@*<script src="~/Scripts/jquery-3.3.1.js"></script>*@
+<script>
+    $(document).ready(function () {
+        window.setTimeout(function () {
+            window.location.href = "@Url.Action("Login","Account")";
+        }, 3000);
+    });
+</script>
