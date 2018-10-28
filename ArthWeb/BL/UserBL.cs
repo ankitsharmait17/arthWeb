@@ -26,9 +26,9 @@ namespace BL
             return new UserDAO().GetUserData(username);
         }
 
-        public bool AddUser(User user,string url)
+        public string AddUser(User user)
         {
-            return new UserDAO().AddUser(user,url);
+            return new UserDAO().AddUser(user);
         }
 
         public bool UpdateUser(User user)

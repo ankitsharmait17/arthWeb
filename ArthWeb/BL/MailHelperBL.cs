@@ -17,7 +17,7 @@ namespace BL
                 mail.IsBodyHtml = true;
                 using (SmtpClient MailClient = new SmtpClient(ConfigurationManager.AppSettings["Host"], Convert.ToInt32(ConfigurationManager.AppSettings["SenderMailPort"])))
                 {
-                    MailClient.EnableSsl = true;
+                    MailClient.EnableSsl = false;
                     MailClient.UseDefaultCredentials = false;
                     MailClient.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["SenderMailID"], ConfigurationManager.AppSettings["SenderMailPassword"]);
                     MailClient.Send(mail);

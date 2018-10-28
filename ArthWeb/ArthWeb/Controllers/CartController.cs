@@ -113,17 +113,25 @@ namespace ArthWeb.Controllers
         {
             try
             {
-                List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
-                var exList = new OrderBL().PlaceOrder(id, User.Identity.Name, li);
-                if (exList.Count()==1)
+                var usercheck = new UserBL().GetUser(User.Identity.Name);
+                if (usercheck.IsActive == false)
                 {
-                    Session["cart"] = null;
-                    Session["count"] = 0;
-                    return Json(new { Success = true, Message = "Order Placed" ,data=exList});
+                    return Json(new { Success = false, Message = "Your account is not activated. Please activate your account to place the order. The link was sent to you at the time of signing up." });
                 }
                 else
                 {
-                    return Json(new { Success = false, Message = exList });
+                    List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
+                    var exList = new OrderBL().PlaceOrder(id, User.Identity.Name, li);
+                    if (exList.Count() == 1)
+                    {
+                        Session["cart"] = null;
+                        Session["count"] = 0;
+                        return Json(new { Success = true, Message = "Order Placed", data = exList });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Message = exList });
+                    }
                 }
             }
             catch (Exception ex)

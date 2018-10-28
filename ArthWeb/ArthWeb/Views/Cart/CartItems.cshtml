@@ -162,6 +162,7 @@
                     location.href = '@Url.Action("ViewOrder","Account")?orderID=' + param;
                 }
                 else {
+                    showErrorAlert(res.Message);
                     $.each(res.data, function (i, el) {
                         showErrorAlert(el.Key + " " + el.Value);
                     });

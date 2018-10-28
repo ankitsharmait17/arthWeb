@@ -56,27 +56,29 @@ namespace DL
             return userdata;
         }
 
-        public bool AddUser(User user,string url)
+        public string AddUser(User user)
         {
+            string code = null;
             try
             {
                 using (ArthModel cntx=new ArthModel())
                 {
                     var isPresent = cntx.Users.Where(x => user.EmailID.Equals(x.EmailID)).FirstOrDefault();
                     if (isPresent != null)
-                        return false;
+                        return null;
                     user.Password = new Hash().GenerateHash(user.Password,new Salt().GenerateSalt());
                     user.Confirmation =  Guid.NewGuid();
                     var entity=cntx.Users.Add(user);
                     cntx.SaveChanges();
-                    SendEmail(entity.Confirmation.ToString(), user.EmailID, user.Name,url);
+                    code = user.Confirmation.ToString();
+                    //SendEmail(entity.Confirmation.ToString(), user.EmailID, user.Name,url);
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            return true;
+            return code;
         }
 
         public bool UpdateUser(User user)
@@ -108,25 +110,32 @@ namespace DL
 
         public void SendEmail(string actCode,string email,string name,string url)
         {
-            url += "?email=" + email + "&code=" + actCode;
-            using (MailMessage mail=new MailMessage())
+            try
             {
-                mail.From = new MailAddress(ConfigurationManager.AppSettings["SenderMailID"], "Arth Support");
-                mail.To.Add(new MailAddress(email,name));
-                mail.Subject = "Activation Email :Please activate your profile";
-                string body = "Hello " + name + ",";
-                body += "<br /><br />Please click the following link to activate your account";
-                body += "<br /><a href = '" + url + "'>Click here to activate your account.</a>";
-                body += "<br /><br />Thanks";
-                mail.Body = body;
-                mail.IsBodyHtml = true;
-                using (SmtpClient MailClient = new SmtpClient(ConfigurationManager.AppSettings["Host"], Convert.ToInt32(ConfigurationManager.AppSettings["SenderMailPort"])))
+                url += "?email=" + email + "&code=" + actCode;
+                using (MailMessage mail = new MailMessage())
                 {
-                    MailClient.EnableSsl = true;
-                    MailClient.UseDefaultCredentials = false;
-                    MailClient.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["SenderMailID"], ConfigurationManager.AppSettings["SenderMailPassword"]);
-                    MailClient.Send(mail);
+                    mail.From = new MailAddress(ConfigurationManager.AppSettings["SenderMailID"], "Arth Support");
+                    mail.To.Add(new MailAddress(email, name));
+                    mail.Subject = "Activation Email :Please activate your profile";
+                    string body = "Hello " + name + ",";
+                    body += "<br /><br />Please click the following link to activate your account";
+                    body += "<br /><a href = '" + url + "'>Click here to activate your account.</a>";
+                    body += "<br /><br />Thanks";
+                    mail.Body = body;
+                    mail.IsBodyHtml = true;
+                    using (SmtpClient MailClient = new SmtpClient(ConfigurationManager.AppSettings["Host"], Convert.ToInt32(ConfigurationManager.AppSettings["SenderMailPort"])))
+                    {
+                        MailClient.EnableSsl = false;
+                        MailClient.UseDefaultCredentials = false;
+                        MailClient.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["SenderMailID"], ConfigurationManager.AppSettings["SenderMailPassword"]);
+                        MailClient.Send(mail);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

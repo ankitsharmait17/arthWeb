@@ -80,12 +80,17 @@ namespace ArthWeb.Controllers
                     HttpContext.User = principal;
                     return Redirect(retUrl);
                 }
+                else
+                {
+                    TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
+                    return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+                }
             }
             catch (Exception)
             {
-                return RedirectToAction("Login", routeValues: new { ReturnUrl = retUrl });
+                TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
+                return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
             }
-            return RedirectToAction("Login", new { ReturnUrl = retUrl });
         }
 
         [Authorize]
@@ -117,12 +122,12 @@ namespace ArthWeb.Controllers
             try
             {
                 string url = Request.Url.AbsoluteUri.Replace("RegisterUser", "ConfirmEmail");
-                var isSuccess = new UserBL().AddUser(user,url);
-                if (isSuccess)
+                var code = new UserBL().AddUser(user);
+                if (code != null)
                 {
-
+                    Task.Run(() => SendConfirmationMail(url, user.EmailID, code));
                 }
-                return Json(new { Success = isSuccess });
+                return Json(new { Success= (code==null)? false:true });
             }
             catch (Exception)
             {
@@ -397,6 +402,25 @@ namespace ArthWeb.Controllers
                 body += "<br /><br />Your account password has been reset. You can now login using your new password.";
                 body += "<br /><br />Thanks";
                 string subject = "Arth support : Reset Password Success.";
+                new MailHelperBL().SendEmail(email, name, body, subject);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void SendConfirmationMail(string url, string email, string actCode)
+        {
+            try
+            {
+                string name = new UserBL().GetUser(email).Name;
+                url += "?email=" + email + "&code=" + actCode;
+                string body = "Hello " + name + ",";
+                body += "<br /><br />Please click the following link to activate your account";
+                body += "<br /><a href = '" + url + "'>Click here to activate your account.</a>";
+                body += "<br /><br />Thanks";
+                string subject = "Arth support :Please activate your profile";
                 new MailHelperBL().SendEmail(email, name, body, subject);
             }
             catch (Exception)

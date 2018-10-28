@@ -426,6 +426,10 @@
 
     $('#addToCart').on('click', function () {
         var size = $('#itemSize').val();
+        if (size == null || size.length == 0) {
+            showWarningAlert("Please select a size.");
+            return false;
+        }
         AddToCart(itemKey, size);
     });
 

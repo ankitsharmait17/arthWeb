@@ -54,7 +54,7 @@
         if (email.length < 8) {
             showWarningAlert("email length is minimum 8.");return;
         }
-        if (pass.length != 8) {
+        if (pass.length < 8) {
             showWarningAlert("minimum password size is 8.");
             return;
         }
