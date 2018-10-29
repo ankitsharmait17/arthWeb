@@ -4,6 +4,7 @@ using BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -126,6 +127,7 @@ namespace ArthWeb.Controllers
                     {
                         Session["cart"] = null;
                         Session["count"] = 0;
+                        Task.Run(() => SendOrderSuccessMail(User.Identity.Name,li));
                         return Json(new { Success = true, Message = "Order Placed", data = exList });
                     }
                     else
@@ -137,6 +139,39 @@ namespace ArthWeb.Controllers
             catch (Exception ex)
             {
                 return Json(new { Success = false, Message = ex.Message });
+            }
+        }
+
+        public void SendOrderSuccessMail(string email,List<ItemCartModel> li)
+        {
+            try
+            {
+                decimal price = 0;
+                var items = new ItemBL().GetCartItems(li);
+                string name = new UserBL().GetUser(email).Name;
+                string body = "Hello " + name + ",";
+                body += "<br/><br/>Your order has been placed. You can check the order status from your profile.";
+                body += "<br /><br />Order Details:<br/>";
+                body += "<table><tr><th>Items</th><th>Size</th><th>Price</th>";
+                foreach(var item in items)
+                {
+                    body += "<tr>";
+                    body += "<td>" + item.Description + "</td>";
+                    body += "<td>" + item.Size + "</td>";
+                    body += "<td>" + item.Quantity +" X  Rs." + item.Price +"</td>";
+                    body += "</tr>";
+                    price += item.Price * item.Quantity;
+                }
+                body += "<tr><td></td><td>Total:</td><td>Rs." + price + "</td></tr>";
+                body += "</table>";
+                body += "<br/><br/>We will keep you informed about the order status.";
+                body += "<br/>Thanks";
+                string subject = "Arth support : Order placed.";
+                new MailHelperBL().SendEmail(email, name, body, subject);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
