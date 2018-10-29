@@ -19,9 +19,19 @@
         height: 500px;
         width: 500px;
     }
-
-    
 </style>
+
+<script>
+    function GetPrice(num) {
+        var price = num.toLocaleString('en-IN', {
+            maximumFractionDigits: 2,
+            style: 'currency',
+            currency: 'INR'
+        });
+        return price;
+    }
+</script>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -50,6 +60,14 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col l12">
+                    <span id="price">
+                        &#8377;
+                        
+                    </span>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col l8">
                     <div class="input-field inline">
                         <label for="qty">Quantity</label>
@@ -73,12 +91,13 @@
 </div>
 
 <script>
-    
+
     $(document).ready(function () {
         $('.big_img').elevateZoom();
         $('select').formSelect();
+        $('#price').append(GetPrice("@Model.Price"));
     });
-        
+
     $('.small_img').on('click',function(){
         $("#big_img_div img:last-child").remove()
         var src = $(this).attr("src");
@@ -92,17 +111,20 @@
             showWarningAlert('Please select a size.');
             return false;
         }
-        AddToCart($('#sizes').find(':selected').text());
+        var price = $('#price').text();
+        price = parseFloat(price.replace("\u20b9", ''));
+        AddToCart($('#sizes').find(':selected').text(), price);
     });
 
-    function AddToCart(size) {
+    function AddToCart(size,price) {
         $.ajax({
             url: '@Url.Action("Add","Cart")',
             type: 'POST',
             data: {
                 ItemKey: "@Model.ItemKey",
                 Quantity: $('#qty').val(),
-                Size: size
+                Size: size,
+                Price: price
             },
             success: function (res) {
                 if (res.Success) {

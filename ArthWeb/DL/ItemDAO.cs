@@ -177,7 +177,7 @@ namespace DL
             return itemList;
         }
 
-        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items)
+        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items,bool sizeCheck)
         {
             List<ItemCartModel> itemCarts= null;
             try
@@ -188,25 +188,32 @@ namespace DL
                     foreach (ItemCartModel it in items)
                     {
                         var item = cntx.Items.FirstOrDefault(x => x.ItemKey.Equals(it.ItemKey));
-                        var qty = cntx.ItemQuantities.FirstOrDefault(x => x.ItemID == item.ItemID);
-                        if (qty != null)
+                        var size = cntx.ItemSizes.FirstOrDefault(x => x.ItemSizeName.Equals(it.Size));
+                        if (size != null)
                         {
-                            if (qty.Quantity < it.Quantity)
+                            if (sizeCheck)
                             {
-                                continue;
+                                var qty = cntx.ItemQuantities.FirstOrDefault(x => x.ItemID == item.ItemID && x.ItemSizeID == size.ItemSizeID);
+                                if (qty != null)
+                                {
+                                    if (qty.Quantity < it.Quantity)
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            if (item != null)
+                            {
+                                itemCarts.Add(new ItemCartModel()
+                                {
+                                    ItemKey = item.ItemKey,
+                                    Description = item.Description,
+                                    Quantity = it.Quantity,
+                                    Size = it.Size,
+                                    Price = item.Price
+                                });
                             }
                         }
-                        if (item != null)
-                        {
-                            itemCarts.Add(new ItemCartModel()
-                            {
-                                ItemKey = item.ItemKey,
-                                Description = item.Description,
-                                Quantity = it.Quantity,
-                                Size = it.Size,
-                                Price=item.Price
-                            });
-                        }   
                     }
                 }
             }

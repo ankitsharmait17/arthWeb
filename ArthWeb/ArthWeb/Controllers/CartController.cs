@@ -29,7 +29,7 @@ namespace ArthWeb.Controllers
                     Session["count"] = 0;
                     return RedirectToAction("Index", "Home");
                 }
-                items =new ItemBL().GetCartItems(li);
+                items =new ItemBL().GetCartItems(li,true);
                 if (items.Count != li.Count)
                 {
                     ViewBag.Error = "Some items had to be removed from your cart because they were low in stock.";
@@ -147,12 +147,13 @@ namespace ArthWeb.Controllers
             try
             {
                 decimal price = 0;
-                var items = new ItemBL().GetCartItems(li);
+                var items = new ItemBL().GetCartItems(li,false);
                 string name = new UserBL().GetUser(email).Name;
                 string body = "Hello " + name + ",";
                 body += "<br/><br/>Your order has been placed. You can check the order status from your profile.";
                 body += "<br /><br />Order Details:<br/>";
-                body += "<table><tr><th>Items</th><th>Size</th><th>Price</th>";
+                body += "<table border="+ 1 + " cellpadding=" + 1 + " cellspacing=" + 1 + " width = " + 400 + ">";
+                body += "<tr bgcolor='#4da6ff'><th>Items</th><th>Size</th><th>Price</th>";
                 foreach(var item in items)
                 {
                     body += "<tr>";
@@ -165,7 +166,7 @@ namespace ArthWeb.Controllers
                 body += "<tr><td></td><td>Total:</td><td>Rs." + price + "</td></tr>";
                 body += "</table>";
                 body += "<br/><br/>We will keep you informed about the order status.";
-                body += "<br/>Thanks";
+                body += "<br/><br/>Thanks";
                 string subject = "Arth support : Order placed.";
                 new MailHelperBL().SendEmail(email, name, body, subject);
             }

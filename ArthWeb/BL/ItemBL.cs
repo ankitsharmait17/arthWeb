@@ -17,9 +17,9 @@ namespace BL
             return new ItemDAO().GetItem(itemKey);
         }
 
-        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items)
+        public List<ItemCartModel> GetCartItems(List<ItemCartModel> items,bool sizeCheck)
         {
-            return new ItemDAO().GetCartItems(items);
+            return new ItemDAO().GetCartItems(items,sizeCheck);
         }
     }
 }

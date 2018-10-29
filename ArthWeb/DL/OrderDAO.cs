@@ -47,9 +47,10 @@ namespace DL
                             OrderID=addedOrder.OrderID
                         });
                         var it = cntx.Items.FirstOrDefault(x => x.ItemKey.Equals(item.ItemKey));
-                        if (it != null)
+                        var size = cntx.ItemSizes.FirstOrDefault(x => x.ItemSizeName.Equals(item.Size));
+                        if (it != null && size!=null)
                         {
-                            var quantity = cntx.ItemQuantities.FirstOrDefault(x => x.ItemID == it.ItemID);
+                            var quantity = cntx.ItemQuantities.FirstOrDefault(x => x.ItemID == it.ItemID && size.ItemSizeID==x.ItemSizeID);
                             if (quantity != null)
                             {
                                 try

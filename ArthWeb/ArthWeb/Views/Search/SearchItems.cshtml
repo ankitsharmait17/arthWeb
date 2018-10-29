@@ -221,9 +221,18 @@
 
 
 <script>
-    var search, pageSize, startRec, order,itemKey;
+    var search, pageSize, startRec, order,itemKey,price;
     search = "@ViewBag.searchString";
     pageSize = 10;
+
+    function GetPrice(num) {
+        var price=num.toLocaleString('en-IN', {
+            maximumFractionDigits: 2,
+            style: 'currency',
+            currency: 'INR'
+        });
+        return price;
+    }
 
     function isNumber(evt) {
         evt = (evt) ? evt : window.event;
@@ -253,7 +262,7 @@
             '<div class="card" >' +
             '<div class="card-image">' +
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
-            '<span class="card-title">Rs. ' + price + '</span>' +
+            '<span class="card-title">' + GetPrice(price) + '</span>' +
             '<span class="itemKeyspan">' + itemkey+'</span>'+
             '<a href="@Url.Action("ViewItem","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light btn-large red viewBtn"><i class="material-icons">zoom_in</i></a>' +
             '<button class="btn-floating halfway-fab waves-effect waves-light red addBtn btn-large"><i class="material-icons">add_shopping_cart</i></button>'+
@@ -421,6 +430,8 @@
 
     $(document).on('click', '.addBtn', function () {
         itemKey = $(this).closest('div').find('.itemKeyspan').text();
+        price = $(this).closest('div').find('.card-title').text();
+        price = parseFloat(price.replace("\u20b9", ''));
         GetSizes(itemKey);
     });
 
@@ -430,7 +441,7 @@
             showWarningAlert("Please select a size.");
             return false;
         }
-        AddToCart(itemKey, size);
+        AddToCart(itemKey, size,price);
     });
 
     function CreatePagination(length) {
@@ -503,14 +514,15 @@
         });
     }
 
-    function AddToCart(item,size) {
+    function AddToCart(item,size,price) {
         $.ajax({
             url: '@Url.Action("Add","Cart")',
             type: 'POST',
             data: {
                 ItemKey: item,
                 Quantity: 1,
-                Size: size
+                Size: size,
+                Price: price
             },
             success: function (res) {
                 if (res.Success) {
