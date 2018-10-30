@@ -72,7 +72,7 @@ namespace ArthWeb.Controllers
                 else
                 {
                     List<ItemCartModel> li = (List<ItemCartModel>)Session["cart"];
-                    var check=li.FirstOrDefault(x => x.ItemKey.Equals(item.ItemKey));
+                    var check=li.FirstOrDefault(x => x.ItemKey.Equals(item.ItemKey) && x.Size.Equals(item.Size));
                     if (check != null)
                         check.Quantity += item.Quantity;
                     else

@@ -32,20 +32,6 @@
 }
 
 <style>
-
-
-    .list-group-item {
-        border-left: 0;
-    }
-
-    .group-first {
-        border-top: 0;
-    }
-
-    .group-last {
-        border-bottom: 0;
-    }
-
     .grid-img {
         width: 250px!important;
         height: 400px!important;
@@ -55,21 +41,23 @@
         padding: 20px;
     }
 
-    .overlay {
-        display: none;
+    @@media (min-width: 768px) {
+        .addBtn {
+            display: none;
+        }
+
+        .viewBtn {
+            display: none;
+        }
+
+        .card-title {
+            display: none;
+        }
     }
 
-    .addBtn{
-        display:none;
-    }
+    
 
-    .viewBtn {
-        display: none;
-    }
 
-    .card-title {
-        display: none;
-    }
 
     .card-image:hover .card-title{
         display: block;
@@ -91,7 +79,7 @@
     .sidenav li {
         margin: 10px;
     }
-    
+
     .itemKeyspan{
         display:none;
     }
@@ -100,6 +88,10 @@
         width: 400px!important;
         height: 300px!important;
         overflow:visible;
+    }
+
+    .card{
+        padding:20px;
     }
 </style>
 
@@ -162,29 +154,30 @@
     </li>
 </ul>
 
-<div class="col l12">
+<div class="container-fluid">
     <div class="row">
-        <div class="col l8 left">
-            <div class="disabled" id="chips">
-
-            </div>
-        </div>
-        <div class="col l1">
-            <button class="btn waves-effect waves-light" id="clear" style="display:none">
-                Clear
-            </button>
-        </div>
-        <div class="col l1">
+        <div class="col s6 m6 l7">
             <a href="#" data-target="slide-out" class="btn sidenav-trigger transparent black-text">FILTERS</a>
         </div>
-        <div class="col l2">
+        <div class="col s6 m6 l3">
             <select id="order">
-                <option disabled selected>Sort By</option>
-                <option value="0">Price: High to Low</option>
-                <option value="1">Price: High to Low</option>
+                <option value="0" selected>Price: High to Low</option>
+                <option value="1">Price: Low to High</option>
                 <option value="2">Newest First</option>
                 <option value="3">Most Popular</option>
             </select>
+        </div>
+        <div class="col s6 m6 l2">
+            <button class="btn waves-effect waves-light" id="clear" style="display:none">
+                Clear Filters
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="disabled" id="chips">
+
+            </div>
         </div>
     </div>
 </div>
@@ -258,7 +251,7 @@
 
     function CreateItem(itemkey,price) {
         var container = $('.itemContainer>.row');
-        var markup = '<div class="col l3 img-div">' +
+        var markup = '<div class="col l3 m5 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
@@ -269,7 +262,7 @@
             '</div>' +
             '</div>' +
             '</div >' +
-            '<div class="col l1"></div>';
+            '<div class="col l1 m1"></div>';
         container.append(markup);
     }
 
@@ -526,7 +519,10 @@
             },
             success: function (res) {
                 if (res.Success) {
-                    $('#cartLink').find('.badge').text(res.data);
+                    //$('#cartLink').find('.badge').text(res.data);
+                    $('.cartLink').each(function () {
+                        $(this).find('.badge').text(res.data);
+                    });
                     $('#sizeModal').modal('close');
                     showSuccessAlert('Item added to cart.');
                 }

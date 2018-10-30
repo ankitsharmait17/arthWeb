@@ -62,7 +62,11 @@ namespace DL
                                 on itemMap.ItemTypeID equals type.ItemTypeID
                                 join subType in cntx.ItemSubTypes
                                 on itemMap.ItemSubTypeID equals subType.ItemSubTypeID
-                                select new { item, itemMap, type, subType});
+                                join qty in cntx.ItemQuantities
+                                on item.ItemID equals qty.ItemID where qty.Quantity>0
+                                join itemSize in cntx.ItemSizes
+                                on qty.ItemSizeID equals itemSize.ItemSizeID
+                                select new { item, itemMap, type, subType,qty,itemSize});
                     
 
                     if (!string.IsNullOrWhiteSpace(search))
@@ -110,12 +114,6 @@ namespace DL
 
                     if (!string.IsNullOrWhiteSpace(filterSize))
                     {
-                        var sizeCheck = (from joined in data
-                                         join qty in cntx.ItemQuantities
-                                         on joined.item.ItemID equals qty.ItemID
-                                         join itemSize in cntx.ItemSizes
-                                         on qty.ItemSizeID equals itemSize.ItemSizeID
-                                         select new { qty,itemSize });
                         filterSize = filterSize.Remove(filterSize.Length - 1);
                         var keywords = filterSize.Split('|');
                         string predicate = null;
@@ -125,46 +123,30 @@ namespace DL
                             predicate += "itemSize.ItemSizeName.Equals(@" + i + ") || ";
                         }
                         predicate += "itemSize.ItemSizeName.Equals(@" + i + ")";
-                        sizeCheck = sizeCheck.Where(predicate, keywords);
-                        var distinctitems = sizeCheck.AsEnumerable().Select(x => x.qty.ItemID).Distinct();
-                        data = (from joined in data
-                                join item in distinctitems
-                                on joined.item.ItemID equals item
-                                select new { joined.item,joined.itemMap,joined.type,joined.subType });
+                        data = data.Where(predicate, keywords);
                     }
 
+                    var grouped = data.GroupBy(x => new { x.item.ItemID, x.item.ItemKey, x.item.Price });
 
                     switch (order)
                     {
                         case "0":
-                            data = data.OrderByDescending(x => x.item.Price);
+                            grouped = grouped.OrderByDescending(x => x.Key.Price);
                             break;
                         case "1":
-                            data = data.OrderBy(x => x.item.Price);
-                            break;
-                        case "2":
-                            data = data.OrderBy(x => x.item.Description);
-                            break;
-                        case "3":
-                            data = data.OrderByDescending(x => x.item.DescriptionLong);
+                            grouped = grouped.OrderBy(x => x.Key.Price);
                             break;
                         default:
-                            data = data.OrderBy(x => x.item.ItemID);
+                            grouped = grouped.OrderBy(x => x.Key.ItemID);
                             break;
                     }
 
-                    data = data.Skip(startRec).Take(pageSize);
-                    itemList = data.AsEnumerable()
-                                .Select(x => new ItemModel()
+                    grouped = grouped.Skip(startRec).Take(pageSize);
+                    itemList = grouped.Select(x => new ItemModel()
                                 {
-                                    ItemID = x.item.ItemID,
-                                    ItemKey = x.item.ItemKey,
-                                    Description = x.item.Description,
-                                    DescriptionLong = x.item.DescriptionLong,
-                                    Gender = x.itemMap.Gender,
-                                    ItemSubType = x.subType.ItemSubTypeKey,
-                                    ItemType = x.type.ItemTypeKey,
-                                    Price = x.item.Price
+                                    ItemID = x.Key.ItemID,
+                                    ItemKey = x.Key.ItemKey,
+                                    Price = x.Key.Price
                                 }).ToList();
                 }
             }

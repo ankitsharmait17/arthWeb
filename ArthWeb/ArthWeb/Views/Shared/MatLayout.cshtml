@@ -13,6 +13,7 @@
         flex: 1 0 auto;
         margin:10px;
     }
+    
 
     
 </style>
@@ -45,7 +46,7 @@
                         <li><a href="#">Women</a></li>
                         <li><a href="#">Accessories</a></li>
                         <li>
-                            <form id="searchForm" action="@Url.Action("SearchItems","Search")">
+                            <form class="searchForm" action="@Url.Action("SearchItems","Search")">
                                 <div class="input-field">
                                     <input id="search" type="search" name="search" required>
                                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -54,7 +55,7 @@
                             </form>
                         </li>
                         <li>
-                            <a href="#" id="cartLink">
+                            <a href="#" class="cartLink">
                                 <span class="new badge white black-text" data-badge-caption="Item/s">@count</span>
                                 <i class="fab fa-shopping-cart white-text"></i>&nbsp;&nbsp;
                                 Cart
@@ -75,7 +76,7 @@
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                            <li>@Html.ActionLink("Sign in/Sign up", "Login", "Account")</li>
                         }
                     </ul>
                 </div>
@@ -83,9 +84,39 @@
         </div>
 
         <ul class="sidenav" id="mobile-demo">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li><a href="@Url.Action("Profile","Account")" class="grey-text text-darken-1"><i class="material-icons">face</i>Profile</a></li>
+            }
+            else
+            {
+                <li>@Html.ActionLink("Sign in/Sign up", "Login", "Account")</li>
+            }
+            <li>
+                <a href="#" class="cartLink">
+                    <span class="new badge white-text black" data-badge-caption="Item/s">@count</span>
+                    <i class="fab fa-shopping-cart fa-lg"></i>
+                    Cart
+                </a>
+            </li>
             <li><a href="#">Men</a></li>
             <li><a href="#">Women</a></li>
             <li><a href="#">Accessories</a></li>
+            <li>
+                <div class="row valign-wrapper">
+                    <div class="input-field col s10">
+                        <i class="material-icons prefix">search</i>
+                        <input placeholder="Search..." id="searchbar" type="text">
+                    </div>
+                    <div class="col s2">
+                        <button class="btn btn-flat" id="searchbarBtn"><i class="fa fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+            </li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li><a href="@Url.Action("LogOut", "Account")" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+            }
         </ul>
     </header>
     <!-- Navbar End-->
@@ -142,7 +173,7 @@
     <script>
         $(document).ready(function () {
             //$('.carousel').carousel();\
-            $(".dropdown-trigger").dropdown({ hover: true, coverTrigger: false, constrainWidth: false });
+            $(".dropdown-trigger").dropdown({coverTrigger: false, constrainWidth: false });
             $('.sidenav').sidenav();
             //M.AutoInit();
         });
@@ -153,7 +184,7 @@
             location.href = "@Url.Action("SearchItems","Search")" + "?search=" + term;
         });
 
-        $('#cartLink').on('click', function () {
+        $('.cartLink').on('click', function () {
             if ($(this).find('.badge').text() == "0") {
                 return false;
             }
@@ -174,6 +205,21 @@
             var markup = "<i class='fa fa-exclamation-triangle'></i>&nbsp;<span>" + message + "</span>";
             M.toast({ html: markup, classes: 'rounded' });
         }
+
+        $('#searchbarBtn').on('click', function () {
+            var text = $('#searchbar').val();
+            if (text == null || text.length == 0) {
+                return false;
+            }
+            location.href = "@Url.Action("SearchItems","Search")" + "?search=" + text;
+        });
+
+        $("#searchbar").on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                $('#searchbarBtn').trigger('click');
+            }
+        });
+
     </script>
 </body>
 </html>
