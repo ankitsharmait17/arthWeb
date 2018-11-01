@@ -23,7 +23,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col s7">
+        <div class="col l8 m12 s12">
             <ul class="collection with-header">
                 <li class="collection-header"><h6>MY CART</h6></li>
                 @foreach (ItemCartModel item in Model)
@@ -42,28 +42,9 @@
                     </li>
                     price += item.Price * item.Quantity;
                 }
-                <li class="collection-item">
-                    <p style="float:left">
-                        <a href="@Url.Action("Index","Home")" class="btn btn-flat waves-effect">KEEP SHOPPING</a>
-                        <button class="btn btn-primary waves-effect" id="placeOrder">PLACE ORDER</button>
-                    </p>
-                </li>
             </ul>
-            <div class="col s3">
-                <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
-            </div>
-            <div class="input-field col s9">
-                @*<p id="addressP" class="flow-text" style="width:50%;border: 1px solid black;">
-
-                </p>*@
-                
-                    <textarea id="addressP" class="materialize-textarea" disabled></textarea>
-                    
-                </div>
-            
-
         </div>
-        <div class="col s5">
+        <div class="col l4 m12 s12">
             <ul class="collection with-header">
                 <li class="collection-header"><h6>PRICE DETAILS</h6></li>
                 <li class="collection-item">
@@ -95,19 +76,47 @@
                     </div>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l8 m12 s12">
+                <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
+                <textarea id="addressP" class="materialize-textarea" disabled></textarea>
+        </div>
+        <div class="col l4 m12 s12">
             <blockquote>
                 Currently we are taking orders for Cash on Delivery Only.
                 Online Payment coming soon.
             </blockquote>
         </div>
     </div>
+    <div class="row">
+        <div class="col s12">
+            <p>
+                <a href="@Url.Action("Index","Home")" class="btn btn-flat waves-effect">KEEP SHOPPING</a>
+                <button class="btn btn-primary waves-effect" id="placeOrder">PLACE ORDER</button>
+            </p>
+        </div>
+    </div>
 </div>
 
-<div id="selectModal" class="modal modal-lg">
+<div id="selectModal" class="modal bottom-sheet modal-fixed-footer">
     <div class="modal-content">
         <h5 class="modal-title">Select Address</h5><br />
         <div class="row">
-            @Html.DropDownList("address",addressList, new {@class= "input-field" })
+            <ul class="collection">
+                
+                @*Html.DropDownList("address",addressList, new {@class= "input-field" })*@
+                @foreach (SelectListItem item in addressList)
+                {
+                    <li class="collection-item">
+                    <label>
+                        <input type="radio" name="address" value="@item.Value" />
+                        <span>@item.Text</span>
+                    </label>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
     <div class="modal-footer">
@@ -125,7 +134,8 @@
     
 
     $('#selBtn').on('click', function () {
-        var add = $('#address').val();
+        //var add = $('#address').val();
+        var add = $("input[name=address]:checked").val();
         if (add.length == 0) {
             alert("Select an address");
             return false;
@@ -133,7 +143,7 @@
         aID = add;
         showSuccessAlert("Address selected");
         //var markup = "<b>Address:</b><br/>";
-        var markup= $('#address').find(":selected").text()
+        var markup = $('input[name=address]:checked').closest('label').find('span').text();
         //$('#addressP').html(markup);
         $('#addressP').val(markup);
         $('#selectModal').modal('close');
