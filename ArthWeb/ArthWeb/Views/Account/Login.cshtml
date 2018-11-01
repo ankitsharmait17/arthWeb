@@ -4,40 +4,47 @@
     ViewBag.Title = "Log in";
     Layout = "~/Views/Shared/MatLayout.cshtml";
 }
-
-
-<h2>@ViewBag.Title.</h2>
 <div class="container-fluid">
     <div class="row">
-        <div class="col s8 center">
-            
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,new {onsubmit="return validate();" }))
-                {
-                    @Html.AntiForgeryToken()
-            <div class="input-field">
-                @Html.TextBoxFor(m => m.UserName, new { @required = "required",@id="uname",@maxlength= "254",@type="email",@class="validate" })
-                @Html.LabelFor(m => m.UserName)
+        <div class="col l4 s1 m2"></div>
+        <div class="col l4 s10 m8">
+            <div class="card">
+                <div class="card-image">
+                    <img src="https://www.tate.org.uk/art/images/work/N/N04/N04948_10.jpg">
+                    <span class="card-title">Sign in/Sign up</span>
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s12">
+                            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { onsubmit = "return validate();" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="input-field">
+                                    @Html.TextBoxFor(m => m.UserName, new { @required = "required", @id = "uname", @maxlength = "254", @type = "email", @class = "validate" })
+                                    @Html.LabelFor(m => m.UserName)
+                                </div>
+                                <div class="input-field">
+                                    @Html.PasswordFor(m => m.Password, new { @required = "required", @id = "pass", @class = "validate" })
+                                    @Html.LabelFor(m => m.Password)
+                                </div>
+                                <input type="submit" value="Sign in" class="btn" />
+
+                            }
+                        </div>
+                    </div>
+
+                    <p>
+                        @Html.ActionLink("Register as a new user", "Register", "Account")
+                    </p>
+                    <p>
+                        @Html.ActionLink("Forgot Password", "ForgotPassword", "Account")
+                    </p>
+                </div>
             </div>
-            <div class="input-field">
-                @Html.PasswordFor(m => m.Password, new { @required = "required",@id="pass" ,@class="validate"})
-                @Html.LabelFor(m => m.Password)
-            </div>
-                <input type="submit" value="Log in" class="btn" />
-                   
-                }
-            
-        </div>
-        <div class="col s4 center">
-            <p>
-                @Html.ActionLink("Register as a new user", "Register", "Account")
-            </p>
-            <p>
-                @Html.ActionLink("Forgot Password", "ForgotPassword", "Account")
-            </p>
+        </div> 
+        <div class="col l4 s1 m2"></div>
         </div>
     </div>
-</div>
-
 <script>
     function validate() {
         var uname = $('#uname').val();
