@@ -11,7 +11,7 @@
         margin: 2px;
     }
 
-    .s3 {
+    .l3 {
         margin: 10px !important;
     }
 </style>
@@ -70,30 +70,32 @@
         <div id="panelDiv">
             @foreach (var add in @Model.Addresses)
             {
-                <div class="card-panel col s3" id="addDiv-@add.AddressID">
-                    <div class="col s10">
-                        <p><span class="name">@add.Name</span></p>
-                        <p><span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
-                        @if (add.Landmark != null)
-                        {<p><span class="landmark">@add.Landmark</span></p>}
-                        <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
-                        @if (add.AltPhone != null)
-                        {
-                            <p><b>Alternate Phone:</b> <span class="altphn">@add.AltPhone</span></p>
-                        }
-                        <span class="addressID" style="display:none">@add.AddressID</span>
-                        <span class="addressType" style="display:none">@add.Type</span>
-                    </div>
-                    <div class="col s1"></div>
-                    <div class="col s1">
-                        <button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>
-                        <button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>
+                <div class="card-panel col l3 m5" id="addDiv-@add.AddressID">
+                    <div class="row">
+                        <div class="col m10 l10">
+                            <p><span class="name">@add.Name</span></p>
+                            <p><span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
+                            @if (add.Landmark != null)
+                            {<p><span class="landmark">@add.Landmark</span></p>}
+                            <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
+                            @if (add.AltPhone != null)
+                            {
+                                <p><b>Alternate Phone:</b> <span class="altphn">@add.AltPhone</span></p>
+                            }
+                            <span class="addressID" style="display:none">@add.AddressID</span>
+                            <span class="addressType" style="display:none">@add.Type</span>
+                        </div>
+                        <div class="col m1 l1"></div>
+                        <div class="col m1 l1">
+                            <button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>
+                            <button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>
+                        </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-    <div id="orders" class="col s12">
+    <div id="orders" class="col s12 m12 l12">
         <ul class="collapsible">
             @foreach(var order in Model.Orders)
             {
@@ -115,11 +117,11 @@
                             price += orderdetail.PricePerItem * orderdetail.Quantity;
                         }
                     </ul>
-                    <p class="left">
+                    <p class="left-align">
                         <b>Order Date</b>: @order.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
                         <b>Status</b>: @order.Status
                     </p>
-                    <p class="right">Order Total: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
+                    <p class="right-align"><b>Order Total</b>: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
                 </div>
             </li>
             }
@@ -133,7 +135,7 @@
         <h5 class="modal-title">Add Address</h5><br />
         <input id="addID" type="text" style="display:none" />
         <div class="row">
-            <div class="col s4">
+            <div class="col l6 m6 s12">
                 <label>
                     <input name="addType" value="Home" type="radio" id="Home" checked />
                     <span>Home</span>
@@ -145,39 +147,39 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s4 input-field">
+            <div class="col l4 m4 s12 input-field">
                 <label for="addName">Name</label>
                 <input required="required" maxlength="50" type="text" id="addName" placeholder="Required" />
             </div>
-            <div class="col s4 input-field">
+            <div class="col l4 m4 s12 input-field">
                 <label for="addPhone">Phone</label>
                 <input required="required" maxlength="10" type="text" id="addPhone" placeholder="Required" onkeypress="return isNumber(event)" />
             </div>
         </div>
         <div class="row">
-            <div class="col s4 input-field">
+            <div class="col l4 m12 s12 input-field">
                 <textarea id="addDet" class="materialize-textarea" placeholder="Required"></textarea>
                 <label for="addDet">Address</label>
             </div>
-            <div class="col s4 input-field">
+            <div class="col l4 m6 s6 input-field">
                 <label for="addCity">City</label>
                 <input required="required" maxlength="50" type="text" id="addCity" placeholder="Required" />
             </div>
-            <div class="col s4 input-field">
+            <div class="col l4 m6 s6 input-field">
                 <label for="addState">State</label>
                 <input required="required" maxlength="50" type="text" id="addState" placeholder="Required" />
             </div>
         </div>
         <div class="row">
-            <div class="col s4 input-field">
+            <div class="col l4 m6 s6 input-field">
                 <label for="addPin">Pin</label>
                 <input required="required" maxlength="10" type="text" id="addPin" placeholder="Required" />
             </div>
-            <div class="col s4 input-field">
+            <div class="col l4 m6 s6 input-field">
                 <label for="addLandmark">Landmark</label>
                 <input maxlength="50" type="text" id="addLandmark" placeholder="Optional" />
             </div>
-            <div class="col s4 input-field">
+            <div class="col l4 m6 s6 input-field">
                 <label for="addAltphone">Alternate Phone</label>
                 <input maxlength="10" type="text" id="addAltphone" placeholder="Optional" />
             </div>
@@ -293,8 +295,8 @@
     }
 
     function Addrow(add, id) {
-        var markup = '<div class="card-panel col s3" id="addDiv-' + id + '">';
-        markup += '<div class="col s10">';
+        var markup = '<div class="card-panel col l3 m5" id="addDiv-' + id + '">';
+        markup += '<div class="col m10 l10">';
         markup += '<p><span class="name">' + add.Name + '</span></p>';
         markup += '<p><span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
         if (add.Landmark.length != 0) {
@@ -306,8 +308,8 @@
         }
         markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">' + add.Type + '</span>';
         markup += '</div>';
-        markup += '<div class="col s1"></div>';
-        markup += '<div class="col s1">';
+        markup += '<div class="col m1 l1"></div>';
+        markup += '<div class="col m1 l1">';
         markup += '<button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>';
         markup += '<button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>';
         markup += '</div>';
@@ -417,6 +419,7 @@
                 if (res.Success) {
                     showSuccessAlert(res.Message);
                     Addrow(obj, res.data);
+                    $('#addModal').modal('close');
                 }
                 else {
                     showErrorAlert(res.Message);
@@ -435,6 +438,7 @@
                     showSuccessAlert(res.Message);
                     $('#addDiv-' + obj.AddressID).remove();
                     Addrow(obj, obj.AddressID);
+                    $('#addModal').modal('close');
                 }
                 else {
                     showErrorAlert(res.Message);
@@ -472,6 +476,7 @@
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
+                    $('#pwdModal').modal('close');
                 }
                 else {
                     showErrorAlert(res.Message);

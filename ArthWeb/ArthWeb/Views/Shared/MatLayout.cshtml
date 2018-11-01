@@ -192,17 +192,17 @@
         });
 
         function showSuccessAlert(message) {
-            var markup = "<i class='fa fa-check'></i>&nbsp;<span>" + message + "</span>";
+            var markup = "<span>" + message + "</span><i class='fa fa-check'></i>";
             M.toast({ html: markup,classes:'rounded' });
         }
 
         function showErrorAlert(message) {
-            var markup = "<i class='fa fa-times'></i>&nbsp;<span>" + message + "</span>";
+            var markup = "<span>" + message + "</span><i class='fa fa-times'></i>";
             M.toast({ html: markup, classes: 'rounded' });
         }
 
         function showWarningAlert(message) {
-            var markup = "<i class='fa fa-exclamation-triangle'></i>&nbsp;<span>" + message + "</span>";
+            var markup = "<span>" + message + "</span><i class='fa fa-exclamation-triangle'></i>";
             M.toast({ html: markup, classes: 'rounded' });
         }
 
