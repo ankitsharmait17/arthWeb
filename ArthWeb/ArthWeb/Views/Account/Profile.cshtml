@@ -14,6 +14,15 @@
     .l3 {
         margin: 10px !important;
     }
+
+    .tabs .indicator{
+        background-color:grey!important;
+    }
+
+    .tabs .active{
+        background-color:white!important;
+    }
+     
 </style>
 <div class="row">
     <div class="col s12 m8 offset-m2 l6 offset-l3">
@@ -34,10 +43,10 @@
 <div class="row">
 
     <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#account">Account</a></li>
-            <li class="tab col s3"><a href="#address">Addresses</a></li>
-            <li class="tab col s3"><a href="#orders">Orders</a></li>
+        <ul class="tabs white">
+            <li class="tab col s3"><a class="active black-text" href="#account">Account</a></li>
+            <li class="tab col s3"><a href="#address" class="black-text">Addresses</a></li>
+            <li class="tab col s3"><a href="#orders" class="black-text">Orders</a></li>
         </ul>
     </div>
     <div id="account" class="col s12">
@@ -68,31 +77,34 @@
             <button class="waves-effect waves-light btn" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
         </div>
         <div id="panelDiv">
-            @foreach (var add in @Model.Addresses)
-            {
-                <div class="card-panel col l3 m5" id="addDiv-@add.AddressID">
-                    <div class="row">
-                        <div class="col m10 l10">
-                            <p><span class="name">@add.Name</span></p>
-                            <p><span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
-                            @if (add.Landmark != null)
-                            {<p><span class="landmark">@add.Landmark</span></p>}
-                            <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
-                            @if (add.AltPhone != null)
-                            {
-                                <p><b>Alternate Phone:</b> <span class="altphn">@add.AltPhone</span></p>
-                            }
-                            <span class="addressID" style="display:none">@add.AddressID</span>
-                            <span class="addressType" style="display:none">@add.Type</span>
+            <div class="row">
+                @foreach (var add in @Model.Addresses)
+                {
+                    <div class="card-panel col l3 m5 s11" id="addDiv-@add.AddressID">
+                        <div class="row">
+                            <div class="col m12 l12 s12">
+                                <p><span class="name"><b>@add.Name</b></span></p>
+                                <p><span class="address">@add.AddressDetail</span>,<span class="city">@add.City</span>,<span class="state">@add.State</span> - <span class="pin">@add.Pin</span></p>
+                                @if (add.Landmark != null)
+                                {<p><span class="landmark">@add.Landmark</span></p>}
+                                <p><b>Phone:</b> <span class="phn">@add.Phone</span></p>
+                                @if (add.AltPhone != null)
+                                {
+                                    <p><b>Alternate Phone:</b> <span class="altphn">@add.AltPhone</span></p>
+                                }
+                                <span class="addressID" style="display:none">@add.AddressID</span>
+                                <span class="addressType" style="display:none">@add.Type</span>
+                            </div>
                         </div>
-                        <div class="col m1 l1"></div>
-                        <div class="col m1 l1">
-                            <button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>
-                            <button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>
+                                <button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
     <div id="orders" class="col s12 m12 l12">
@@ -297,7 +309,7 @@
     function Addrow(add, id) {
         var markup = '<div class="card-panel col l3 m5" id="addDiv-' + id + '">';
         markup += '<div class="col m10 l10">';
-        markup += '<p><span class="name">' + add.Name + '</span></p>';
+        markup += '<p><span class="name"><b>' + add.Name + '</b></span></p>';
         markup += '<p><span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
         if (add.Landmark.length != 0) {
             markup += '<p><span class="landmark">' + add.Landmark + '</span></p>';
