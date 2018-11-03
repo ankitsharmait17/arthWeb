@@ -80,11 +80,15 @@
                 Name: fname,
                 Phone: $('#phone').val()
             },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert("Registered Successfully.");
                     location.href = '@Url.Action("Login","Account")';
                 }
+                hideSpinner();
             }
         })
 

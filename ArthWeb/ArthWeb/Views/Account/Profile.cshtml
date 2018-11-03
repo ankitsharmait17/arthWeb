@@ -264,10 +264,14 @@
                 Name: fname,
                 Phone: $('#phone').val()
             },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert("Details Updated.");
                 }
+                hideSpinner();
             }
         })
 
@@ -307,8 +311,9 @@
     }
 
     function Addrow(add, id) {
-        var markup = '<div class="card-panel col l3 m5" id="addDiv-' + id + '">';
-        markup += '<div class="col m10 l10">';
+        var markup = '<div class="card-panel col l3 m5 s11" id="addDiv-' + id + '">';
+        markup += '<div class="row">';
+        markup += '<div class="col m12 l12 s12">';
         markup += '<p><span class="name"><b>' + add.Name + '</b></span></p>';
         markup += '<p><span class="address">' + add.AddressDetail + '</span>,<span class="city">' + add.City + '</span>,<span class="state">' + add.State + '</span>-<span class="pin">' + add.Pin + '</span></p>';
         if (add.Landmark.length != 0) {
@@ -319,14 +324,15 @@
             markup += '<p><b>Alternate Phone:</b><span class="altphn">' + add.AltPhone + '</span></p>';
         }
         markup += '<span class="addressID" style="display:none">' + id + '</span><span class="addressType" style="display:none">' + add.Type + '</span>';
-        markup += '</div>';
-        markup += '<div class="col m1 l1"></div>';
-        markup += '<div class="col m1 l1">';
+        markup += '</div></div>';
+        markup += '<div class="row">';
+        markup += '<div class="col s12 m12 l12">';
         markup += '<button class="btn-flat waves-effect deleteLink right"><i class="material-icons">close</i></button>';
         markup += '<button class="btn-flat waves-effect editLink right"><i class="material-icons">create</i></button>';
         markup += '</div>';
         markup += '</div>';
-        $('#panelDiv').append(markup);
+        markup += '</div>';
+        $('#panelDiv>.row').append(markup);
     }
 
     $('#addBtn').on('click', function () {
@@ -427,6 +433,9 @@
             url: '/Account/AddAddress',
             type: 'POST',
             data: obj,
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
@@ -436,6 +445,7 @@
                 else {
                     showErrorAlert(res.Message);
                 }
+                hideSpinner();
             }
         });
     }
@@ -445,6 +455,9 @@
             url: '/Account/UpdateAddress',
             type: 'POST',
             data: obj,
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
@@ -455,6 +468,7 @@
                 else {
                     showErrorAlert(res.Message);
                 }
+                hideSpinner();
             }
         });
     }
@@ -464,6 +478,9 @@
             url: '/Account/DeleteAddress',
             type: 'POST',
             data: { id: id },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
@@ -472,6 +489,7 @@
                 else {
                     showErrorAlert(res.Message);
                 }
+                hideSpinner();
             }
         });
     }
@@ -485,6 +503,9 @@
             url: '@Url.Action("ChangePassword","Account")',
             type: 'POST',
             data: postdata,
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
@@ -493,6 +514,7 @@
                 else {
                     showErrorAlert(res.Message);
                 }
+                hideSpinner();
             }
         });
     }

@@ -171,6 +171,9 @@
             url: '@Url.Action("Remove", "Cart")',
             type: "POST",
             data: { itemKey: item },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.success) {
                     showSuccessAlert("Item removed from cart.");
@@ -185,9 +188,13 @@
             url: '@Url.Action("PlaceOrder","Cart")',
             type: "POST",
             data: { id: id },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     showSuccessAlert(res.Message);
+                    hideSpinner();
                     var param = res.data["OrderID"];
                     location.href = '@Url.Action("ViewOrder","Account")?orderID=' + param;
                 }

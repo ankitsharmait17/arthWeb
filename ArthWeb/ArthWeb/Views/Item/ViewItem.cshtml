@@ -126,6 +126,9 @@
                 Size: size,
                 Price: price
             },
+            beforeSend: function () {
+                showSpinner();
+            },
             success: function (res) {
                 if (res.Success) {
                     $('#cartLink').find('.badge').text(res.data);
@@ -135,6 +138,7 @@
                 else {
                     showErrorAlert("Item couldn't be added to cart.Please try again.");
                 }
+                hideSpinner();
             }
         });
     }
