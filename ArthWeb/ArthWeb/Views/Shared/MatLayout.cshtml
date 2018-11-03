@@ -45,9 +45,7 @@
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/Content/materialize.min.css" rel="stylesheet" />
-    @*<link href="~/Content/all.css" rel="stylesheet" />*@
     <link href="~/Content/font-awesome/font-awesome.min.css" rel="stylesheet" />
-    @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">*@
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     <script src="~/Scripts/materialize.min.js"></script>
     <script src="~/Scripts/jquery.elevateZoom-3.0.8.min.js"></script>
@@ -66,7 +64,7 @@
                     <a href="@Url.Action("Index","Home")" class="brand-logo">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="#">Men</a></li>
+                        <li><a href="#" class="dropdown-trigger" data-target="men-dd">Men</a></li>
                         <li><a href="#">Women</a></li>
                         <li><a href="#">Accessories</a></li>
                         <li>
@@ -142,6 +140,28 @@
                 <li><a href="@Url.Action("LogOut", "Account")" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
             }
         </ul>
+
+        <div id="men-dd" class="dropdown-content">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="col s6">
+                        <ul>
+                            <li><a href="#">Item1</a></li>
+                            <li><a href="#">Item1</a></li>
+                            <li><a href="#">Item1</a></li>
+                        </ul>
+                    </div>
+                    <div class="col s6">
+                        <ul>
+                            <li><a href="#">Item1</a></li>
+                            <li><a href="#">Item1</a></li>
+                            <li><a href="#">Item1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </header>
     <!-- Navbar End-->
     <main>

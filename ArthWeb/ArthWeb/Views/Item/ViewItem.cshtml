@@ -106,7 +106,6 @@
 
     $(document).ready(function () {
         $('.materialboxed').materialbox();
-        $('.big_img').elevateZoom();
         $('select').formSelect();
         $('#price').append(GetPrice("@Model.Price"));
         $('.carousel').carousel({
@@ -115,14 +114,7 @@
             padding: 20
         });
     });
-
-    $('.small_img').on('click',function(){
-        $("#big_img_div img:last-child").remove()
-        var src = $(this).attr("src");
-        $('#big_img_div').append("<img src='" + src + "' class='big_img img-thumbnail responsive-img card' data-zoom-image='"+src+"' />");
-        $('.big_img').elevateZoom();
-    });
-
+    
     $('#addBtn').on('click', function () {
         var size = $('#sizes').val();
         if (size == null || size.length == 0) {
