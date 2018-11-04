@@ -212,39 +212,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\138.gif" />
-    <Content Include="Content\all.css" />
-    <Content Include="Content\all.min.css" />
     <Content Include="Content\beautiful-bloom-blooming-658687.jpg" />
     <Content Include="Content\beauty-bloom-blue-67636.jpg" />
     <Content Include="Content\bloom-blossom-flora-35807.jpg" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\brands.css" />
-    <Content Include="Content\brands.min.css" />
     <Content Include="Content\dewdrops-flora-flower-56866.jpg" />
     <Content Include="Content\font-awesome\font-awesome.css" />
     <Content Include="Content\font-awesome\font-awesome.min.css" />
     <Content Include="Content\font-awesome\font-awesome.svg" />
-    <Content Include="Content\fontawesome.css" />
-    <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\materialize.css" />
     <Content Include="Content\materialize.min.css" />
-    <Content Include="Content\regular.css" />
-    <Content Include="Content\regular.min.css" />
-    <Content Include="Content\solid.css" />
-    <Content Include="Content\solid.min.css" />
-    <Content Include="Content\svg-with-js.css" />
-    <Content Include="Content\svg-with-js.min.css" />
-    <Content Include="Content\v4-shims.css" />
-    <Content Include="Content\v4-shims.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -258,7 +237,6 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.elevateZoom-3.0.8.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -303,10 +281,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
