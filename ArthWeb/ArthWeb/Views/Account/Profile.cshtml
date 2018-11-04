@@ -116,16 +116,16 @@
                 <div class="collapsible-header">Order#: @order.OrderID</div>
                 <div class="collapsible-body">
                     <ul class="collection">
-                        @foreach(var orderdetail in order.OrderDetails)
+                        @foreach (var orderdetail in order.OrderDetails)
                         {
-                        <li class="collection-item avatar">
-                            <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
-                            <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@orderdetail.ItemKey">@orderdetail.ItemDesc</a></span>
-                            <p>
-                                <b>Size</b>: @orderdetail.Size<br>
-                                <b>Quantity</b>: @orderdetail.Quantity
-                            </p>
-                        </li>
+                            <li class="collection-item avatar">
+                                <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
+                                <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@orderdetail.ItemKey">@orderdetail.ItemDesc</a></span>
+                                <p>
+                                    <b>Size</b>: @orderdetail.Size<br>
+                                    <b>Quantity</b>: @orderdetail.Quantity
+                                </p>
+                            </li>
                             price += orderdetail.PricePerItem * orderdetail.Quantity;
                         }
                     </ul>
@@ -133,7 +133,16 @@
                         <b>Order Date</b>: @order.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
                         <b>Status</b>: @order.Status
                     </p>
+
                     <p class="right-align"><b>Order Total</b>: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
+                    @if (order.Status.Equals("Placed") || order.Status.Equals("Packed"))
+                    {
+                        <p class="left-align"><button class="btn btn-primary cancelOrder" id="@order.OrderID">Cancel Order</button></p>
+                    }
+                    else if (order.Status.Equals("Delivered"))
+                    {
+                        <p class="left-align"><button class="btn btn-primary returnOrder" id="@order.OrderID">Return</button></p>
+                    }
                 </div>
             </li>
             }
@@ -425,7 +434,16 @@
 
     $('.deleteLink').on('click', function () {
         var addressID = $(this).closest('.card-panel').find('.addressID').text();
-        DeleteAddress(addressID);
+        alertify.confirm("Delete Address", "Are you sure?", function () {
+            DeleteAddress(addressID);
+        }, function () { });
+    });
+
+    $('.cancelOrder').on('click', function () {
+        var id = $(this).attr('id');
+        alertify.confirm("Order Cancellation", "Are you sure?", function () {
+            CancelOrder(id);
+        }, function () { });
     });
 
     function AddAddress(obj) {
@@ -510,6 +528,27 @@
                 if (res.Success) {
                     showSuccessAlert(res.Message);
                     $('#pwdModal').modal('close');
+                }
+                else {
+                    showErrorAlert(res.Message);
+                }
+                hideSpinner();
+            }
+        });
+    }
+
+    function CancelOrder(id) {
+        $.ajax({
+            url: '@Url.Action("CancelOrder", "Account")',
+            type: 'POST',
+            data: { id:id },
+            beforeSend: function () {
+                showSpinner();
+            },
+            success: function (res) {
+                if (res.Success) {
+                    showSuccessAlert(res.Message);
+                    location.reload();
                 }
                 else {
                     showErrorAlert(res.Message);

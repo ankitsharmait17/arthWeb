@@ -176,5 +176,26 @@ namespace DL
             }
             return order;
         }
+
+        public bool CancelOrder(int orderID,int userID)
+        {
+            bool isSuccess = false;
+            try
+            {
+                using (ArthModel cntx = new ArthModel())
+                {
+                    var order = cntx.Orders.FirstOrDefault(x => x.OrderID == orderID && x.UserID == userID);
+                    if (order == null)
+                        return false;
+                    order.Status = "Cancelled";
+                    isSuccess=cntx.SaveChanges()>0;
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return isSuccess;
+        }
     }
 }

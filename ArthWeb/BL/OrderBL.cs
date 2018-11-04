@@ -32,5 +32,10 @@ namespace BL
             }
             return order;
         }
+
+        public bool CancelOrder(int orderID,int userID)
+        {
+            return new OrderDAO().CancelOrder(orderID, userID);
+        }
     }
 }

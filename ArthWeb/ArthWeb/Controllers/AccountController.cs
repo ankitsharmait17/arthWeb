@@ -428,5 +428,23 @@ namespace ArthWeb.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        public ActionResult CancelOrder(int id)
+        {
+            try
+            {
+                int userID = new UserBL().GetUser(User.Identity.Name).UserID;
+                var status = new OrderBL().CancelOrder(id, userID);
+                if (status)
+                    return Json(new { Success = true, Message = "Order has been cancelled." });
+                else
+                    return Json(new { Success = false, Message = "Order could not be cancelled." });
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+        }
     }
 }
