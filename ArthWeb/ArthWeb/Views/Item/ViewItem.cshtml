@@ -34,10 +34,6 @@
 
 
 <div class="container-fluid">
-    <div class="row center-align">
-        <h2>@Model.Description</h2>
-    </div>
-    <br>
     <div class="row">
         <div class="col l6 m6 s12">
             <div class="row">
@@ -64,15 +60,24 @@
             <div class="card-panel">
                 <div class="row">
                     <div class="col l12 s12 m12">
-                        <p><u><b>Description:</b></u></p>
-                        <p>
-                            @Model.Description &nbsp;&nbsp;  @Model.DescriptionLong
-                        </p>
+                        <ul class="collection with-header">
+                            <li class="collection-header">
+                                <h4>Description</h4>
+                            </li>
+                            <li class="collection-item">
+                                <p>
+                                    @Model.Description
+                                </p>
+                                <p>
+                                    @Model.DescriptionLong
+                                </p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col l12 s12 m12">
-                        <span id="price">
+                        <span id="price" style="font-size:40px">
                             &#8377;
 
                         </span>
