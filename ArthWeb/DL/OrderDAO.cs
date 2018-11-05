@@ -29,10 +29,19 @@ namespace DL
                     var addedOrder = cntx.Orders.Add(new Order()
                     {
                         UserID = user.UserID,
-                        AddressID = addressID,
                         OrderDate = DateTime.UtcNow,
                         Delivered = false,
-                        Status="Placed"
+                        Status = "Placed",
+                        Name = address.Name,
+                        AddressDetail = address.AddressDetail,
+                        AltPhone = address.AltPhone,
+                        City = address.City,
+                        Landmark = address.Landmark,
+                        Phone = address.Phone,
+                        Pin = address.Pin,
+                        State = address.State,
+                        Type = address.Type,
+                        OrderDeliveryDate = DateTime.UtcNow.AddDays(5)
                     });
                     cntx.SaveChanges();
                     exList.Add("OrderID", addedOrder.OrderID.ToString());
@@ -88,26 +97,23 @@ namespace DL
                 {
                     var data = (from ord in cntx.Orders
                                 where ord.UserID == userID
-                                join add in cntx.Addresses
-                                on ord.AddressID equals add.AddressID
                                 join usr in cntx.Users
                                 on ord.UserID equals usr.UserID
-                                select new { ord, add, usr }).AsEnumerable()
+                                select new { ord, usr }).AsEnumerable()
                               .Select(x => new OrderModel()
                               {
                                   Address = new Address()
                                   {
-                                      AddressID = x.add.AddressID,
-                                      AddressDetail = x.add.AddressDetail,
-                                      AltPhone = x.add.AltPhone,
-                                      City = x.add.City,
-                                      Landmark = x.add.Landmark,
-                                      Name = x.add.Name,
-                                      Phone = x.add.Phone,
-                                      Pin = x.add.Pin,
-                                      State = x.add.State,
-                                      Type = x.add.Type,
-                                      UserID = x.add.UserID
+                                      AddressDetail = x.ord.AddressDetail,
+                                      AltPhone = x.ord.AltPhone,
+                                      City = x.ord.City,
+                                      Landmark = x.ord.Landmark,
+                                      Name = x.ord.Name,
+                                      Phone = x.ord.Phone,
+                                      Pin = x.ord.Pin,
+                                      State = x.ord.State,
+                                      Type = x.ord.Type,
+                                      UserID = x.ord.UserID
                                   },
                                   UserID = x.ord.UserID,
                                   Delivered = x.ord.Delivered,
@@ -139,24 +145,21 @@ namespace DL
                 {
                     order = (from ord in cntx.Orders
                              where ord.OrderID == orderID && ord.UserID==userID
-                             join add in cntx.Addresses
-                             on ord.AddressID equals add.AddressID
-                             select new { ord, add }).AsEnumerable()
+                             select new { ord }).AsEnumerable()
                            .Select(x => new OrderModel()
                            {
                                Address = new Address()
                                {
-                                   AddressDetail = x.add.AddressDetail,
-                                   AddressID = x.add.AddressID,
-                                   AltPhone = x.add.AltPhone,
-                                   City = x.add.City,
-                                   Landmark = x.add.Landmark,
-                                   Name = x.add.Name,
-                                   Phone = x.add.Phone,
-                                   Pin = x.add.Pin,
-                                   State = x.add.State,
-                                   Type = x.add.Type,
-                                   UserID = x.add.UserID
+                                   AddressDetail = x.ord.AddressDetail,
+                                   AltPhone = x.ord.AltPhone,
+                                   City = x.ord.City,
+                                   Landmark = x.ord.Landmark,
+                                   Name = x.ord.Name,
+                                   Phone = x.ord.Phone,
+                                   Pin = x.ord.Pin,
+                                   State = x.ord.State,
+                                   Type = x.ord.Type,
+                                   UserID = x.ord.UserID
                                },
                                Status = x.ord.Status,
                                OrderID = x.ord.OrderID,
