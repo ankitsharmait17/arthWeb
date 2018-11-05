@@ -130,8 +130,20 @@
                         }
                     </ul>
                     <p class="left-align">
-                        <b>Order Date</b>: @order.OrderDate  &nbsp;&nbsp;&nbsp;&nbsp;
+                        <b>Order Date</b>: @order.OrderDate
+                    </p>
+                    <p class="left-align">
                         <b>Status</b>: @order.Status
+                    </p>
+                    <p class="left-align">
+                        @if (order.Status.Equals("Delivered"))
+                        {
+                            <b>Date Delivered:</b> @order.OrderDeliveredDate
+                        }
+                        else if (order.Status.Equals("Shipped") || order.Status.Equals("Packed") || order.Status.Equals("Placed"))
+                        {
+                            <b>Delivered by:</b> @order.OrderDeliveryDate
+                        }
                     </p>
 
                     <p class="right-align"><b>Order Total</b>: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
@@ -446,6 +458,13 @@
         }, function () { });
     });
 
+    $('.returnOrder').on('click', function () {
+        var id = $(this).attr('id');
+        alertify.confirm("Return Order", "Are you sure?", function () {
+            ReturnOrder(id);
+        }, function () { });
+    });
+
     function AddAddress(obj) {
         $.ajax({
             url: '/Account/AddAddress',
@@ -540,6 +559,27 @@
     function CancelOrder(id) {
         $.ajax({
             url: '@Url.Action("CancelOrder", "Account")',
+            type: 'POST',
+            data: { id:id },
+            beforeSend: function () {
+                showSpinner();
+            },
+            success: function (res) {
+                if (res.Success) {
+                    showSuccessAlert(res.Message);
+                    location.reload();
+                }
+                else {
+                    showErrorAlert(res.Message);
+                }
+                hideSpinner();
+            }
+        });
+    }
+
+    function ReturnOrder(id) {
+        $.ajax({
+            url: '@Url.Action("ReturnOrder", "Account")',
             type: 'POST',
             data: { id:id },
             beforeSend: function () {

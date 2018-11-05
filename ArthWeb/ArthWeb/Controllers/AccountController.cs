@@ -435,11 +435,29 @@ namespace ArthWeb.Controllers
             try
             {
                 int userID = new UserBL().GetUser(User.Identity.Name).UserID;
-                var status = new OrderBL().CancelOrder(id, userID);
+                var status = new OrderBL().ChangeOrderStatus(id, userID,"Cancelled");
                 if (status)
                     return Json(new { Success = true, Message = "Order has been cancelled." });
                 else
                     return Json(new { Success = false, Message = "Order could not be cancelled." });
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ReturnOrder(int id)
+        {
+            try
+            {
+                int userID = new UserBL().GetUser(User.Identity.Name).UserID;
+                var status = new OrderBL().ChangeOrderStatus(id, userID, "Return Initiated");
+                if (status)
+                    return Json(new { Success = true, Message = "Return has been initiated." });
+                else
+                    return Json(new { Success = false, Message = "Order cannot be returned." });
             }
             catch (Exception)
             {

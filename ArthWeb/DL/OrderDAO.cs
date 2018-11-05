@@ -177,7 +177,7 @@ namespace DL
             return order;
         }
 
-        public bool CancelOrder(int orderID,int userID)
+        public bool ChangeOrderStatus(int orderID,int userID,string status)
         {
             bool isSuccess = false;
             try
@@ -187,7 +187,7 @@ namespace DL
                     var order = cntx.Orders.FirstOrDefault(x => x.OrderID == orderID && x.UserID == userID);
                     if (order == null)
                         return false;
-                    order.Status = "Cancelled";
+                    order.Status = status;
                     isSuccess=cntx.SaveChanges()>0;
                 }
             }

@@ -33,9 +33,9 @@ namespace BL
             return order;
         }
 
-        public bool CancelOrder(int orderID,int userID)
+        public bool ChangeOrderStatus(int orderID,int userID,string status)
         {
-            return new OrderDAO().CancelOrder(orderID, userID);
+            return new OrderDAO().ChangeOrderStatus(orderID, userID,status);
         }
     }
 }
