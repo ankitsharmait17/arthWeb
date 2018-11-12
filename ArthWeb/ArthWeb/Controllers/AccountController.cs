@@ -122,17 +122,16 @@ namespace ArthWeb.Controllers
         {
             FormsAuthentication.SignOut();
 
-            //Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+            Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
             Session.Clear();
 
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetExpires(DateTime.Now.AddSeconds(-1));
             Response.Cache.SetNoStore();
             Response.AppendHeader("Pragma", "no-cache");
-            //var formsCookie = new Ticket().DestroyAuthenticationCookie();
-            //Response.Cookies.Add(formsCookie);
-            Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
-            Session.Abandon();
+            var formsCookie = new Ticket().DestroyAuthenticationCookie();
+            Response.Cookies.Add(formsCookie);
+            //Session.Abandon();
             return RedirectToAction("Index","Home");
         }
 
