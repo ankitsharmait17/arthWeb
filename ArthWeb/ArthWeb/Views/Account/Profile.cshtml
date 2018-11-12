@@ -399,7 +399,7 @@
         ChangePassword(oldpass, pass);
     });
 
-    $('.editLink').on('click', function () {
+    $(document).on('click', '.editLink' ,function () {
         var panelDiv = $(this).closest('.card-panel');
         var addData = {
             Name: panelDiv.find('.name').text(),
@@ -444,7 +444,7 @@
 
     
 
-    $('.deleteLink').on('click', function () {
+    $(document).on('click', '.deleteLink' ,function () {
         var addressID = $(this).closest('.card-panel').find('.addressID').text();
         alertify.confirm("Delete Address", "Are you sure?", function () {
             DeleteAddress(addressID);

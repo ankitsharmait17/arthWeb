@@ -82,14 +82,16 @@ namespace ArthWeb.Controllers
                 }
                 else
                 {
-                    TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
-                    return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+                    //TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
+                    //return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+                    throw new Exception("Email Id or password is incorrect.Please try again.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
-                return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+                //TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
+                //return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
+                throw;
             }
         }
 
