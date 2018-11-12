@@ -131,6 +131,7 @@ namespace ArthWeb.Controllers
             Response.AppendHeader("Pragma", "no-cache");
             //var formsCookie = new Ticket().DestroyAuthenticationCookie();
             //Response.Cookies.Add(formsCookie);
+            Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
             Session.Abandon();
             return RedirectToAction("Index","Home");
         }
