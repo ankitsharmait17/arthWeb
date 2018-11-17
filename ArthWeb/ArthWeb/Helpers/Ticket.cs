@@ -17,7 +17,7 @@ namespace ArthWeb.Helpers
                 username,                     // authenticated username
                 DateTime.Now,                          // issueDate
                 DateTime.Now.AddSeconds(Convert.ToInt64(3600)),           // expiryDate
-                true,                        // true to persist across browser sessions
+                false,                        // true to persist across browser sessions
                 new UserBL().GetUserData(username),                              // can be used to store additional user data such as roles(NOT TO BE DONE IN OUR CASE)
                 FormsAuthentication.FormsCookiePath);  // the path for the cookie
             string encryptedTicket = FormsAuthentication.Encrypt(ticket);

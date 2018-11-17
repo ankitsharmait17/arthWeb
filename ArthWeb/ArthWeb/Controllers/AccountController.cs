@@ -32,9 +32,9 @@ namespace ArthWeb.Controllers
                 {
                     return Redirect(retUrl);
                 }
-                var expiredAuthProcessCookie =new Ticket().DestroyCookie(
-                    ConfigurationManager.AppSettings["AUTH_PROCESS_COOKIE"],Request.Url.Host);
-                Response.Cookies.Add(expiredAuthProcessCookie);
+                //var expiredAuthProcessCookie =new Ticket().DestroyCookie(
+                //    ConfigurationManager.AppSettings["AUTH_PROCESS_COOKIE"],Request.Url.Host);
+                //Response.Cookies.Add(expiredAuthProcessCookie);
             }
             catch (Exception)
             {
@@ -47,60 +47,20 @@ namespace ArthWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HandleAntiForgeryErrorOnLogin]
-        public ActionResult Login(LoginModel data,string ReturnUrl)
+        public ActionResult Login(LoginModel data)
         {
-            string retUrl = null;
             try
             {
-                if (string.IsNullOrWhiteSpace(ReturnUrl))
-                    retUrl = Url.Action("Index", "Home");
-                else
-                    retUrl = ReturnUrl;
                 if (Request.IsAuthenticated)
                 {
-                    return Redirect(retUrl);
+                    return RedirectToAction("Index","Home");
                 }
-                //var authProcessCookie = new Ticket().CreateCookie(
-                //    ConfigurationManager.AppSettings["AUTHENTICATION_PROCESS_COOKIE"],
-                //    Cryptography.Protect(data.UserName, "AUTHENTICATION_PROCESS"),
-                //    DateTime.Now.AddSeconds(Convert.ToInt32(3600)),
-                //    Request.Url.Host
-                //    );
-                //Response.Cookies.Add(authProcessCookie);
                 var isUsrAuthenticated = new UserBL().ValidateUser(data.UserName, data.Password);
                 if (isUsrAuthenticated)
                 {
-                    //var formscookie = new Ticket().CreateAuthenticationCookie(data.UserName);
-                    //Response.Cookies.Add(formscookie);
-                    ////var authCookieValue = Request.Headers.Get("authCookieValue");
-                    //FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(formscookie.Value);
-                    //var userData = JsonConvert.DeserializeObject<UserData>(authTicket.UserData);
-                    //var identity = new GenericIdentity(authTicket.Name, "Forms");
-                    //var principal = new GenericPrincipal(identity, null);
-                    //HttpContext.User = principal;
-                    //return Redirect(retUrl);
-                    
-
-                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                    Convert.ToInt32(ConfigurationManager.AppSettings["FORMS_AUTHENTICATION_TICKET_VERSION"]),                                     // ticket version
-                    data.UserName,                     // authenticated username
-                    DateTime.Now,                          // issueDate
-                    DateTime.Now.AddSeconds(Convert.ToInt64(3600)),           // expiryDate
-                    false,                        // true to persist across browser sessions
-                    new UserBL().GetUserData(data.UserName),                              // can be used to store additional user data such as roles(NOT TO BE DONE IN OUR CASE)
-                    FormsAuthentication.FormsCookiePath);  // the path for the cookie  // the path for the cookie
-
-                    // Encrypt the ticket using the machine key
-                    string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-
-                    // Add the cookie to the request to save it
-                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                    cookie.HttpOnly = true;
-                    Response.Cookies.Add(cookie);
-
-                    // Your redirect logic
-                    //retUrl= FormsAuthentication.GetRedirectUrl(data.UserName,true);
-                    return RedirectToAction(retUrl);
+                    var formsCookie = new Ticket().CreateAuthenticationCookie(data.UserName);
+                    Response.Cookies.Add(formsCookie);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -121,17 +81,17 @@ namespace ArthWeb.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
+            Session.Abandon();
+            //Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+            //Session.Clear();
 
-            Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-            Session.Clear();
-
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetExpires(DateTime.Now.AddSeconds(-1));
-            Response.Cache.SetNoStore();
-            Response.AppendHeader("Pragma", "no-cache");
+            //Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            //Response.Cache.SetExpires(DateTime.Now.AddSeconds(-1));
+            //Response.Cache.SetNoStore();
+            //Response.AppendHeader("Pragma", "no-cache");
             var formsCookie = new Ticket().DestroyAuthenticationCookie();
             Response.Cookies.Add(formsCookie);
-            //Session.Abandon();
+            
             return RedirectToAction("Index","Home");
         }
 
@@ -160,7 +120,7 @@ namespace ArthWeb.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         public ActionResult Profile()
         {
             var username = User.Identity.Name;
