@@ -74,7 +74,6 @@ namespace ArthWeb.Controllers
                     Response.Cookies.Add(formscookie);
                     //var authCookieValue = Request.Headers.Get("authCookieValue");
                     FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(formscookie.Value);
-                    var userData = JsonConvert.DeserializeObject<UserData>(authTicket.UserData);
                     var identity = new GenericIdentity(authTicket.Name, "Forms");
                     var principal = new GenericPrincipal(identity, null);
                     HttpContext.User = principal;
