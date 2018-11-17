@@ -23,8 +23,8 @@ namespace ArthWeb.Helpers
             string encryptedTicket = FormsAuthentication.Encrypt(ticket);
             HttpCookie formsCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
             formsCookie.HttpOnly = true;
-            formsCookie.Secure = FormsAuthentication.RequireSSL;
-            formsCookie.Domain = FormsAuthentication.CookieDomain;
+            //formsCookie.Secure = FormsAuthentication.RequireSSL;
+            //formsCookie.Domain = FormsAuthentication.CookieDomain;
 
             return formsCookie;
 
