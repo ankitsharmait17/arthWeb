@@ -24,7 +24,7 @@ namespace ArthWeb.Helpers
             HttpCookie formsCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
             formsCookie.HttpOnly = true;
             //formsCookie.Secure = FormsAuthentication.RequireSSL;
-            //formsCookie.Domain = FormsAuthentication.CookieDomain;
+            formsCookie.Domain = FormsAuthentication.CookieDomain;
 
             return formsCookie;
 
@@ -34,7 +34,7 @@ namespace ArthWeb.Helpers
             HttpCookie formsCookie = new HttpCookie(FormsAuthentication.FormsCookieName, string.Empty);
             formsCookie.Expires = DateTime.Now.AddYears(-1);
             formsCookie.HttpOnly = true;
-            formsCookie.Secure = FormsAuthentication.RequireSSL;
+            //formsCookie.Secure = FormsAuthentication.RequireSSL;
             formsCookie.Domain = FormsAuthentication.CookieDomain;
 
             return formsCookie;
