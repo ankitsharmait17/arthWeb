@@ -15,6 +15,9 @@ namespace ArthWeb.Models
 
         [DataType(DataType.Text)]
         public string Password { get; set; }
+
+        [DisplayName("Remember me?")]
+        public bool RememberMe { get; set; }
         
     }
 }

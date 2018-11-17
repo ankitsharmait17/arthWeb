@@ -10,14 +10,14 @@ namespace ArthWeb.Helpers
 {
     public class Ticket
     {
-        public HttpCookie CreateAuthenticationCookie(string username)
+        public HttpCookie CreateAuthenticationCookie(string username,bool rememberMe)
         {
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
                 Convert.ToInt32(ConfigurationManager.AppSettings["FORMS_AUTHENTICATION_TICKET_VERSION"]),                                     // ticket version
                 username,                     // authenticated username
                 DateTime.Now,                          // issueDate
                 DateTime.Now.AddSeconds(Convert.ToInt64(3600)),           // expiryDate
-                true,                        // true to persist across browser sessions
+                rememberMe?true:false,                        // true to persist across browser sessions
                 new UserBL().GetUserData(username),                              // can be used to store additional user data such as roles(NOT TO BE DONE IN OUR CASE)
                 FormsAuthentication.FormsCookiePath);  // the path for the cookie
             string encryptedTicket = FormsAuthentication.Encrypt(ticket);
@@ -25,6 +25,12 @@ namespace ArthWeb.Helpers
             formsCookie.HttpOnly = true;
             //formsCookie.Secure = FormsAuthentication.RequireSSL;
             //formsCookie.Domain = FormsAuthentication.CookieDomain;
+
+            if (rememberMe)
+            {
+                formsCookie.Expires = ticket.Expiration;
+            }
+
 
             return formsCookie;
 

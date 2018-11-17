@@ -27,6 +27,12 @@
                                     @Html.PasswordFor(m => m.Password, new { @required = "required", @id = "pass", @class = "validate" })
                                     @Html.LabelFor(m => m.Password)
                                 </div>
+                                <label>
+                                    <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
+                                    <span>Remember Me?</span>
+                                </label>
+                                <br />
+                                <br />
                                 <input type="submit" value="Sign in" class="btn" />
 
                             }

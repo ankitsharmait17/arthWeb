@@ -60,29 +60,18 @@ namespace ArthWeb.Controllers
                 {
                     return Redirect(retUrl);
                 }
-                var authProcessCookie = new Ticket().CreateCookie(
-                    ConfigurationManager.AppSettings["AUTHENTICATION_PROCESS_COOKIE"],
-                    Cryptography.Protect(data.UserName, "AUTHENTICATION_PROCESS"),
-                    DateTime.Now.AddSeconds(Convert.ToInt32(3600)),
-                    Request.Url.Host
-                    );
-                Response.Cookies.Add(authProcessCookie);
                 var isUsrAuthenticated = new UserBL().ValidateUser(data.UserName, data.Password);
                 if (isUsrAuthenticated)
                 {
-                    var formscookie = new Ticket().CreateAuthenticationCookie(data.UserName);
+                    var formscookie = new Ticket().CreateAuthenticationCookie(data.UserName,data.RememberMe);
                     Response.Cookies.Add(formscookie);
-                    //var authCookieValue = Request.Headers.Get("authCookieValue");
-                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(formscookie.Value);
-                    var identity = new GenericIdentity(authTicket.Name, "Forms");
+                    var identity = new GenericIdentity(FormsAuthentication.FormsCookieName, "Forms");
                     var principal = new GenericPrincipal(identity, null);
                     HttpContext.User = principal;
                     return Redirect(retUrl);
                 }
                 else
                 {
-                    //TempData["Fail"] = "Email Id or password is incorrect.Please try again.";
-                    //return RedirectToAction("Index", "Common", new { retUrl = Url.Action("Login", "Account") });
                     throw new Exception("Email Id or password is incorrect.Please try again.");
                 }
             }
@@ -98,17 +87,9 @@ namespace ArthWeb.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
-
-            Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-            Session.Clear();
-
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetExpires(DateTime.Now.AddSeconds(-1));
-            Response.Cache.SetNoStore();
-            Response.AppendHeader("Pragma", "no-cache");
+            Session.Abandon();
             var formsCookie = new Ticket().DestroyAuthenticationCookie();
             Response.Cookies.Add(formsCookie);
-            Response.Cookies["AUTHCOOKIE"].Expires = DateTime.Now.AddDays(-1);
             return RedirectToAction("Index","Home");
         }
 
