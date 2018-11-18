@@ -1,4 +1,5 @@
 ﻿@{ 
+    string path = HttpContext.Current.Request.Url.AbsolutePath;
     int count = Session["count"]==null?0:(int)Session["count"];
 }
 <style>
@@ -171,6 +172,12 @@
         <div class="overlay">
             <div id="loader-img"></div>
         </div>
+        <div class="row breadcrumbs">
+            <div class="col s12">
+                <button class="btn btn-primary waves-effect" onclick="window.history.back();"> < Back</button>
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
+        </div>
         @RenderBody()
     </main>
 
@@ -225,6 +232,13 @@
             //$('.carousel').carousel();\
             $(".dropdown-trigger").dropdown({coverTrigger: false, constrainWidth: false });
             $('.sidenav').sidenav();
+            var path = "@path";
+            if (path == "/") {
+                $(".breadcrumbs").hide();
+            }
+            if (path.toLowerCase() == "/home/index") {
+                $(".breadcrumbs").hide();
+            }
             //M.AutoInit();
         });
 
