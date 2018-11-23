@@ -152,7 +152,7 @@
             success: function (res) {
                 if (res.Success) {
                     $('.cartLink').each(function () {
-                        $(this).find('.badge').text(res.data);
+                        $(this).find('.notification-badge').text(res.data);
                     });
                     showSuccessAlert('Item added to cart.');
                 }

@@ -518,7 +518,7 @@
                 if (res.Success) {
                     //$('#cartLink').find('.badge').text(res.data);
                     $('.cartLink').each(function () {
-                        $(this).find('.badge').text(res.data);
+                        $(this).find('.notification-badge').text(res.data);
                     });
                     $('#sizeModal').modal('close');
                     showSuccessAlert('Item added to cart.');

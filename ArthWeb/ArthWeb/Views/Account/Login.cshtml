@@ -20,11 +20,11 @@
                             {
                                 @Html.AntiForgeryToken()
                                 <div class="input-field">
-                                    @Html.TextBoxFor(m => m.UserName, new { @required = "required", @id = "uname", @maxlength = "254", @type = "email", @class = "validate" })
+                                    @Html.TextBoxFor(m => m.UserName, new { @required = "required", @maxlength = "254", @type = "email", @class = "validate" })
                                     @Html.LabelFor(m => m.UserName)
                                 </div>
                                 <div class="input-field">
-                                    @Html.PasswordFor(m => m.Password, new { @required = "required", @id = "pass", @class = "validate" })
+                                    @Html.PasswordFor(m => m.Password, new { @required = "required", @class = "validate" })
                                     @Html.LabelFor(m => m.Password)
                                 </div>
                                 <label>
@@ -51,8 +51,8 @@
     </div>
 <script>
     function validate() {
-        var uname = $('#uname').val();
-        var pass = $('#pass').val();
+        var uname = $('#UserName').val();
+        var pass = $('#Password').val();
         if (uname = "") {
             showWarningAlert("Username cannot be empty"); return false;
         }
