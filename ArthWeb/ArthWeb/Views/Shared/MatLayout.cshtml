@@ -17,7 +17,7 @@
     }
 
     #loader-img {
-        background: url('../../Content/138.gif') center center no-repeat;
+        background: url('../../Content/Rolling-1s-200px.gif') center center no-repeat;
         height: 100%;
         z-index: 20;
     }
@@ -86,10 +86,9 @@
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
                             <form class="searchForm" action="@Url.Action("SearchItems","Search")">
-                                <div class="input-field">
-                                    <input id="search" type="search" name="search" required>
-                                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                                    <i class="material-icons">close</i>
+                                <div class="input-field white">
+                                    <input id="search" type="search" name="search" placeholder="Search..." required>
+                                    <i class="material-icons black-text" onclick="act(this);">search</i>
                                 </div>
                             </form>
                         </li>
@@ -208,7 +207,7 @@
             </div>*@
         <div class="footer-copyright">
             <div class="container">
-                <h6 class="right">© 2018 Copyright</h6>
+                <h6 class="center">© 2018 Copyright</h6>
                 
             </div>
         </div>
@@ -218,6 +217,11 @@
 
 
     <script>
+
+        function act(element) {
+            element.previousElementSibling.focus();
+        }
+
         $(document).ready(function () {
             //$('.carousel').carousel();\
             $(".dropdown-trigger").dropdown({coverTrigger: false, constrainWidth: false });

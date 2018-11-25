@@ -248,6 +248,7 @@
     <Content Include="Content\font-awesome\font-awesome.svg" />
     <Content Include="Content\materialize.css" />
     <Content Include="Content\materialize.min.css" />
+    <Content Include="Content\Rolling-1s-200px.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
