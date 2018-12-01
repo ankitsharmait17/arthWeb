@@ -7,11 +7,11 @@
 } else if (Model.IsClickable) { 
     if (string.IsNullOrEmpty(Model.Description))
     {
-        <a href="@Model.Url">@Model.Title</a>
+        <a href="@Model.Url" class="grey-text darken-2">@Model.Title</a>
     }
     else
     {
-        <a href="@Model.Url" title="@Model.Description">@Model.Title</a>
+        <a href="@Model.Url" class="grey-text darken-2" title="@Model.Description">@Model.Title</a>
     }
 } else { 
     <text>@Model.Title</text>

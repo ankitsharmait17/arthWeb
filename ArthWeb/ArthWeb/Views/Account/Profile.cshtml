@@ -66,15 +66,15 @@
                         <input maxlength="10" type="text" id="phone" value="@Model.Phone" onkeypress="return isNumber(event)" />
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light" id="submitBtn" disabled>Submit</button>
-                <button class="btn waves-effect waves-light modal-trigger" data-target="pwdModal" id="changepwd">Change Password</button>
+                <button class="btn waves-effect waves-light black" id="submitBtn" disabled>Submit</button>
+                <button class="btn waves-effect waves-light modal-trigger black" data-target="pwdModal" id="changepwd">Change Password</button>
             </div>
         </div>
     </div>
     <div id="address" class="col s12">
         <br />
         <div class="row center">
-            <button class="waves-effect waves-light btn" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
+            <button class="waves-effect waves-light btn black" id="addTrigger"><i class="fab fa-plus-circle fa-sm white-text"></i> Add</button>
         </div>
         <div id="panelDiv">
             <div class="row">
@@ -120,7 +120,7 @@
                         {
                             <li class="collection-item avatar">
                                 <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
-                                <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@orderdetail.ItemKey">@orderdetail.ItemDesc</a></span>
+                                <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@orderdetail.ItemKey" class="grey-text">@orderdetail.ItemDesc</a></span>
                                 <p>
                                     <b>Size</b>: @orderdetail.Size<br>
                                     <b>Quantity</b>: @orderdetail.Quantity
@@ -146,14 +146,14 @@
                         }
                     </p>
 
-                    <p class="right-align"><b>Order Total</b>: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID">SEE DETAILS</a></p>
+                    <p class="right-align"><b>Order Total</b>: Rs. @price &nbsp;&nbsp;&nbsp;<a href="@Url.Action("ViewOrder","Account")?orderID=@order.OrderID" class="grey-text">SEE DETAILS</a></p>
                     @if (order.Status.Equals("Placed") || order.Status.Equals("Packed"))
                     {
-                        <p class="left-align"><button class="btn btn-primary cancelOrder" id="@order.OrderID">Cancel Order</button></p>
+                        <p class="left-align"><button class="btn btn-primary cancelOrder black" id="@order.OrderID">Cancel Order</button></p>
                     }
                     else if (order.Status.Equals("Delivered"))
                     {
-                        <p class="left-align"><button class="btn btn-primary returnOrder" id="@order.OrderID">Return</button></p>
+                        <p class="left-align"><button class="btn btn-primary returnOrder black" id="@order.OrderID">Return</button></p>
                     }
                 </div>
             </li>
@@ -219,7 +219,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn waves-effect waves-light" id="addBtn">Save</button>
+        <button class="btn waves-effect waves-light black" id="addBtn">Save</button>
     </div>
 </div>
 <!--Address Modal End -->
@@ -227,7 +227,7 @@
 
 <div id="pwdModal" class="modal modal-fixed-footer">
     <div class="modal-content">
-        <h5 class="modal-title">Change Password</h5><br />
+        <h5>Change Password</h5><br/>
         <div class="row">
             <div class="col s12 input-field">
                 <label for="oldPwd">Old Password</label>

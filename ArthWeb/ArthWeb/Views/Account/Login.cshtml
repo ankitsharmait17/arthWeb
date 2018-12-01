@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-image">
                     <img src="https://www.tate.org.uk/art/images/work/N/N04/N04948_10.jpg">
-                    <span class="card-title">Sign in/Sign up</span>
+                    <span class="card-title">SIGN IN</span>
                 </div>
                 <div class="card-content">
                     <div class="row">
@@ -21,19 +21,19 @@
                                 @Html.AntiForgeryToken()
                                 <div class="input-field">
                                     @Html.TextBoxFor(m => m.UserName, new { @required = "required", @maxlength = "254", @type = "email", @class = "validate" })
-                                    @Html.LabelFor(m => m.UserName)
+                                    @Html.LabelFor(m => m.UserName, new { @class = "black-text" })
                                 </div>
                                 <div class="input-field">
                                     @Html.PasswordFor(m => m.Password, new { @required = "required", @class = "validate" })
-                                    @Html.LabelFor(m => m.Password)
+                                    @Html.LabelFor(m => m.Password,new {@class="black-text" })
                                 </div>
                                 <label>
-                                    <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
-                                    <span>Remember Me?</span>
+                                    <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true" class="filled-in">
+                                    <span class="black-text">REMEMBER ME?</span>
                                 </label>
                                 <br />
                                 <br />
-                                <input type="submit" value="Sign in" class="btn" />
+                                <input type="submit" value="SIGN IN" class="btn black" />
 
                             }
                         </div>
@@ -41,8 +41,8 @@
 
                  </div>
                 <div class="card-action">
-                    @Html.ActionLink("Register as a new user", "Register", "Account")
-                    @Html.ActionLink("Forgot Password", "ForgotPassword", "Account")
+                    <a href="@Url.Action("Register","Account")" class="grey-text">SIGN UP</a>
+                    <a href="@Url.Action("ForgotPassword","Account")" class="grey-text">FORGOT PASSWORD</a>
                 </div>
             </div>
         </div> 

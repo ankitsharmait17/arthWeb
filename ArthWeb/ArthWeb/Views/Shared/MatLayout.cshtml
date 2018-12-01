@@ -55,8 +55,29 @@
         font-size:30px;
     }
 
-    
-    
+    [type="checkbox"].filled-in:checked + span:not(.lever):after {
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 2px solid black!important;
+        background-color: black!important;
+        z-index: 0;
+    }
+
+    input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default):focus:not([readonly]), input[type="password"]:not(.browser-default):focus:not([readonly]), input[type="email"]:not(.browser-default):focus:not([readonly]), input[type="url"]:not(.browser-default):focus:not([readonly]), input[type="time"]:not(.browser-default):focus:not([readonly]), input[type="date"]:not(.browser-default):focus:not([readonly]), input[type="datetime"]:not(.browser-default):focus:not([readonly]), input[type="datetime-local"]:not(.browser-default):focus:not([readonly]), input[type="tel"]:not(.browser-default):focus:not([readonly]), input[type="number"]:not(.browser-default):focus:not([readonly]), input[type="search"]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+        border-bottom: 1px solid black!important;
+        -webkit-box-shadow: 0 1px 0 0 black!important;
+        box-shadow: 0 1px 0 0 black!important;
+    }
+
+    [type="radio"]:checked + span::after, [type="radio"].with-gap:checked + span::after {
+        background-color: black !important;
+    }
+
+    [type="radio"]:checked + span::after, [type="radio"].with-gap:checked + span::before, [type="radio"].with-gap:checked + span::after {
+        border: 2px solid black !important;
+    }
+
 </style>
 <html>
 <head>
@@ -80,13 +101,18 @@
     <header>
         <div class="navbar-fixed">
             <nav>
-                <div class="nav-wrapper">
-                    <a href="@Url.Action("Index","Home")" class="brand-logo">LOGO</a>
-                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <div class="nav-wrapper grey lighten-2">
+                    <a href="@Url.Action("Index","Home")" class="brand-logo center black-text">LOGO</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
+                    <ul class="left hide-on-med-and-down">
+                        <li><a href="#" class="black-text">MEN</a></li>
+                        <li><a href="#" class="black-text">WOMEN</a></li>
+                        <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
+                    </ul>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
                             <form class="searchForm" action="@Url.Action("SearchItems","Search")">
-                                <div class="input-field white">
+                                <div class="input-field">
                                     <input id="search" type="search" name="search" placeholder="Search..." required>
                                     <i class="material-icons black-text" onclick="act(this);">search</i>
                                 </div>
@@ -94,27 +120,27 @@
                         </li>
                         <li>
                             <a href="#" class="cartLink">
-                                <i class="fab fa-shopping-cart white-text notif"></i>
+                                <i class="fab fa-shopping-cart black-text notif"></i>
                                 <small class="notification-badge white-text">@count</small>
                             </a>
                         </li>
-                        
+
 
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li>
                                 <a class="dropdown-trigger" href="#!" data-target="profileDD">
-                                    <i class="material-icons">account_circle</i>
+                                    <i class="material-icons black-text">account_circle</i>
                                 </a>
                                 <ul id="profileDD" class="dropdown-content">
-                                    <li><a href="@Url.Action("Profile","Account")" class="grey-text text-darken-1"><i class="material-icons">face</i>Profile</a></li>
-                                    <li><a href="@Url.Action("LogOut", "Account")" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                                    <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i>PROFILE</a></li>
+                                    <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons">keyboard_tab</i>LOGOUT</a></li>
                                 </ul>
                             </li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Sign in/Sign up", "Login", "Account")</li>
+                            <li><a href="@Url.Action("Login","Account")" class="black-text">SIGN IN</a></li>
                         }
                     </ul>
                 </div>
@@ -124,12 +150,15 @@
         <ul class="sidenav" id="mobile-demo">
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a href="@Url.Action("Profile","Account")" class="grey-text text-darken-1"><i class="material-icons">face</i>Profile</a></li>
+                <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i>PROFILE</a></li>
             }
             else
             {
-                <li>@Html.ActionLink("Sign in/Sign up", "Login", "Account")</li>
+                <li><a href="@Url.Action("Login","Account")" class="black-text">SIGN IN</a></li>
             }
+            <li><a href="#" class="black-text">MEN</a></li>
+            <li><a href="#" class="black-text">WOMEN</a></li>
+            <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
             <li>
                 <a href="#" class="cartLink">
                     <i class="fab fa-shopping-cart notif"></i>
@@ -149,7 +178,7 @@
             </li>
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a href="@Url.Action("LogOut", "Account")" class="grey-text text-darken-1"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons">keyboard_tab</i>LOGOUT</a></li>
             }
         </ul>
 
@@ -163,7 +192,7 @@
         </div>
         <div class="row breadcrumbs">
             <div class="col s12">
-                <button class="btn btn-primary waves-effect" onclick="window.history.back();"> < Back</button>
+                <button class="btn btn-primary waves-effect black white-text" onclick="window.history.back();" id="backHistBtn"> < Back</button>
                 @Html.MvcSiteMap().SiteMapPath()
             </div>
         </div>
@@ -172,25 +201,27 @@
 
     <!--        Footer Start-->
 
-    <footer class="page-footer">
+    <footer class="page-footer grey lighten-2">
         <div class="container">
             <div class="row">
                 <div class="col l12 s12 center-align">
-                    <h5 class="white-text">FIND US AT</h5>
+                    <h5 class="black-text">FIND US AT</h5>
                 </div>
                 <div class="col s12 center-align">
-                    <div class="col s4 right-align"><h5><a href="#"><i class="fab fa-facebook fa-lg white-text"></i></a></h5></div>
-                    <div class="col s2 center-align"><h5><a href="#"><i class="fab fa-instagram fa-lg white-text"></i></a></h5></div>
-                    <div class="col s2 center-align"><h5><a href="#"><i class="fab fa-twitter fa-lg white-text"></i></a></h5></div>
-                    <div class="col s4 left-align"><h5><a href="#"><i class="fab fa-pinterest fa-lg white-text"></i></a></h5></div>
+                    <h5>
+                        <a href="#"><i class="fab fa-facebook fa-lg black-text"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#"><i class="fab fa-instagram fa-lg black-text"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#"><i class="fab fa-twitter fa-lg black-text"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#"><i class="fab fa-pinterest fa-lg black-text"></i></a>
+                    </h5>
                 </div>
 
             </div>
             <div class="row">
                 <h6 class="right">
-                    <a href="#" class="white-text">CONTACT US</a> |
-                    <a href="#" class="white-text">ABOUT US</a> |
-                    <a href="#" class="white-text">TERMS & CONDITIONS</a>
+                    <a href="#" class="black-text">CONTACT US</a> <span class="black-text">|</span>
+                    <a href="#" class="black-text">ABOUT US</a> <span class="black-text">|</span>
+                    <a href="#" class="black-text">TERMS & CONDITIONS</a>
                 </h6>
             </div>
         </div>
@@ -205,10 +236,9 @@
                     </div>
                 </div>
             </div>*@
-        <div class="footer-copyright">
+        <div class="footer-copyright white">
             <div class="container">
-                <h6 class="center">© 2018 Copyright</h6>
-                
+                <h6 class="center black-text">© 2018 COPYRIGHT</h6>
             </div>
         </div>
     </footer>
