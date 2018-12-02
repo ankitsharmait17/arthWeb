@@ -15,7 +15,7 @@
         {
             markup += "<li>";
             markup += "<label for='" + subType + "'>";
-            markup += "<input type='checkbox' id='" + subType + "'class='filterSubtype'><span>" + subType + "</span>";
+            markup += "<input type='checkbox' id='" + subType + "'class='filterSubtype filled-in'><span>" + subType + "</span>";
             markup += "</label></li>";
         }
         markup += "</ul></div></li>";
@@ -26,7 +26,7 @@
     {
         sizeMarkup += "<li>";
         sizeMarkup += "<label for='" + size + "'>";
-        sizeMarkup += "<input type='checkbox' id='" + size + "'class='filterSize'><span>" + size + "</span>";
+        sizeMarkup += "<input type='checkbox' id='" + size + "'class='filterSize filled-in'><span>" + size + "</span>";
         sizeMarkup += "</label></li>";
     }
 }
@@ -55,10 +55,6 @@
         }
     }
 
-    
-
-
-
     .card-image:hover .card-title{
         display: block;
     }
@@ -85,8 +81,15 @@
     }
 
     .card{
-        padding:20px;
+        padding:10px;
     }
+
+    
+
+    .pagination li.active{
+        background-color:black;
+    }
+
 </style>
 
 <ul id="slide-out" class="sidenav">
@@ -100,12 +103,12 @@
                     <ul class="list-unstyled">
                         <li>
                             <label for="Men">
-                                <input type="checkbox" id="Men" class="filterGender"><span>Men</span>
+                                <input type="checkbox" id="Men" class="filterGender filled-in"><span>Men</span>
                             </label>
                         </li>
                         <li>
                             <label for="Women">
-                                <input type="checkbox" id="Women" class="filterGender"><span>Women</span>
+                                <input type="checkbox" id="Women" class="filterGender filled-in"><span>Women</span>
                             </label>
                         </li>
                     </ul>
@@ -138,7 +141,7 @@
                         <li>
                             <input id="fromPrice" placeholder="Start" type="text" onkeypress="return isNumber(event)">
                             <input id="toPrice" placeholder="End" type="text" onkeypress="return isNumber(event)">
-                            <button class="btn btn-primary" id="go">GO</button>
+                            <button class="btn btn-primary black" id="go">GO</button>
                         </li>
                     </ul>
                 </div>
@@ -162,7 +165,7 @@
             </select>
         </div>
         <div class="col s6 m6 l2">
-            <button class="btn waves-effect waves-light" id="clear" style="display:none">
+            <button class="btn waves-effect waves-light black" id="clear" style="display:none">
                 Clear Filters
             </button>
         </div>
@@ -196,7 +199,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn waves-effect waves-light" id="addToCart">Add to Cart</button>
+        <button class="btn waves-effect waves-light black" id="addToCart">Add to Cart</button>
     </div>
 </div>
 
@@ -207,7 +210,7 @@
     var search, pageSize, startRec, order,itemKey,price;
     search = "@ViewBag.searchString";
     pageSize = 10;
-
+    var itemLink = '@Url.Action("ViewItem", "Item")?itemKey=';
     function GetPrice(num) {
         var price=num.toLocaleString('en-IN', {
             maximumFractionDigits: 2,
@@ -233,6 +236,7 @@
         $('.chip').remove();
         $('.filterGender , .filterSubtype , .filterSize').prop('checked', false);
         $('#clear').css('display', 'none');
+        $(".dropdown-content>li>a").css("color", "black");
         if (search != "")
         {
             GetItemsforGrid(search, null);
@@ -241,14 +245,15 @@
 
     function CreateItem(itemkey,price) {
         var container = $('.itemContainer>.row');
+        var link = itemLink + itemkey;
         var markup = '<div class="col l3 m5 img-div">' +
             '<div class="card" >' +
             '<div class="card-image">' +
             '<img src="/Content/dewdrops-flora-flower-56866.jpg">' +
             '<span class="card-title">' + GetPrice(price) + '</span>' +
-            '<span class="itemKeyspan">' + itemkey+'</span>'+
-            '<a href="@Url.Action("ViewItem","Item")?itemKey=' + itemkey +'" class="btn-floating halfway-fab left waves-effect waves-light btn-large red viewBtn"><i class="material-icons">zoom_in</i></a>' +
-            '<button class="btn-floating halfway-fab waves-effect waves-light red addBtn btn-large"><i class="material-icons">add_shopping_cart</i></button>'+
+            '<span class="itemKeyspan">' + itemkey + '</span>' +
+            '<a href="#" class="btn-floating halfway-fab left waves-effect waves-light btn-large black viewBtn"><i class="material-icons">zoom_in</i></a>' +
+            '<button class="btn-floating halfway-fab waves-effect waves-light black addBtn btn-large"><i class="material-icons">add_shopping_cart</i></button>'+
             '</div>' +
             '</div>' +
             '</div >' +
@@ -284,11 +289,11 @@
         });
         if (!isPresent) {
             var cl = $(this).attr('class');
-            if (cl == 'filterGender')
+            if (cl.includes('filterGender'))
                 cl = 'chipsGender';
-            else if (cl == 'filterSubtype')
+            else if (cl.includes('filterSubtype'))
                 cl = 'chipsSubtype';
-            else if (cl == 'filterSize')
+            else if (cl.includes('filterSize'))
                 cl = 'chipsSize';
             CreateChip(text, cl);
             //$('#clear').css('display', 'block');
@@ -549,6 +554,12 @@
             }
         });
     }
+
+    $(document).on('click', '.viewBtn', function () {
+        var key = $(this).closest('div').find('.itemKeyspan').text();
+        var link = itemLink + key;
+        window.open(link, "_blank");
+    });
 
 </script>
 

@@ -78,6 +78,15 @@
         border: 2px solid black !important;
     }
 
+    ul.dropdown-content.select-dropdown li span {
+        color: #000; /* no need for !important :) */
+    }
+
+    .navbar-fixed {
+        position: absolute;
+        z-index: 999999999;
+    }
+
 </style>
 <html>
 <head>
@@ -100,8 +109,8 @@
 
     <header>
         <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper grey lighten-2">
+            <nav class="transparent z-depth-0">
+                <div class="nav-wrapper">
                     <a href="@Url.Action("Index","Home")" class="brand-logo center black-text">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
                     <ul class="left hide-on-med-and-down">

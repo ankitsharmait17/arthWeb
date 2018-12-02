@@ -30,7 +30,7 @@
                 {
                     <li class="collection-item avatar">
                         <img src="/Content/dewdrops-flora-flower-56866.jpg" alt="" class="circle">
-                        <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@item.ItemKey">@item.Description</a></span>
+                        <span class="title"><a href="@Url.Action("ViewItem","Item")?itemKey=@item.ItemKey" class="grey-text">@item.Description</a></span>
                         <span class="itemKey" style="display:none">@item.ItemKey</span>
                         <p>
                             <b>Size</b>: @item.Size<br>
@@ -80,21 +80,18 @@
     </div>
     <div class="row">
         <div class="col l8 m12 s12">
-                <button class="btn btn-primary waves-effect modal-trigger" data-target="selectModal" id="selAddress">Select Address</button>
+                <button class="btn btn-primary waves-effect modal-trigger black" data-target="selectModal" id="selAddress">Select Address</button>
                 <textarea id="addressP" class="materialize-textarea" disabled></textarea>
         </div>
         <div class="col l4 m12 s12">
-            <blockquote>
-                Currently we are taking orders for Cash on Delivery Only.
-                Online Payment coming soon.
-            </blockquote>
+            
         </div>
     </div>
     <div class="row">
         <div class="col s12">
             <p>
-                <a href="@Url.Action("Index","Home")" class="btn btn-flat waves-effect">KEEP SHOPPING</a>
-                <button class="btn btn-primary waves-effect" id="placeOrder">PLACE ORDER</button>
+                <a href="@Url.Action("Index","Home")" class="btn btn-primary waves-effect grey">KEEP SHOPPING</a>
+                <button class="btn btn-primary waves-effect black" id="placeOrder">PLACE ORDER</button>
             </p>
         </div>
     </div>
@@ -105,8 +102,6 @@
         <h5 class="modal-title">Select Address</h5><br />
         <div class="row">
             <ul class="collection">
-                
-                @*Html.DropDownList("address",addressList, new {@class= "input-field" })*@
                 @foreach (SelectListItem item in addressList)
                 {
                     <li class="collection-item">
@@ -120,7 +115,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn waves-effect waves-light" id="selBtn">OK</button>
+        <button class="btn waves-effect waves-light black" id="selBtn">OK</button>
     </div>
 </div>
 
