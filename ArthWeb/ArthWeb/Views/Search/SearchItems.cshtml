@@ -8,14 +8,14 @@
     foreach (var item in catList)
     {
         markup += "<li>";
-        markup += "<div class='collapsible-header'>" + item.Key + "</div>";
+        markup += "<div class='collapsible-header'>" + item.Key.Replace('_',' ') + "</div>";
         markup += "<div class='collapsible-body'>";
-        markup += "<ul class='list-unstyled'>";
+        markup += "<ul class='list-unstyled' id='"+item.Key+"'>";
         foreach (string subType in item.Value)
         {
             markup += "<li>";
             markup += "<label for='" + subType + "'>";
-            markup += "<input type='checkbox' id='" + subType + "'class='filterSubtype filled-in'><span>" + subType + "</span>";
+            markup += "<input type='checkbox' id='" + subType + "'class='filterSubtype filled-in'><span>" + subType.Replace('_',' ') + "</span>";
             markup += "</label></li>";
         }
         markup += "</ul></div></li>";
@@ -207,8 +207,10 @@
 
 
 <script>
-    var search, pageSize, startRec, order,itemKey,price;
+    var search, pageSize, startRec, order, itemKey, price, item,cat;
+    item = "@ViewBag.item";
     search = "@ViewBag.searchString";
+    cat = "@ViewBag.cat";
     pageSize = 10;
     var itemLink = '@Url.Action("ViewItem", "Item")?itemKey=';
     function GetPrice(num) {
@@ -237,7 +239,12 @@
         $('.filterGender , .filterSubtype , .filterSize').prop('checked', false);
         $('#clear').css('display', 'none');
         $(".dropdown-content>li>a").css("color", "black");
-        if (search != "")
+        if (item != "") {
+            item = '#' + cat + ' > li  #' + item;
+            console.log(item);
+            $(item).click();
+        }   
+        if (search != "" && item=="")
         {
             GetItemsforGrid(search, null);
         }

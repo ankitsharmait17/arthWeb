@@ -12,13 +12,15 @@ namespace ArthWeb.Controllers
     public class SearchController : Controller
     {
         // GET: Search
-        public ActionResult SearchItems(string search=null)
+        public ActionResult SearchItems(string search=null,string cat=null,string item=null)
         {
             try
             {
                 ViewBag.DDList = new ItemMappingBL().GetItemMappingDict();
                 ViewBag.sizes = new ItemSizeBL().GetAllSizes();
                 ViewBag.searchString = string.IsNullOrWhiteSpace(search)?"":search;
+                ViewBag.cat= string.IsNullOrWhiteSpace(cat) ? "" : cat;
+                ViewBag.item = string.IsNullOrWhiteSpace(item) ? "" : item;
             }
             catch (Exception)
             {

@@ -37,7 +37,7 @@ namespace BE
                 .Property(e => e.DescriptionLong)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<ItemMapping>()
+            modelBuilder.Entity<Item>()
                 .Property(e => e.Gender)
                 .IsUnicode(false);
 

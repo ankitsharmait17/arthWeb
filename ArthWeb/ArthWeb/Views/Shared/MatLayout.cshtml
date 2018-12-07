@@ -87,6 +87,11 @@
         z-index: 999999999;
     }
 
+    .dropdown-content {
+        overflow: visible !important;
+    }
+    
+
 </style>
 <html>
 <head>
@@ -114,7 +119,11 @@
                     <a href="@Url.Action("Index","Home")" class="brand-logo center black-text">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
                     <ul class="left hide-on-med-and-down">
-                        <li><a href="#" class="black-text">MEN</a></li>
+                        <li>
+                            <a class="dropdown-trigger black-text" href="#!" data-target="menDD">
+                                MEN
+                            </a>
+                        </li>
                         <li><a href="#" class="black-text">WOMEN</a></li>
                         <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
                     </ul>
@@ -156,6 +165,38 @@
             </nav>
         </div>
 
+        <ul id="menDD" class="dropdown-content">
+            <li>
+                <div class="container">
+                    <div class="row">
+                        <div class="col s4 left-align">
+                            <h6><u>Fusion</u></h6>
+                            <ul>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })" class="black-text">Kurtis</a></li>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
+                            </ul>
+                        </div>
+                        <div class="col s4 left-align">
+                            <h6>Fusion</h6>
+                            <ul>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })">Kurtis</a></li>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
+                            </ul>
+                        </div>
+                        <div class="col s4 left-align">
+                            <h6>Fusion</h6>
+                            <ul>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })">Kurtis</a></li>
+                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        
+
         <ul class="sidenav" id="mobile-demo">
             @if (User.Identity.IsAuthenticated)
             {
@@ -191,7 +232,7 @@
             }
         </ul>
 
-        
+
 
     </header>
     <!-- Navbar End-->
@@ -262,8 +303,8 @@
         }
 
         $(document).ready(function () {
-            //$('.carousel').carousel();\
-            $(".dropdown-trigger").dropdown({coverTrigger: false, constrainWidth: false });
+            $(".dropdown-trigger").dropdown({ coverTrigger: false, constrainWidth: false, hover: true });
+            
             $('.sidenav').sidenav();
             var path = "@path";
             if (path == "/") {

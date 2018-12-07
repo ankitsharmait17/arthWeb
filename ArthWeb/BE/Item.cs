@@ -26,6 +26,9 @@ namespace BE
 
         public int ItemMappingID { get; set; }
 
+        [StringLength(5)]
+        public string Gender { get; set; }
+
         public virtual ItemMapping ItemMapping { get; set; }
     }
 }

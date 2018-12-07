@@ -20,11 +20,7 @@ namespace BE
         public int ItemTypeID { get; set; }
 
         public int ItemSubTypeID { get; set; }
-
-        [Required]
-        [StringLength(10)]
-        public string Gender { get; set; }
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
 

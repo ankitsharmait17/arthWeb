@@ -84,9 +84,9 @@ namespace DL
                         int i;
                         for (i = 0; i < keywords.Length - 1; i++)
                         {
-                            predicate += "itemMap.Gender.Equals(@" + i + ") ||";
+                            predicate += "item.Gender.Equals(@" + i + ") ||";
                         }
-                        predicate += "itemMap.Gender.Equals(@" + i + ")";
+                        predicate += "item.Gender.Equals(@" + i + ")";
                         data = data.Where(predicate, keywords);
                     }
 
