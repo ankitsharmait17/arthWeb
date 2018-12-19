@@ -22,6 +22,7 @@ namespace BE
         public virtual DbSet<ItemQuantity> ItemQuantities { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -114,6 +115,18 @@ namespace BE
 
             modelBuilder.Entity<OrderDetail>()
                 .Property(e => e.ItemKey)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Menu>()
+                .Property(e => e.Gender)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Menu>()
+                .Property(e => e.ItemSubType)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Menu>()
+                .Property(e => e.ItemType)
                 .IsUnicode(false);
         }
     }

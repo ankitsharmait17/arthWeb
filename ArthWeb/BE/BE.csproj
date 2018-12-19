@@ -57,6 +57,7 @@
     <Compile Include="ItemSize.cs" />
     <Compile Include="ItemSubType.cs" />
     <Compile Include="ItemType.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Models\ItemCartModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\OrderDetailModel.cs" />

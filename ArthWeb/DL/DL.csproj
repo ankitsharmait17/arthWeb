@@ -59,6 +59,7 @@
     <Compile Include="ItemMappingDAO.cs" />
     <Compile Include="ItemSizeDAO.cs" />
     <Compile Include="ItemTypeDAO.cs" />
+    <Compile Include="MenuDAO.cs" />
     <Compile Include="OrderDAO.cs" />
     <Compile Include="OrderDetailDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

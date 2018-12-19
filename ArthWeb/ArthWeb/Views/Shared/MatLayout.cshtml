@@ -206,15 +206,6 @@
             {
                 <li><a href="@Url.Action("Login","Account")" class="black-text">SIGN IN</a></li>
             }
-            <li><a href="#" class="black-text">MEN</a></li>
-            <li><a href="#" class="black-text">WOMEN</a></li>
-            <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
-            <li>
-                <a href="#" class="cartLink">
-                    <i class="fab fa-shopping-cart notif"></i>
-                    <small class="notification-badge white-text">@count</small>
-                </a>
-            </li>
             <li>
                 <div class="row valign-wrapper">
                     <div class="input-field col s10">
@@ -225,6 +216,15 @@
                         <button class="btn btn-flat" id="searchbarBtn"><i class="fa fa-angle-double-right"></i></button>
                     </div>
                 </div>
+            </li>
+            <li><a href="#" class="black-text">MEN</a></li>
+            <li><a href="#" class="black-text">WOMEN</a></li>
+            <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
+            <li>
+                <a href="#" class="cartLink btn btn-flat">
+                    <i class="fab fa-shopping-cart notif"></i>
+                    <small class="notification-badge white-text">@count</small>
+                </a>
             </li>
             @if (User.Identity.IsAuthenticated)
             {

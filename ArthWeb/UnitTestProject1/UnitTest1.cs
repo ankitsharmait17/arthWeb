@@ -36,5 +36,11 @@ namespace UnitTestProject1
         {
             new UserDAO().SendEmail("abc-abc-abc-abc", "ankit.sharma.it2017@gmail.com", "ankit","http://localhost:62316/Account/ConfirmEmail");
         }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+            var x = new MenuDAO().GetMenuItems("Men");
+        }
     }
 }

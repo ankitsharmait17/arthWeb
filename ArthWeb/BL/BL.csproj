@@ -46,6 +46,7 @@
     <Compile Include="ItemMappingBL.cs" />
     <Compile Include="ItemSizeBL.cs" />
     <Compile Include="MailHelperBL.cs" />
+    <Compile Include="MenuBL.cs" />
     <Compile Include="OrderBL.cs" />
     <Compile Include="OrderDetailBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
