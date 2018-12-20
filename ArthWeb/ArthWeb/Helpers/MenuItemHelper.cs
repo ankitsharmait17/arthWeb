@@ -6,9 +6,9 @@ using System.Web;
 
 namespace ArthWeb.Helpers
 {
-    public class MenuHelper
+    public class MenuItemHelper
     {
-        public Dictionary<string, List<string>> GetMenuItems(string gender)
+        public static Dictionary<string, List<string>> GetMenuItems(string gender)
         {
             return new MenuBL().GetMenuItems(gender);
         }

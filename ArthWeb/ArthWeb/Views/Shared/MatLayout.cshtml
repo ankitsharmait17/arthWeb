@@ -1,6 +1,39 @@
-﻿@{ 
+﻿@using ArthWeb.Helpers;
+@{ 
     string path = HttpContext.Current.Request.Url.AbsolutePath;
     int count = Session["count"]==null?0:(int)Session["count"];
+    Dictionary<string ,List<string>> menMenu = MenuItemHelper.GetMenuItems("Men");
+    Dictionary<string, List<string>> womenMenu = MenuItemHelper.GetMenuItems("Women");
+    string menmarkup = null;
+    string womenMarkup = null;
+    foreach (var item in menMenu)
+    {
+        menmarkup += "<li>";
+        menmarkup += "<div class='collapsible-header center' style='display:block;'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
+        menmarkup += "<div class='collapsible-body'>";
+        menmarkup += "<ul class='list-unstyled'>";
+        foreach (string subType in item.Value)
+        {
+            menmarkup += "<li>";
+            menmarkup += "<a href='"+Url.Action("SearchItems","Search",new {cat=item.Key,item=subType,gender="Men" })+ "'>" + subType.Replace('_', ' ')+"</a>";
+            menmarkup += "</li>";
+        }
+        menmarkup += "</ul></div></li>";
+    }
+    foreach (var item in womenMenu)
+    {
+        womenMarkup += "<li>";
+        womenMarkup += "<div class='collapsible-header center' style='display:block;'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
+        womenMarkup += "<div class='collapsible-body'>";
+        womenMarkup += "<ul class='list-unstyled'>";
+        foreach (string subType in item.Value)
+        {
+            womenMarkup += "<li>";
+            womenMarkup += "<a href='" + Url.Action("SearchItems", "Search", new { cat = item.Key, item = subType, gender = "Women" }) + "'>" + subType.Replace('_', ' ') + "</a>";
+            womenMarkup += "</li>";
+        }
+        womenMarkup += "</ul></div></li>";
+    }
 }
 <style>
     body {
@@ -10,6 +43,8 @@
         color: black;
         font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif!important;
     }
+
+    
 
     main {
         flex: 1 0 auto;
@@ -90,6 +125,7 @@
     .dropdown-content {
         overflow: visible !important;
     }
+
     
 
 </style>
@@ -119,13 +155,9 @@
                     <a href="@Url.Action("Index","Home")" class="brand-logo center black-text">LOGO</a>
                     <a href="#" data-target="mobile-demo" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
                     <ul class="left hide-on-med-and-down">
-                        <li>
-                            <a class="dropdown-trigger black-text" href="#!" data-target="menDD">
-                                MEN
-                            </a>
-                        </li>
-                        <li><a href="#" class="black-text">WOMEN</a></li>
-                        <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
+                        <li><a href="#" class="black-text sidenav-trigger show-on-large" data-target="menDD"><b>MEN</b></a></li>
+                        <li><a href="#" class="black-text sidenav-trigger show-on-large" data-target="womenDD"><b>WOMEN</b></a></li>
+                        <li><a href="#" class="black-text"><b>WHAT'S NEW?</b></a></li>
                     </ul>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
@@ -151,60 +183,47 @@
                                     <i class="material-icons black-text">account_circle</i>
                                 </a>
                                 <ul id="profileDD" class="dropdown-content">
-                                    <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i>PROFILE</a></li>
-                                    <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons">keyboard_tab</i>LOGOUT</a></li>
+                                    <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i><b>PROFILE</b></a></li>
+                                    <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons">keyboard_tab</i><b>LOGOUT</b></a></li>
                                 </ul>
                             </li>
                         }
                         else
                         {
-                            <li><a href="@Url.Action("Login","Account")" class="black-text">SIGN IN</a></li>
+                            <li><a href="@Url.Action("Login","Account")" class="black-text"><b>SIGN IN</b></a></li>
                         }
                     </ul>
                 </div>
             </nav>
         </div>
 
-        <ul id="menDD" class="dropdown-content">
+        <ul id="menDD" class="sidenav">
+            
             <li>
-                <div class="container">
-                    <div class="row">
-                        <div class="col s4 left-align">
-                            <h6><u>Fusion</u></h6>
-                            <ul>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })" class="black-text">Kurtis</a></li>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
-                            </ul>
-                        </div>
-                        <div class="col s4 left-align">
-                            <h6>Fusion</h6>
-                            <ul>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })">Kurtis</a></li>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
-                            </ul>
-                        </div>
-                        <div class="col s4 left-align">
-                            <h6>Fusion</h6>
-                            <ul>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Kurtis",cat="Fusion" })">Kurtis</a></li>
-                                <li><a href="@Url.Action("SearchItems","Search",new { item="Waist_Coats",cat="Fusion" })">Waist Coats</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                <ul class="collapsible menCollapse center" data-collapsible="accordion">
+                    @Html.Raw(menmarkup)
+                </ul>
+            </li>
+        </ul>
+        <ul id="womenDD" class="sidenav">
+            
+            <li>
+                <ul class="collapsible womenCollapse" data-collapsible="accordion">
+                    @Html.Raw(womenMarkup)
+                </ul>
             </li>
         </ul>
 
-        
 
-        <ul class="sidenav" id="mobile-demo">
+
+        <ul class="sidenav center" id="mobile-demo">
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i>PROFILE</a></li>
+                <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i><b>PROFILE</b></a></li>
             }
             else
             {
-                <li><a href="@Url.Action("Login","Account")" class="black-text">SIGN IN</a></li>
+                <li><a href="@Url.Action("Login","Account")" class="black-text"><b>SIGN IN</b></a></li>
             }
             <li>
                 <div class="row valign-wrapper">
@@ -217,9 +236,28 @@
                     </div>
                 </div>
             </li>
-            <li><a href="#" class="black-text">MEN</a></li>
-            <li><a href="#" class="black-text">WOMEN</a></li>
-            <li><a href="#" class="black-text">WHAT'S NEW?</a></li>
+            <li>
+                <ul class="collapsible" data-collapsible="accordion" id="menuMobileCollapse">
+                    <li>
+                <div class="collapsible-header center" style="display:block;"><b>WOMEN</b></div>
+                <div class="collapsible-body">
+                    <ul class="collapsible womenCollapse" data-collapsible="accordion">
+                        @Html.Raw(womenMarkup)
+                    </ul>
+                </div>
+                 
+            </li>
+            <li>
+                <div class="collapsible-header center" style="display:block;"><b>MEN</b></div>
+                <div class="collapsible-body">
+                    <ul class="collapsible menCollapse" data-collapsible="accordion">
+                        @Html.Raw(menmarkup)
+                    </ul>
+                </div>
+                </li>
+                </ul>
+            </li>
+            <li><a href="#" class="black-text"><b>WHAT'S NEW?</b></a></li>
             <li>
                 <a href="#" class="cartLink btn btn-flat">
                     <i class="fab fa-shopping-cart notif"></i>
@@ -303,9 +341,7 @@
         }
 
         $(document).ready(function () {
-            $(".dropdown-trigger").dropdown({ coverTrigger: false, constrainWidth: false, hover: true });
-            
-            $('.sidenav').sidenav();
+            $('#mobile-demo').sidenav();
             var path = "@path";
             if (path == "/") {
                 $(".breadcrumbs").hide();
@@ -313,6 +349,11 @@
             if (path.toLowerCase() == "/home/index") {
                 $(".breadcrumbs").hide();
             }
+            $('#menDD').sidenav();
+            $('#womenDD').sidenav();
+            $('.menCollapse').collapsible();
+            $('.womenCollapse').collapsible();
+            $('#menuMobileCollapse').collapsible();
             //M.AutoInit();
         });
 

@@ -12,7 +12,7 @@ namespace ArthWeb.Controllers
     public class SearchController : Controller
     {
         // GET: Search
-        public ActionResult SearchItems(string search=null,string cat=null,string item=null)
+        public ActionResult SearchItems(string search=null,string cat=null,string item=null,string gender=null)
         {
             try
             {
@@ -21,6 +21,7 @@ namespace ArthWeb.Controllers
                 ViewBag.searchString = string.IsNullOrWhiteSpace(search)?"":search;
                 ViewBag.cat= string.IsNullOrWhiteSpace(cat) ? "" : cat;
                 ViewBag.item = string.IsNullOrWhiteSpace(item) ? "" : item;
+                ViewBag.gender = string.IsNullOrWhiteSpace(gender) ? "" : gender;
             }
             catch (Exception)
             {

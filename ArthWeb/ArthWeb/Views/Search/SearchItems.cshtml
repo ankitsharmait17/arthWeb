@@ -84,11 +84,13 @@
         padding:10px;
     }
 
-    
+
 
     .pagination li.active{
         background-color:black;
     }
+
+    
 
 </style>
 
@@ -207,10 +209,11 @@
 
 
 <script>
-    var search, pageSize, startRec, order, itemKey, price, item,cat;
+    var search, pageSize, startRec, order, itemKey, price, item,cat,gender;
     item = "@ViewBag.item";
     search = "@ViewBag.searchString";
     cat = "@ViewBag.cat";
+    gender = "@ViewBag.gender";
     pageSize = 10;
     var itemLink = '@Url.Action("ViewItem", "Item")?itemKey=';
     function GetPrice(num) {
@@ -232,6 +235,7 @@
     }
 
     $(document).ready(function () {
+        $('#slide-out').sidenav({ edge:"right"});
         $('.collapsible').collapsible();
         $('select').formSelect();
         $('#sizeModal').modal();
@@ -239,6 +243,11 @@
         $('.filterGender , .filterSubtype , .filterSize').prop('checked', false);
         $('#clear').css('display', 'none');
         $(".dropdown-content>li>a").css("color", "black");
+        if (gender != "") {
+            var markup = "<div class='chip chipsGender'><b>" + gender + "</b><i class='close material-icons' onClick='deleteChip(this)'>close</i></div>";
+            $('#chips').append(markup);
+            $('#' + gender).prop('checked', true);
+        }
         if (item != "") {
             item = '#' + cat + ' > li  #' + item;
             console.log(item);

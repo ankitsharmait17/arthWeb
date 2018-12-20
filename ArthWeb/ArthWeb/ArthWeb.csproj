@@ -214,7 +214,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Cryptography.cs" />
-    <Compile Include="Helpers\MenuHelper.cs" />
+    <Compile Include="Helpers\MenuItemHelper.cs" />
     <Compile Include="Helpers\Ticket.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
