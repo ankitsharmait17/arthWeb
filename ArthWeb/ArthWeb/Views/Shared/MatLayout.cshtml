@@ -9,7 +9,7 @@
     foreach (var item in menMenu)
     {
         menmarkup += "<li>";
-        menmarkup += "<div class='collapsible-header center' style='display:block;'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
+        menmarkup += "<div class='collapsible-header'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
         menmarkup += "<div class='collapsible-body'>";
         menmarkup += "<ul class='list-unstyled'>";
         foreach (string subType in item.Value)
@@ -23,7 +23,7 @@
     foreach (var item in womenMenu)
     {
         womenMarkup += "<li>";
-        womenMarkup += "<div class='collapsible-header center' style='display:block;'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
+        womenMarkup += "<div class='collapsible-header'><b>" + item.Key.Replace('_', ' ') + "</b></div>";
         womenMarkup += "<div class='collapsible-body'>";
         womenMarkup += "<ul class='list-unstyled'>";
         foreach (string subType in item.Value)
@@ -75,7 +75,7 @@
     }
 
     
-    .notification-badge {
+    /*.notification-badge {
         position: relative;
         padding: 5px 9px;
         background-color: black;
@@ -83,19 +83,25 @@
         bottom: 15px;
         left: 0px;
         border-radius: 50%;
-    }
+    }*/
 
     .notif {
         position: absolute;
-        font-size:30px;
+        font-size:20px;
+        font-weight:bold;
+    }
+
+    .notification-badge{
+        font-size:15px;
+        font-weight:bold;
     }
 
     [type="checkbox"].filled-in:checked + span:not(.lever):after {
         top: 0;
         width: 20px;
         height: 20px;
-        border: 2px solid black!important;
-        background-color: black!important;
+        border: 2px solid black !important;
+        background-color: black !important;
         z-index: 0;
     }
 
@@ -124,6 +130,12 @@
 
     .dropdown-content {
         overflow: visible !important;
+    }
+
+    @@media (max-width: 768px) {
+        .findUs {
+            font-size: 12px !important;
+        }
     }
 
     
@@ -171,7 +183,8 @@
                         <li>
                             <a href="#" class="cartLink">
                                 <i class="fab fa-shopping-cart black-text notif"></i>
-                                <small class="notification-badge white-text">@count</small>
+                                @*<small class="notification-badge white-text">@count</small>*@
+                                <small class="notification-badge black-text">(@count)</small>
                             </a>
                         </li>
 
@@ -179,7 +192,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li>
-                                <a class="dropdown-trigger" href="#!" data-target="profileDD">
+                                <a class="profileDDTrigger" href="#!" data-target="profileDD">
                                     <i class="material-icons black-text">account_circle</i>
                                 </a>
                                 <ul id="profileDD" class="dropdown-content">
@@ -200,7 +213,7 @@
         <ul id="menDD" class="sidenav">
             
             <li>
-                <ul class="collapsible menCollapse center" data-collapsible="accordion">
+                <ul class="collapsible menCollapse" data-collapsible="accordion">
                     @Html.Raw(menmarkup)
                 </ul>
             </li>
@@ -216,10 +229,10 @@
 
 
 
-        <ul class="sidenav center" id="mobile-demo">
+        <ul class="sidenav" id="mobile-demo">
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons">face</i><b>PROFILE</b></a></li>
+                <li><a href="@Url.Action("Profile","Account")" class="black-text"><i class="material-icons black-text">face</i><b>PROFILE</b></a></li>
             }
             else
             {
@@ -239,7 +252,7 @@
             <li>
                 <ul class="collapsible" data-collapsible="accordion" id="menuMobileCollapse">
                     <li>
-                <div class="collapsible-header center" style="display:block;"><b>WOMEN</b></div>
+                        <div class="collapsible-header">&nbsp;&nbsp;&nbsp;&nbsp;<b>WOMEN</b></div>
                 <div class="collapsible-body">
                     <ul class="collapsible womenCollapse" data-collapsible="accordion">
                         @Html.Raw(womenMarkup)
@@ -247,8 +260,9 @@
                 </div>
                  
             </li>
+                    <li></li>
             <li>
-                <div class="collapsible-header center" style="display:block;"><b>MEN</b></div>
+                <div class="collapsible-header">&nbsp;&nbsp;&nbsp;&nbsp;<b>MEN</b></div>
                 <div class="collapsible-body">
                     <ul class="collapsible menCollapse" data-collapsible="accordion">
                         @Html.Raw(menmarkup)
@@ -259,14 +273,15 @@
             </li>
             <li><a href="#" class="black-text"><b>WHAT'S NEW?</b></a></li>
             <li>
-                <a href="#" class="cartLink btn btn-flat">
-                    <i class="fab fa-shopping-cart notif"></i>
-                    <small class="notification-badge white-text">@count</small>
+                <a href="#" class="cartLink">
+                    <i class="fab fa-shopping-cart notif black-text"></i><b>CART</b>
+                    @*<small class="notification-badge white-text">@count</small>*@
+                    <small class="notification-badge">(@count)</small>
                 </a>
             </li>
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons">keyboard_tab</i>LOGOUT</a></li>
+                <li><a href="@Url.Action("LogOut", "Account")" class="black-text"><i class="material-icons black-text">keyboard_tab</i><b>LOGOUT</b></a></li>
             }
         </ul>
 
@@ -293,7 +308,7 @@
         <div class="container">
             <div class="row">
                 <div class="col l12 s12 center-align">
-                    <h5 class="black-text">FIND US AT</h5>
+                    <h6 class="black-text findUs">FIND US AT</h6>
                 </div>
                 <div class="col s12 center-align">
                     <h5>
@@ -305,8 +320,8 @@
                 </div>
 
             </div>
-            <div class="row">
-                <h6 class="center">
+            <div class="row center">
+                <h6 class="findUs">
                     <a href="#" class="black-text">CONTACT US</a> <span class="black-text">|</span>
                     <a href="#" class="black-text">ABOUT US</a> <span class="black-text">|</span>
                     <a href="#" class="black-text">TERMS & CONDITIONS</a>
@@ -326,7 +341,7 @@
             </div>*@
         <div class="footer-copyright white">
             <div class="container">
-                <h6 class="center black-text">© 2018 COPYRIGHT</h6>
+                <h6 class="center black-text findUs">© 2018 COPYRIGHT</h6>
             </div>
         </div>
     </footer>
@@ -354,6 +369,7 @@
             $('.menCollapse').collapsible();
             $('.womenCollapse').collapsible();
             $('#menuMobileCollapse').collapsible();
+            $('.profileDDTrigger').dropdown({ constrainWidth: false, coverTrigger: false, hover: true });
             //M.AutoInit();
         });
 
@@ -364,7 +380,7 @@
         });
 
         $('.cartLink').on('click', function () {
-            if ($(this).find('.notification-badge').text() == "0") {
+            if ($(this).find('.notification-badge').text() == "(0)") {
                 return false;
             }
             location.href = "@Url.Action("CartItems", "Cart")";
